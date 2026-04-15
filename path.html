@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learning Path · Simple AI Projects for Kids</title>
-  <meta name="description" content="See the full learning path — a tree of AI projects that build on each other. Earned projects light up.">
-  <meta property="og:title" content="Learning Path · Simple AI Projects for Kids">
-  <meta property="og:description" content="A tree of AI projects that build on each other.">
+  <title>Adventure Map · Simple AI Projects for Kids</title>
+  <meta name="description" content="Explore the AI adventure map — a tree of projects that build on each other. Earn stickers, unlock new islands.">
+  <meta property="og:title" content="Adventure Map · Simple AI Projects for Kids">
+  <meta property="og:description" content="Explore the AI adventure map.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="images/faces/lily.png">
-  <link rel="stylesheet" href="css/styles.css?v=16">
+  <link rel="stylesheet" href="css/styles.css?v=18">
   <script src="js/projects_meta.js"></script>
 </head>
 <body data-band="home">
@@ -29,16 +29,16 @@
   </nav>
 
   <article class="project container about-page">
-    <p class="breadcrumb"><a href="index.html">Home</a> › Learning Path</p>
-    <h1>🗺 The Learning Path</h1>
-    <p class="lead">Each project builds on the one before it. Projects you've finished light up ⭐. Arrows show which project unlocks which. You can always skip ahead — but the tree shows the smoothest path.</p>
+    <p class="breadcrumb"><a href="index.html">Home</a> › Adventure Map</p>
+    <h1>🗺 The AI Adventure Map</h1>
+    <p class="lead">Hop from island to island. Each project you finish lights up ⭐ and glows. A 🔒 means you need to finish the project it points from first — but you can always click to peek!</p>
 
     <p style="text-align:center">
       <button class="btn btn-ghost" id="reset-progress" type="button">Reset my progress</button>
       <span id="progress-count" style="margin-left:10px;color:#666"></span>
     </p>
 
-    <div class="tree-wrap" id="learning-tree">
+    <div class="map-wrap" id="learning-tree">
       <svg id="tree-svg" aria-hidden="true"></svg>
       <div class="tree-layers" id="tree-layers"></div>
     </div>
@@ -60,7 +60,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=16" defer></script>
+  <script src="js/common.js?v=18" defer></script>
   <script>
   (function(){
     const meta = window.PROJECTS_META || {};
@@ -68,22 +68,22 @@
       try { return JSON.parse(localStorage.getItem('sai_stickers_v1') || '{}'); }
       catch(e){ return {}; }
     })();
+    // Each band becomes an "island world" with its own scenery emoji
     const bands = [
-      ['5-8',  'Ages 5–8 — Discover',  '#fde68a'],
-      ['9-12', 'Ages 9–12 — Build',    '#bbf7d0'],
-      ['13-15','Ages 13–15 — Code',    '#bae6fd'],
-      ['16',   'Ages 16+ — Ship',      '#fbcfe8']
+      ['5-8',  '🌱 Meadow Island — Ages 5–8',   '#fde68a', '🐣🌻🦋🌈'],
+      ['9-12', '🌳 Forest Island — Ages 9–12',  '#bbf7d0', '🌳🐿️🍄🦉'],
+      ['13-15','🛠 Workshop Island — Ages 13–15','#bae6fd', '⚙️💡🔧🤖'],
+      ['16',   '🚀 Launchpad — Ages 16+',        '#fbcfe8', '🚀🛰️🌌✨']
     ];
     const host = document.getElementById('tree-layers');
     const svg  = document.getElementById('tree-svg');
 
-    // Progress counter
-    const doneCount = Object.keys(stickers).filter(k => stickers[k]).length;
+    const doneSet = new Set(Object.keys(stickers).filter(k => stickers[k]));
+    const doneCount = doneSet.size;
     const totalCount = Object.keys(meta).length;
     document.getElementById('progress-count').textContent =
-      totalCount ? '⭐ ' + doneCount + ' / ' + totalCount + ' completed' : '';
+      totalCount ? '⭐ ' + doneCount + ' / ' + totalCount + ' islands visited' : '';
 
-    // Reset button
     document.getElementById('reset-progress').addEventListener('click', function(){
       if (!confirm('Clear all your completed stickers? This only resets your progress on this device.')) return;
       try { localStorage.removeItem('sai_stickers_v1'); } catch(e){}
@@ -95,39 +95,73 @@
       return;
     }
 
-    // Build layered rows; remember each card's DOM id so we can draw arrows.
+    // Determine locked state: a project is locked if it has prereqs AND none of them are done.
+    // (We unlock once any one prereq is done, so kids can branch.)
+    function isLocked(slug) {
+      const prereqs = (meta[slug].prereqs || []);
+      if (!prereqs.length) return false;
+      return !prereqs.some(p => doneSet.has(p));
+    }
+
+    // "You are here" = last completed project (most recent in stickers)
+    let lastSlug = null, lastDate = 0;
+    Object.keys(stickers).forEach(k => {
+      const s = stickers[k];
+      if (s && s.date) {
+        const t = new Date(s.date).getTime();
+        if (t > lastDate) { lastDate = t; lastSlug = k; }
+      }
+    });
+
     const idOf = function(slug){ return 'tnode-' + slug; };
     host.innerHTML = bands.map(function(b){
-      const band = b[0], label = b[1], color = b[2];
+      const band = b[0], label = b[1], color = b[2], scenery = b[3];
       const nodes = Object.keys(meta)
         .filter(function(s){ return meta[s].band === band; })
         .sort(function(a, c){ return (meta[a].prereqs||[]).length - (meta[c].prereqs||[]).length; });
       const cards = nodes.map(function(slug){
         const m = meta[slug];
-        const d = !!stickers[slug];
+        const d = doneSet.has(slug);
+        const locked = !d && isLocked(slug);
+        const here = slug === lastSlug;
         const tagline = (m.tags || []).slice(0,2).join(' · ');
         const timeMap = { quick:'⏱ ~10 min', short:'⏱ 15–30 min', medium:'⏱ 30–60 min', long:'⏱ 1 hr+' };
-        return '<a id="' + idOf(slug) + '" class="tree-node ' + (d?'done':'') + '" href="projects/' + slug + '.html">'
-          + '<div class="tree-node-title">' + (d ? '⭐ ' : '') + m.title + '</div>'
+        const prereqTitles = (m.prereqs || []).map(p => (meta[p] && meta[p].title) || p).join(' or ');
+        const lockTip = locked ? `Finish ${prereqTitles} first to unlock this island!` : '';
+        const classes = ['tree-node'];
+        if (d) classes.push('done');
+        if (locked) classes.push('locked');
+        if (here) classes.push('here');
+        return '<a id="' + idOf(slug) + '" class="' + classes.join(' ') + '" href="projects/' + slug + '.html"'
+          + (locked ? ' title="' + lockTip.replace(/"/g,'&quot;') + '"' : '') + '>'
+          + (here ? '<div class="here-marker" aria-hidden="true">📍 You are here</div>' : '')
+          + '<div class="tree-node-title">'
+            + (d ? '<span class="node-star">⭐</span> ' : locked ? '<span class="node-lock">🔒</span> ' : '')
+            + m.title + '</div>'
           + '<div class="tree-node-meta">' + tagline + '</div>'
           + '<div class="tree-node-time">' + (timeMap[m.time]||'') + '</div>'
+          + (locked ? '<div class="node-locktip">' + lockTip + '</div>' : '')
           + '</a>';
       }).join('');
-      return '<div class="tree-band" style="--band-color:' + color + '">'
-        + '<h2>' + label + ' <span class="tb-count">' + nodes.length + ' projects</span></h2>'
+      return '<div class="tree-band island" style="--band-color:' + color + '">'
+        + '<div class="island-scenery" aria-hidden="true">' + scenery.split('').join(' ') + '</div>'
+        + '<h2>' + label + ' <span class="tb-count">' + nodes.length + ' islands</span></h2>'
         + '<div class="tree-row">' + cards + '</div>'
         + '</div>';
     }).join('');
 
-    // Draw arrows from prereq → project using absolute SVG overlay
+    // Draw arrows from prereq → project using absolute SVG overlay (desktop only).
     function drawArrows() {
       const wrap = document.getElementById('learning-tree');
+      if (window.innerWidth < 720) { svg.innerHTML = ''; return; } // hide arrows on mobile
       const rect = wrap.getBoundingClientRect();
       svg.setAttribute('width',  rect.width);
       svg.setAttribute('height', rect.height);
       svg.setAttribute('viewBox', '0 0 ' + rect.width + ' ' + rect.height);
-      let defs = '<defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker>'
-               + '<marker id="arrowhead-done" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/></marker></defs>';
+      let defs = '<defs>'
+               + '<marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker>'
+               + '<marker id="arrowhead-done" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/></marker>'
+               + '</defs>';
       const paths = [];
       Object.keys(meta).forEach(function(slug){
         (meta[slug].prereqs || []).forEach(function(prereq){
@@ -142,17 +176,24 @@
           const y2 = tr.top - rect.top;
           const midY = (y1 + y2) / 2;
           const d = 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + midY + ', ' + x2 + ' ' + midY + ', ' + x2 + ' ' + (y2-4);
-          const doneFlag = stickers[prereq] && stickers[slug];
-          paths.push('<path d="' + d + '" fill="none" stroke="' + (doneFlag?'#22c55e':'#bbb') + '" stroke-width="' + (doneFlag?2.5:1.5) + '" stroke-dasharray="' + (doneFlag?'0':'4,4') + '" marker-end="url(' + (doneFlag?'#arrowhead-done':'#arrowhead') + ')"/>');
+          const doneFlag = doneSet.has(prereq) && doneSet.has(slug);
+          paths.push('<path d="' + d + '" fill="none" stroke="' + (doneFlag?'#22c55e':'#bbb') + '" stroke-width="' + (doneFlag?2.5:1.5) + '" stroke-dasharray="' + (doneFlag?'0':'5,5') + '" marker-end="url(' + (doneFlag?'#arrowhead-done':'#arrowhead') + ')"/>');
         });
       });
       svg.innerHTML = defs + paths.join('');
     }
     drawArrows();
     window.addEventListener('resize', drawArrows);
-    // Re-draw after fonts load / content settles
     setTimeout(drawArrows, 100);
     setTimeout(drawArrows, 500);
+
+    // Scroll "You are here" marker into view
+    if (lastSlug) {
+      setTimeout(() => {
+        const el = document.getElementById('tnode-' + lastSlug);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 600);
+    }
   })();
   </script>
 </body>

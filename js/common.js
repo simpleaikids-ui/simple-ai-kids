@@ -219,20 +219,28 @@
   }
 
   /* ================================================================
-     5. CONFETTI 🎉
-     Tiny pure-canvas confetti burst. Called on demand.
+     5. CONFETTI 🎉  — themed per age band
      ================================================================ */
+  const CONFETTI_THEME = {
+    '5-8':   { glyphs: ['⭐','🌈','🎈','🍭','🦄','✨'],      colors: ['#ff6b6b','#ffb400','#ffe28a','#f472b6'] },
+    '9-12':  { glyphs: ['⚙️','🧩','🎯','🚀','💡','🎮'],      colors: ['#a8e6a8','#22c55e','#84cc16','#10b981'] },
+    '13-15': { glyphs: ['⚡','{}','</>','📊','💻','🎧'],     colors: ['#b8c8ff','#6366f1','#0ea5e9','#38bdf8'] },
+    '16':    { glyphs: ['λ','∑','{;}','AI','fn','0101'],    colors: ['#e3b8ff','#a855f7','#c084fc','#e879f9'] },
+    'home':  { glyphs: ['⭐','✨','🎉','🌟','🎊','💫'],      colors: ['#ff6b6b','#ffb400','#ffe28a','#a8e6a8','#b8c8ff','#e3b8ff'] },
+    'info':  { glyphs: ['✨','⭐','🌟'],                     colors: ['#ffb400','#ffe28a','#a8e6a8'] },
+  };
   function fireConfetti(x, y) {
     if (reducedMotion) return;
+    const theme = CONFETTI_THEME[bandKey] || CONFETTI_THEME.home;
     const canvas = document.createElement('canvas');
     canvas.className = 'confetti-canvas';
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
-    const colors = ['#ff6b6b','#ffb400','#ffe28a','#a8e6a8','#b8c8ff','#e3b8ff','#6c5ce7'];
     const pieces = [];
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 90; i++) {
+      const useGlyph = Math.random() < 0.45;
       pieces.push({
         x: x, y: y,
         vx: (Math.random() - 0.5) * 14,
@@ -242,7 +250,9 @@
         h: 8 + Math.random() * 10,
         rot: Math.random() * Math.PI * 2,
         vr: (Math.random() - 0.5) * 0.3,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color: theme.colors[Math.floor(Math.random() * theme.colors.length)],
+        glyph: useGlyph ? theme.glyphs[Math.floor(Math.random() * theme.glyphs.length)] : null,
+        size: 16 + Math.random() * 12,
         life: 0,
       });
     }
@@ -259,14 +269,224 @@
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        if (p.glyph) {
+          ctx.font = p.size + 'px system-ui,sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(p.glyph, 0, 0);
+        } else {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        }
         ctx.restore();
       });
       if (alive > 0) requestAnimationFrame(frame);
       else canvas.remove();
     }
     frame();
+  }
+
+  /* ================================================================
+     SOUND EFFECTS (Web Audio) — muted by default, toggle in nav.
+     Tiny synthesized tones: no assets, no autoplay.
+     ================================================================ */
+  const SOUND_KEY = 'sai_sound_v1';
+  let audioCtx = null;
+  function soundEnabled() {
+    return localStorage.getItem(SOUND_KEY) === 'on';
+  }
+  function setSoundEnabled(on) {
+    try { localStorage.setItem(SOUND_KEY, on ? 'on' : 'off'); } catch(e) {}
+  }
+  function ensureAudio() {
+    if (!audioCtx && window.AudioContext) audioCtx = new AudioContext();
+    return audioCtx;
+  }
+  function tone(freq, dur, type, gain) {
+    const ac = ensureAudio(); if (!ac) return;
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+    g.gain.value = gain || 0.06;
+    o.connect(g).connect(ac.destination);
+    const t = ac.currentTime;
+    g.gain.setValueAtTime(gain || 0.06, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.start(t);
+    o.stop(t + dur);
+  }
+  function playSound(kind) {
+    if (!soundEnabled()) return;
+    try {
+      if (kind === 'happy') { tone(523, 0.12); setTimeout(()=>tone(784, 0.18), 90); }
+      else if (kind === 'sad') { tone(330, 0.18, 'sine'); setTimeout(()=>tone(220, 0.28), 120); }
+      else if (kind === 'ding') { tone(880, 0.12, 'triangle'); }
+      else if (kind === 'boop') { tone(196, 0.08, 'square', 0.04); }
+      else if (kind === 'cheer') { tone(523, 0.1); setTimeout(()=>tone(659, 0.1), 80); setTimeout(()=>tone(784, 0.18), 160); }
+      else { tone(440, 0.1); }
+    } catch(e) {}
+  }
+  window.saiPlaySound = playSound;
+  function insertSoundToggle() {
+    const nav = document.querySelector('.nav-links');
+    if (!nav || nav.querySelector('.sound-toggle')) return;
+    const li = document.createElement('li');
+    li.className = 'sound-toggle-wrap';
+    const on = soundEnabled();
+    li.innerHTML = `
+      <button class="sound-toggle" aria-label="Toggle sound effects" aria-pressed="${on ? 'true' : 'false'}">
+        <span class="st-icon">${on ? '🔊' : '🔇'}</span>
+      </button>`;
+    // insert before the theme toggle if present
+    const theme = nav.querySelector('.theme-toggle-wrap');
+    if (theme) nav.insertBefore(li, theme);
+    else nav.appendChild(li);
+    li.querySelector('.sound-toggle').addEventListener('click', (e) => {
+      const nowOn = !soundEnabled();
+      setSoundEnabled(nowOn);
+      e.currentTarget.querySelector('.st-icon').textContent = nowOn ? '🔊' : '🔇';
+      e.currentTarget.setAttribute('aria-pressed', nowOn ? 'true' : 'false');
+      if (nowOn) playSound('ding');
+    });
+  }
+
+  /* ================================================================
+     READ-ALOUD TOGGLE — speaks the page's main <p> elements.
+     Uses Web Speech API. Shown on project & age pages.
+     ================================================================ */
+  function insertReadAloud() {
+    if (!('speechSynthesis' in window)) return;
+    // Only on content pages
+    if (!document.querySelector('article, .band-header')) return;
+    const host = document.querySelector('.hero .container, .band-header .container, article.project');
+    if (!host || host.querySelector('.read-aloud-btn')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'read-aloud-btn';
+    btn.innerHTML = '🔊 Read this to me';
+    btn.setAttribute('aria-label', 'Read this page aloud');
+    host.appendChild(btn);
+    let speaking = false;
+    btn.addEventListener('click', () => {
+      if (speaking) {
+        window.speechSynthesis.cancel();
+        speaking = false; btn.innerHTML = '🔊 Read this to me'; return;
+      }
+      const parts = Array.from(document.querySelectorAll(
+        'h1, .lead, article.project p, .band-header p, section .container > p'
+      )).map(p => p.textContent.trim()).filter(Boolean).slice(0, 25);
+      if (!parts.length) return;
+      const u = new SpeechSynthesisUtterance(parts.join('. '));
+      u.rate = 0.95; u.pitch = 1.05;
+      u.onend = () => { speaking = false; btn.innerHTML = '🔊 Read this to me'; };
+      window.speechSynthesis.speak(u);
+      speaking = true; btn.innerHTML = '⏹ Stop reading';
+    });
+  }
+
+  /* ================================================================
+     DIFFICULTY DOTS — turn .badge.diff ★☆☆ into colored dot chips
+     Also adds "Easy/Medium/Tricky" text label for readability.
+     ================================================================ */
+  function enhanceDifficultyBadges() {
+    document.querySelectorAll('.badge.diff').forEach(el => {
+      const stars = (el.textContent.match(/★/g) || []).length;
+      const level = Math.max(1, Math.min(3, stars));
+      const labels = ['Easy', 'Medium', 'Tricky'];
+      const classes = ['diff-easy','diff-med','diff-hard'];
+      el.classList.add('diff-chip', classes[level-1]);
+      el.innerHTML = '<span class="dd">'
+        + '<span class="d on"></span>'
+        + (level >= 2 ? '<span class="d on"></span>' : '<span class="d"></span>')
+        + (level >= 3 ? '<span class="d on"></span>' : '<span class="d"></span>')
+        + '</span> ' + labels[level-1];
+    });
+  }
+
+  /* ================================================================
+     PROJECT THUMB SCENES — turn a single emoji into a cute illustrated
+     mini-scene (main emoji + side prop + tiny companion + orbit sparkles).
+     Keeps existing HTML; enhances .project-thumb containers in place.
+     ================================================================ */
+  const THUMB_SCENES = {
+    'teach-computer-to-sort': { main:'🍎', side:'🍌', tiny:'🖥️', orbit:['✨','🤖','⭐','📦'] },
+    'draw-with-ai':           { main:'✏️', side:'🎨', tiny:'🖼️', orbit:['✨','🌈','⭐','🖌️'] },
+    'talk-to-a-robot':        { main:'🤖', side:'💬', tiny:'👋', orbit:['✨','💭','⭐','❓'] },
+    'ai-story-buddy':         { main:'📖', side:'🐉', tiny:'🏰', orbit:['✨','⭐','🌙','📚'] },
+    'emoji-detective':        { main:'👍', side:'🔍', tiny:'📷', orbit:['✨','👎','🖖','⭐'] },
+    'rock-paper-scissors-webcam': { main:'✊', side:'✋', tiny:'✌️', orbit:['📷','✨','⭐','🎮'] },
+    'dance-move-detector':    { main:'💃', side:'🕺', tiny:'🎶', orbit:['🎵','✨','⭐','📷'] },
+    'ai-fortune-teller':      { main:'🔮', side:'🌟', tiny:'🦄', orbit:['✨','🌙','⭐','💫'] },
+    'pet-classifier':         { main:'🐶', side:'🐱', tiny:'🐰', orbit:['✨','🐹','⭐','🦎'] },
+    'voice-controlled-maze':  { main:'🎤', side:'🧭', tiny:'🏁', orbit:['✨','🔊','⭐','🎯'] },
+    'python-chatbot':         { main:'🐍', side:'💬', tiny:'💻', orbit:['✨','{}','⭐','🤖'] },
+    'custom-chatbot':         { main:'💬', side:'🤖', tiny:'⚙️', orbit:['✨','💭','⭐','🧩'] },
+    'study-buddy':            { main:'📚', side:'🤓', tiny:'📝', orbit:['✨','💡','⭐','🎓'] },
+    'train-image-classifier': { main:'🖼️', side:'🧠', tiny:'📊', orbit:['✨','📁','⭐','🎯'] },
+    'sentiment-analyzer':     { main:'😊', side:'😢', tiny:'📊', orbit:['✨','💬','⭐','❤️'] },
+    'ai-art-explorer':        { main:'🎨', side:'🖌️', tiny:'🖼️', orbit:['✨','🌈','⭐','💫'] },
+    'mood-playlist-maker':    { main:'🎵', side:'🎧', tiny:'🎶', orbit:['✨','💿','⭐','🎼'] },
+    'ai-vs-human-quiz':       { main:'🤖', side:'🧑', tiny:'❓', orbit:['✨','⚖️','⭐','🎯'] },
+    'movie-recommender':      { main:'🎬', side:'🍿', tiny:'⭐', orbit:['✨','🎥','📽️','🎞️'] },
+    'cnn-from-scratch':       { main:'🧠', side:'🖼️', tiny:'📊', orbit:['✨','⚙️','⭐','🔢'] },
+    'fine-tune-llm':          { main:'🤖', side:'📚', tiny:'⚙️', orbit:['✨','🔧','⭐','💡'] },
+    'rl-game-agent':          { main:'🎮', side:'🤖', tiny:'🏆', orbit:['✨','🎯','⭐','🕹️'] },
+    'object-detection-app':   { main:'📦', side:'📷', tiny:'🎯', orbit:['✨','🚗','⭐','🐕'] },
+    'ai-ethics-case-study':   { main:'⚖️', side:'🤔', tiny:'📜', orbit:['✨','💭','⭐','🧠'] },
+    'full-stack-ai-product':  { main:'🚀', side:'💻', tiny:'🌐', orbit:['✨','⚙️','⭐','🔌'] },
+    'tiny-transformer':       { main:'🧠', side:'λ', tiny:'💻', orbit:['✨','∑','⭐','🔢'] },
+  };
+  function sceneForCard(card) {
+    const href = card.getAttribute('href') || '';
+    const m = href.match(/projects\/([a-z0-9-]+)\.html/i);
+    if (m && THUMB_SCENES[m[1]]) return THUMB_SCENES[m[1]];
+    return null;
+  }
+  function enhanceProjectThumbs() {
+    document.querySelectorAll('.project-card .project-thumb').forEach(thumb => {
+      if (thumb.querySelector('.pt-emojis')) return; // already enhanced
+      const card = thumb.closest('.project-card');
+      const scene = card ? sceneForCard(card) : null;
+      // Fallback: use whatever text is already in the thumb as the main emoji.
+      const existing = (thumb.textContent || '').trim();
+      const main = scene ? scene.main : (existing[0] || '✨');
+      const side = scene ? scene.side : (existing[1] || '');
+      const tiny = scene ? scene.tiny : '';
+      const orbit = scene ? scene.orbit : ['✨','⭐','💫','✨'];
+      thumb.innerHTML =
+        '<span class="pt-orbit o1">' + orbit[0] + '</span>' +
+        '<span class="pt-orbit o2">' + orbit[1] + '</span>' +
+        '<span class="pt-orbit o3">' + orbit[2] + '</span>' +
+        '<span class="pt-orbit o4">' + orbit[3] + '</span>' +
+        '<span class="pt-emojis">' +
+          (side ? '<span class="pt-side">' + side + '</span>' : '') +
+          '<span class="pt-main">' + main + '</span>' +
+          (tiny ? '<span class="pt-tiny">' + tiny + '</span>' : '') +
+        '</span>';
+    });
+  }
+
+  /* ================================================================
+     GROUP "COMING SOON" cards on age pages — move them to a
+     collapsible "Almost ready" section at the bottom so that
+     available projects don't feel buried.
+     ================================================================ */
+  function groupComingSoon() {
+    const section = document.querySelector('.age-cards, body[data-band="5-8"] section, body[data-band="9-12"] section, body[data-band="13-15"] section, body[data-band="16"] section');
+    if (!document.body.dataset.band || document.body.dataset.band === 'home' || document.body.dataset.band === 'info') return;
+    const grid = document.querySelector('.grid.grid-3, .grid.grid-4');
+    if (!grid) return;
+    const soon = Array.from(grid.querySelectorAll('.project-card')).filter(card =>
+      card.querySelector('.badge.soon'));
+    if (soon.length < 2) return; // don't bother for 0 or 1
+    soon.forEach(c => c.classList.add('coming-soon-card'));
+    const details = document.createElement('details');
+    details.className = 'coming-soon-group';
+    details.innerHTML = '<summary>🔭 Almost ready — coming soon (' + soon.length + ')</summary><div class="grid grid-3 coming-soon-grid"></div>';
+    const innerGrid = details.querySelector('.coming-soon-grid');
+    soon.forEach(c => innerGrid.appendChild(c));
+    grid.parentNode.insertBefore(details, grid.nextSibling);
   }
   window.fireConfetti = fireConfetti; // expose so page scripts can use
 
@@ -330,14 +550,19 @@
         date: new Date().toISOString(),
       };
       setStickers(data);
+      try { localStorage.setItem(NEW_STICKER_KEY, slug); } catch(e) {}
       btn.textContent = '⭐ Sticker Earned!';
       btn.disabled = true;
       const r = btn.getBoundingClientRect();
       fireConfetti(r.left + r.width / 2, r.top + r.height / 2);
+      playSound('cheer');
     });
   }
 
-  /* Render sticker wall on the home page (looks for #sticker-wall) */
+  /* Render sticker wall on the home page — all projects appear as ghosted
+     outlines; earned ones fill in with color + a "peel" animation on new. */
+  const BAND_ICONS = { '5-8': '🎨', '9-12': '🧩', '13-15': '💻', '16': '🚀' };
+  const NEW_STICKER_KEY = 'sai_new_sticker_v1';
   function renderStickerWall() {
     const wall = document.getElementById('sticker-wall');
     if (!wall) return;
@@ -346,22 +571,55 @@
     const countEl = document.getElementById('sticker-count');
     if (countEl) countEl.textContent = keys.length;
 
-    if (keys.length === 0) {
-      wall.innerHTML = `
-        <div class="sticker sticker-empty">
-          <div class="sticker-face">?</div>
-          <div class="sticker-label">Your first sticker goes here!</div>
-        </div>`;
+    const meta = window.PROJECTS_META || {};
+    const allSlugs = Object.keys(meta);
+    // Detect a newly earned sticker so we can animate its "peel" on return.
+    let justEarned = null;
+    try { justEarned = localStorage.getItem(NEW_STICKER_KEY); } catch(e) {}
+
+    // Build order: earned first, then ghosted remainder in meta order.
+    const earnedSet = new Set(keys);
+    const ordered = keys.concat(allSlugs.filter(s => !earnedSet.has(s)));
+
+    if (ordered.length === 0) {
+      wall.innerHTML = '<div class="sticker sticker-empty"><div class="sticker-face">?</div><div class="sticker-label">Your first sticker goes here!</div></div>';
       return;
     }
-    wall.innerHTML = keys.map(slug => {
-      const s = data[slug];
-      return `
-        <a class="sticker earned" href="${s.url}">
-          <div class="sticker-face">${s.emoji}</div>
-          <div class="sticker-label">${s.title}</div>
+    wall.innerHTML = ordered.map(slug => {
+      const earned = !!data[slug];
+      const m = meta[slug] || {};
+      const title = earned ? data[slug].title : (m.title || slug);
+      const emoji = earned ? data[slug].emoji : (BAND_ICONS[m.band] || '✨');
+      const url = earned ? data[slug].url : ('projects/' + slug + '.html');
+      const peel = earned && slug === justEarned ? ' sticker-peel' : '';
+      return `<a class="sticker ${earned ? 'earned' : 'ghost'}${peel}" href="${url}" data-slug="${slug}">
+          <div class="sticker-face">${emoji}</div>
+          <div class="sticker-label">${title}</div>
+          ${earned ? '' : '<span class="sticker-locked" aria-hidden="true">✨</span>'}
         </a>`;
     }).join('');
+
+    // Award "band-complete" gold stickers
+    const bandTotals = {};
+    allSlugs.forEach(s => {
+      const b = (meta[s] || {}).band || '?';
+      bandTotals[b] = (bandTotals[b] || 0) + 1;
+    });
+    const bandDone = {};
+    keys.forEach(s => {
+      const b = (meta[s] || {}).band || '?';
+      bandDone[b] = (bandDone[b] || 0) + 1;
+    });
+    Object.keys(bandTotals).forEach(b => {
+      if (bandDone[b] === bandTotals[b] && bandTotals[b] > 0) {
+        const gold = document.createElement('div');
+        gold.className = 'sticker gold';
+        gold.innerHTML = `<div class="sticker-face">🏆</div><div class="sticker-label">Ages ${b} — all done!</div>`;
+        wall.prepend(gold);
+      }
+    });
+
+    if (justEarned) { try { localStorage.removeItem(NEW_STICKER_KEY); } catch(e) {} }
   }
 
   /* ================================================================
@@ -691,15 +949,20 @@
   applyTheme(getTheme()); // early, before paint
   function boot() {
     insertDarkModeToggle();
+    insertSoundToggle();
     insertFloatingShapes();
     insertMascot();
     insertScrollProgress();
     insertProgressBadge();
     insertPrintButton();
+    insertReadAloud();
     attachScrollReveal();
     attachHoverTilt();
     attachConfettiButtons();
     attachMarkCompleteButton();
+    enhanceDifficultyBadges();
+    enhanceProjectThumbs();
+    groupComingSoon();
     renderStickerWall();
     enhanceVideoSlots();
     enhanceSceneSlots();
@@ -707,6 +970,10 @@
     enhanceQuiz();
     enhanceFamilyPhoto();
     loadProjectsMeta();
+    // Subtle button sound
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.btn, .tiny-btn')) playSound('boop');
+    }, { capture: true });
   }
 
   /* Family photo swap (About page): replaces the SVG placeholder with the

@@ -9,7 +9,7 @@
   <meta property="og:description" content="AI is clever, but it also makes funny mistakes. See real examples — and learn why they happen.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="images/faces/lily.png">
-  <link rel="stylesheet" href="css/styles.css?v=16">
+  <link rel="stylesheet" href="css/styles.css?v=18">
 </head>
 <body data-band="home">
 
@@ -32,10 +32,47 @@
     <h1>🤖 AI's Silliest Mistakes</h1>
     <p class="lead">AI is clever — but it isn't magic. It learns patterns, and sometimes the patterns fool it. Here are some real (and really funny) examples, plus what each mistake teaches us.</p>
 
+    <!-- Fool the AI mini-game -->
+    <section class="fool-game" id="fool-game">
+      <h2>🎯 Fool the AI!</h2>
+      <p>Here's a stop sign. Drag stickers onto it to confuse the AI. Watch what it thinks it sees!</p>
+      <div class="fool-stage">
+        <div class="fool-sign" id="fool-sign" aria-label="Stop sign canvas">
+          <div class="fool-sign-face">STOP</div>
+          <div class="fool-sticker-layer" id="fool-sticker-layer"></div>
+        </div>
+        <div class="fool-readout">
+          <div class="fool-brain">🤖 AI thinks:</div>
+          <div class="fool-guess" id="fool-guess">🛑 "Stop sign" (99% sure)</div>
+          <div class="fool-meter"><div class="fool-meter-bar" id="fool-meter-bar"></div></div>
+          <div class="fool-tools">
+            <button class="tiny-btn" data-sticker="⭐">+ ⭐</button>
+            <button class="tiny-btn" data-sticker="🎃">+ 🎃</button>
+            <button class="tiny-btn" data-sticker="🍕">+ 🍕</button>
+            <button class="tiny-btn" data-sticker="🦄">+ 🦄</button>
+            <button class="tiny-btn danger" id="fool-clear" type="button">Clear</button>
+          </div>
+        </div>
+      </div>
+      <p class="fool-lesson">💡 <b>Lesson:</b> A few stickers shouldn't fool a human driver — but they really do fool AIs. Researchers call this an <b>adversarial example</b>.</p>
+    </section>
+
     <div class="mistakes-grid">
 
       <div class="mistake-card">
         <h3>🐶 Chihuahua or Muffin?</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-muffin" aria-hidden="true">
+            <span class="m-emoji big">🫐</span>
+            <span class="m-emoji tiny">👀</span>
+            <span class="m-dot d1"></span><span class="m-dot d2"></span><span class="m-dot d3"></span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-dog" aria-hidden="true">
+            <span class="m-emoji big">🐶</span>
+            <span class="m-confidence">80%</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: A photo of a blueberry muffin.</div>
         <div class="m-output">🤖 AI says: "Chihuahua!" (80% sure)</div>
         <div class="m-lesson">💡 Lesson: AI looks at shapes and colors, not meaning. Two round brown blobs + two dark dots can look like a little dog's face.</div>
@@ -43,27 +80,68 @@
 
       <div class="mistake-card">
         <h3>🐑 Sheep on the Road</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-field" aria-hidden="true">
+            <span class="m-emoji big">🌾</span>
+            <span class="m-emoji medium">🌿</span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-sheep" aria-hidden="true">
+            <span class="m-emoji big">🐑</span>
+            <span class="m-confidence">72%</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: A photo of a grassy field. No sheep.</div>
         <div class="m-output">🤖 AI says: "Sheep in this picture!"</div>
         <div class="m-lesson">💡 Lesson: AI learned that "grass" usually comes with "sheep." When it sees grass, it guesses sheep — even if there aren't any. That's called a <b>spurious pattern</b>.</div>
       </div>
 
       <div class="mistake-card">
-        <h3>🍌 Turtle → Rifle</h3>
+        <h3>🐢 Turtle → Rifle</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-turtle" aria-hidden="true">
+            <span class="m-emoji big">🐢</span>
+            <span class="m-noise"></span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-rifle" aria-hidden="true">
+            <span class="m-emoji big">🔫</span>
+            <span class="m-confidence">94%</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: A 3D-printed turtle with a weird speckled pattern.</div>
         <div class="m-output">🤖 AI says: "Rifle." Confidently.</div>
         <div class="m-lesson">💡 Lesson: Tiny changes humans can't see can totally fool an AI. Researchers call this an <b>adversarial example</b>.</div>
       </div>
 
-      <div class="mistake-card">
-        <h3>🐼 Panda → Gibbon</h3>
-        <div class="m-input">👀 Input: A clear photo of a panda + invisible noise.</div>
-        <div class="m-output">🤖 AI says: "Gibbon" with 99% confidence.</div>
-        <div class="m-lesson">💡 Lesson: Confidence ≠ correctness. When AI is very sure, it can still be very wrong.</div>
+      <div class="mistake-card mistake-card-interactive" id="panda-card">
+        <h3>🐼 Panda → Gibbon <span class="pill">Try the slider!</span></h3>
+        <div class="panda-slider">
+          <div class="panda-frame">
+            <div class="panda-base">🐼</div>
+            <div class="panda-noise" id="panda-noise"></div>
+          </div>
+          <label class="panda-label">Invisible noise: <b id="panda-amount">0%</b>
+            <input type="range" id="panda-range" min="0" max="100" value="0" step="1">
+          </label>
+          <div class="panda-guess" id="panda-guess">🤖 "Panda" — 99.4% sure</div>
+        </div>
+        <div class="m-lesson">💡 Lesson: Slide the noise up. The picture barely changes — but the AI flips to "Gibbon" with HIGH confidence. <b>Confidence ≠ correctness.</b></div>
       </div>
 
       <div class="mistake-card">
-        <h3>🧑‍🦲 The Invisible Person</h3>
+        <h3>🎩 The Invisible Person</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-hat" aria-hidden="true">
+            <span class="m-emoji big">🎩</span>
+            <span class="m-emoji medium overlap">🙂</span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-none" aria-hidden="true">
+            <span class="m-emoji big">❔</span>
+            <span class="m-confidence">—</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: A face partly hidden by a hat.</div>
         <div class="m-output">🤖 AI says: "No face detected."</div>
         <div class="m-lesson">💡 Lesson: AI only sees what it was trained to see. If it never saw faces with hats, hats confuse it.</div>
@@ -71,6 +149,16 @@
 
       <div class="mistake-card">
         <h3>🗣 "I love my cat" → Sad</h3>
+        <div class="m-visual m-visual-text">
+          <div class="m-picture m-picture-speech" aria-hidden="true">
+            <span class="m-quote">"I love my cat so much it's <b>ridiculous</b>."</span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-sad-tag" aria-hidden="true">
+            <span class="m-emoji big">☹️</span>
+            <span class="m-tag">NEGATIVE</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: "I love my cat so much it's ridiculous."</div>
         <div class="m-output">🤖 AI says: Sentiment = negative.</div>
         <div class="m-lesson">💡 Lesson: The word "ridiculous" usually shows up in angry reviews. AI counts words — it doesn't feel love.</div>
@@ -78,6 +166,19 @@
 
       <div class="mistake-card">
         <h3>🚗 Stop Sign → Speed Limit</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-stop" aria-hidden="true">
+            <span class="m-emoji big">🛑</span>
+            <span class="m-dot s1">⭐</span>
+            <span class="m-dot s2">⭐</span>
+            <span class="m-dot s3">⭐</span>
+            <span class="m-dot s4">⭐</span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-speed" aria-hidden="true">
+            <span class="m-speed">45</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: A stop sign with four small stickers on it.</div>
         <div class="m-output">🤖 AI says: "Speed limit 45."</div>
         <div class="m-lesson">💡 Lesson: This is why self-driving cars are hard. A few stickers shouldn't fool a driver — but they can fool a model.</div>
@@ -85,6 +186,17 @@
 
       <div class="mistake-card">
         <h3>🎨 Six Fingers</h3>
+        <div class="m-visual">
+          <div class="m-picture m-picture-hand" aria-hidden="true">
+            <span class="m-emoji big">✋</span>
+            <span class="m-extra-finger">🖐️</span>
+          </div>
+          <div class="m-arrow">➜</div>
+          <div class="m-picture m-picture-fingers" aria-hidden="true">
+            <span class="m-emoji big">🖐️</span>
+            <span class="m-finger-count">6</span>
+          </div>
+        </div>
         <div class="m-input">👀 Input: "Draw a person waving."</div>
         <div class="m-output">🤖 AI draws: A hand with six fingers. Or three.</div>
         <div class="m-lesson">💡 Lesson: Image AIs learn what hands <em>look like</em>, not how many fingers a hand <em>has</em>. Counting is hard for them.</div>
@@ -114,6 +226,77 @@
   </footer>
 
   <script src="js/projects_meta.js"></script>
-  <script src="js/common.js?v=16" defer></script>
+  <script src="js/common.js?v=18" defer></script>
+  <script>
+  /* Panda → Gibbon slider */
+  (function(){
+    const range = document.getElementById('panda-range');
+    const amount = document.getElementById('panda-amount');
+    const noise = document.getElementById('panda-noise');
+    const guess = document.getElementById('panda-guess');
+    if (!range) return;
+    function update() {
+      const v = +range.value;
+      amount.textContent = v + '%';
+      noise.style.opacity = (v / 100 * 0.35).toFixed(2);
+      if (v < 30)      guess.textContent = '🤖 "Panda" — ' + (99 - v*0.1).toFixed(1) + '% sure';
+      else if (v < 65) guess.textContent = '🤖 "Panda" — ' + (85 - (v-30)*1.2).toFixed(1) + '% sure… but wobbling';
+      else             guess.textContent = '🤖 "Gibbon!" — ' + (90 + (v-65)*0.2).toFixed(1) + '% sure 🤯';
+      guess.className = 'panda-guess ' + (v >= 65 ? 'flipped' : '');
+    }
+    range.addEventListener('input', update);
+    update();
+  })();
+
+  /* Fool-the-AI stop-sign game: add/remove stickers, AI guess flips. */
+  (function(){
+    const sign   = document.getElementById('fool-sign');
+    const layer  = document.getElementById('fool-sticker-layer');
+    const guess  = document.getElementById('fool-guess');
+    const barEl  = document.getElementById('fool-meter-bar');
+    const clearB = document.getElementById('fool-clear');
+    if (!sign) return;
+    let stickers = [];
+
+    function update() {
+      const n = stickers.length;
+      let label, conf, color;
+      if (n === 0)      { label = '🛑 "Stop sign"';           conf = 99; color = '#22c55e'; }
+      else if (n === 1) { label = '🛑 "Stop sign"';           conf = 88; color = '#84cc16'; }
+      else if (n === 2) { label = '🤔 "Stop sign?"';         conf = 62; color = '#eab308'; }
+      else if (n === 3) { label = '⚠️ "Yield sign?"';        conf = 48; color = '#f97316'; }
+      else if (n === 4) { label = '🚫 "Speed limit 45"';     conf = 71; color = '#ef4444'; }
+      else              { label = '🦄 "A decorative plate"'; conf = 55; color = '#a855f7'; }
+      guess.textContent = '🤖 AI thinks: ' + label + ' (' + conf + '%)';
+      barEl.style.width = conf + '%';
+      barEl.style.background = color;
+    }
+
+    document.querySelectorAll('.fool-tools [data-sticker]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (stickers.length >= 6) return;
+        const s = document.createElement('span');
+        s.className = 'fool-sticker';
+        s.textContent = btn.dataset.sticker;
+        const r = sign.getBoundingClientRect();
+        const x = 15 + Math.random() * 70;
+        const y = 15 + Math.random() * 70;
+        s.style.left = x + '%';
+        s.style.top  = y + '%';
+        s.style.transform = 'rotate(' + Math.round(Math.random()*60 - 30) + 'deg)';
+        layer.appendChild(s);
+        stickers.push(s);
+        update();
+        if (window.saiPlaySound) window.saiPlaySound('ding');
+      });
+    });
+    clearB.addEventListener('click', () => {
+      stickers.forEach(s => s.remove());
+      stickers = [];
+      update();
+    });
+    update();
+  })();
+  </script>
 </body>
 </html>
