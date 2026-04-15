@@ -1236,6 +1236,17 @@ html[data-theme="dark"] .band-9-12-bg  { background: #0e2418; }
 html[data-theme="dark"] .band-13-15-bg { background: #121a3a; }
 html[data-theme="dark"] .band-16-bg    { background: #2a1236; }
 
+/* ---- Dark mode: project badges & meta pills (keep dark text on pastel pills) ---- */
+html[data-theme="dark"] .badge,
+html[data-theme="dark"] .meta-pill { color: #1e293b !important; }
+html[data-theme="dark"] .badge.soon { color: #78350f !important; }
+
+/* ---- Dark mode: project hero thumbnail gradient ---- */
+html[data-theme="dark"] .project .hero-thumb {
+  background: linear-gradient(135deg, #4a1d2e, #1e2a4a);
+  border-color: #475569;
+}
+
 /* ---- Dark mode: generic light-card fallbacks ---- */
 html[data-theme="dark"] .progress-card,
 html[data-theme="dark"] .info-card,
