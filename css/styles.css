@@ -1221,6 +1221,21 @@ html[data-theme="dark"] .sticker-wall {
 html[data-theme="dark"] .sticker-wall h2 { color: #f8fafc; }
 html[data-theme="dark"] .sticker-wall .sub { color: #cbd5e1; }
 
+/* ---- Dark mode: age cards ---- */
+html[data-theme="dark"] .age-card.band-5-8   { background: #3a3410; }
+html[data-theme="dark"] .age-card.band-9-12  { background: #14331e; }
+html[data-theme="dark"] .age-card.band-13-15 { background: #1a2550; }
+html[data-theme="dark"] .age-card.band-16    { background: #3a1a4a; }
+html[data-theme="dark"] .age-card { border-color: #475569; color: #f1f5f9; }
+html[data-theme="dark"] .age-card h3 { color: #f8fafc; }
+html[data-theme="dark"] .age-card p  { color: #e2e8f0; }
+
+/* ---- Dark mode: full-section band backgrounds ---- */
+html[data-theme="dark"] .band-5-8-bg   { background: #2a2510; }
+html[data-theme="dark"] .band-9-12-bg  { background: #0e2418; }
+html[data-theme="dark"] .band-13-15-bg { background: #121a3a; }
+html[data-theme="dark"] .band-16-bg    { background: #2a1236; }
+
 /* ---- Dark mode: generic light-card fallbacks ---- */
 html[data-theme="dark"] .progress-card,
 html[data-theme="dark"] .info-card,
