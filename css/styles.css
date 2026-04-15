@@ -1179,6 +1179,72 @@ html[data-theme="dark"] .video-slot, html[data-theme="dark"] .scene-slot {
 }
 html[data-theme="dark"] footer { background: #0b1222; color: var(--text-soft); }
 
+/* ---- Dark mode: live demo shell ---- */
+html[data-theme="dark"] .demo-shell {
+  background: #1e293b;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+html[data-theme="dark"] .demo-head h2 { color: #f8fafc; }
+html[data-theme="dark"] .demo-head p,
+html[data-theme="dark"] .demo-note { color: #cbd5e1; }
+html[data-theme="dark"] .demo-io input,
+html[data-theme="dark"] .demo-teach-row input {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+html[data-theme="dark"] .demo-io input::placeholder,
+html[data-theme="dark"] .demo-teach-row input::placeholder { color: #94a3b8; }
+html[data-theme="dark"] .demo-output {
+  background: #0f172a;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+html[data-theme="dark"] .demo-label { color: #f1f5f9; }
+html[data-theme="dark"] .demo-meter { background: #334155; border-color: #64748b; }
+html[data-theme="dark"] .demo-highlight .hl-happy { background: #14532d; color: #bbf7d0; }
+html[data-theme="dark"] .demo-highlight .hl-sad   { background: #7f1d1d; color: #fecaca; }
+html[data-theme="dark"] .tiny-btn { background: #334155; color: #f1f5f9; border-color: #64748b; }
+html[data-theme="dark"] .tiny-btn.happy { background: #14532d; color: #bbf7d0; }
+html[data-theme="dark"] .tiny-btn.sad   { background: #7f1d1d; color: #fecaca; }
+
+/* ---- Dark mode: sticker wall ---- */
+html[data-theme="dark"] .sticker-wall {
+  background:
+    radial-gradient(circle at 20% 30%, #422006 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, #1e2a4a 0%, transparent 30%),
+    #111827;
+  border-top-color: #334155;
+  border-bottom-color: #334155;
+}
+html[data-theme="dark"] .sticker-wall h2 { color: #f8fafc; }
+html[data-theme="dark"] .sticker-wall .sub { color: #cbd5e1; }
+
+/* ---- Dark mode: generic light-card fallbacks ---- */
+html[data-theme="dark"] .progress-card,
+html[data-theme="dark"] .info-card,
+html[data-theme="dark"] .try-next,
+html[data-theme="dark"] .mini-quiz,
+html[data-theme="dark"] .complete-box {
+  background: #1e293b;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4 { color: #f8fafc; }
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="search"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #94a3b8; }
+
 /* Dark-mode toggle button */
 .theme-toggle {
   background: none;
