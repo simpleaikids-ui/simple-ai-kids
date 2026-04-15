@@ -143,6 +143,26 @@
       setTimeout(loopFlap,  6000);
       setTimeout(loopHop,   9000);
     }
+
+    /* Expose: let the demo (or any page) tell Lily how to react.
+       Moods: 'happy' | 'sad' | 'thinking' | 'idle' */
+    window.saiLilyReact = function (mood) {
+      if (!wrap) return;
+      wrap.classList.remove('lily-happy','lily-sad','lily-thinking');
+      if (mood === 'happy')    wrap.classList.add('lily-happy');
+      else if (mood === 'sad') wrap.classList.add('lily-sad');
+      else if (mood === 'thinking') wrap.classList.add('lily-thinking');
+      // A reactive speech bubble, minus the click
+      if (bubble && (mood === 'happy' || mood === 'sad' || mood === 'thinking')) {
+        const quip = mood === 'happy'   ? 'Yay! 🎉'
+                   : mood === 'sad'     ? 'Aww… 💙'
+                                        : 'Hmm… 🤔';
+        bubble.textContent = quip;
+        bubble.classList.add('show');
+        clearTimeout(bubbleTimer);
+        bubbleTimer = setTimeout(() => bubble.classList.remove('show'), 1600);
+      }
+    };
   }
 
   /* ================================================================
@@ -621,6 +641,71 @@
     });
 
     if (justEarned) { try { localStorage.removeItem(NEW_STICKER_KEY); } catch(e) {} }
+
+    renderStickerSparkline(data);
+  }
+
+  /* ---- Sparkline: projects finished per week over the last 8 weeks ---- */
+  function renderStickerSparkline(data) {
+    const section = document.querySelector('.sticker-wall');
+    if (!section) return;
+    let host = section.querySelector('.sticker-sparkline');
+    const dates = Object.values(data || {}).map(d => d && d.date).filter(Boolean);
+    if (!dates.length) { if (host) host.remove(); return; }
+
+    const WEEKS = 8;
+    const now = new Date();
+    const msWeek = 7 * 24 * 3600 * 1000;
+    // Start-of-current-week anchor (Sunday)
+    const anchor = new Date(now);
+    anchor.setHours(0, 0, 0, 0);
+    anchor.setDate(anchor.getDate() - anchor.getDay());
+    const buckets = new Array(WEEKS).fill(0);
+    dates.forEach(iso => {
+      const d = new Date(iso);
+      if (isNaN(d)) return;
+      const diff = Math.floor((anchor - d) / msWeek);
+      const idx = WEEKS - 1 - diff;
+      if (idx >= 0 && idx < WEEKS) buckets[idx]++;
+    });
+
+    const W = 240, H = 56, pad = 4;
+    const maxV = Math.max(1, ...buckets);
+    const step = (W - pad * 2) / (WEEKS - 1);
+    const pts = buckets.map((v, i) => {
+      const x = pad + i * step;
+      const y = pad + (H - pad * 2) * (1 - v / maxV);
+      return [x, y];
+    });
+    const line = pts.map(([x, y]) => x.toFixed(1) + ',' + y.toFixed(1)).join(' ');
+    const area = 'M ' + pts[0][0] + ',' + (H - pad) +
+                 ' L ' + line.split(' ').join(' L ') +
+                 ' L ' + pts[pts.length - 1][0] + ',' + (H - pad) + ' Z';
+    const dots = pts.map(([x, y], i) => {
+      const v = buckets[i];
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${v ? 3 : 2}" class="${v ? 'sp-dot sp-dot-on' : 'sp-dot'}"></circle>`;
+    }).join('');
+
+    const totalWeeks = buckets.filter(v => v > 0).length;
+    const total = buckets.reduce((a, b) => a + b, 0);
+    if (!host) {
+      host = document.createElement('div');
+      host.className = 'sticker-sparkline';
+      const sub = section.querySelector('.sub');
+      if (sub) sub.after(host); else section.querySelector('.container').prepend(host);
+    }
+    host.innerHTML = `
+      <div class="sp-head">
+        <span class="sp-title">📈 Your streak</span>
+        <span class="sp-stat"><b>${total}</b> project${total !== 1 ? 's' : ''} across <b>${totalWeeks}</b> week${totalWeeks !== 1 ? 's' : ''}</span>
+      </div>
+      <svg class="sp-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+        <path class="sp-area" d="${area}"></path>
+        <polyline class="sp-line" points="${line}" fill="none"></polyline>
+        ${dots}
+      </svg>
+      <div class="sp-axis"><span>8w ago</span><span>this week</span></div>
+    `;
   }
 
   /* ================================================================

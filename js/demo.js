@@ -55,8 +55,10 @@
         <button id="demo-btn" class="btn demo-btn" type="button">What's the Mood? 🤖</button>
       </div>
 
-      <!-- Mood gauge: floating face + pointer above a gradient bar -->
+      <!-- Mood gauge: floating face + pointer above a gradient bar,
+           with a faint neural-network firing animation behind it. -->
       <div class="mood-gauge" aria-hidden="true">
+        <canvas class="neuron-canvas" id="neuron-canvas" aria-hidden="true"></canvas>
         <div class="mg-cursor" id="mg-cursor" style="left:50%">
           <div class="mg-face" id="mg-face">😐</div>
           <div class="mg-pointer"></div>
@@ -76,7 +78,21 @@
       </div>
 
       <div class="demo-output" id="demo-output" aria-live="polite">
-        <div class="demo-label" id="demo-label">Type something — I'll guess in real time!</div>
+        <div class="demo-result-row">
+          <div class="demo-label" id="demo-label">Type something — I'll guess in real time!</div>
+          <div class="conf-donut" id="conf-donut" aria-hidden="true">
+            <svg viewBox="0 0 42 42" class="cd-svg">
+              <circle class="cd-track" cx="21" cy="21" r="15.9155"></circle>
+              <circle class="cd-arc"   cx="21" cy="21" r="15.9155"
+                      stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+              <text class="cd-text" x="21" y="23" text-anchor="middle">0%</text>
+            </svg>
+            <div class="cd-caption">Confidence</div>
+          </div>
+        </div>
+
+        <!-- Word heatmap: each word tinted by its contribution -->
+        <div class="word-heatmap" id="word-heatmap" aria-label="Word contribution heatmap"></div>
 
         <!-- Bucket zone: word chips fly into happy or sad buckets -->
         <div class="word-buckets">
@@ -113,6 +129,11 @@
     </div>
   `;
 
+  const heatmap    = host.querySelector('#word-heatmap');
+  const donutHost  = host.querySelector('#conf-donut');
+  const donutArc   = host.querySelector('#conf-donut .cd-arc');
+  const donutText  = host.querySelector('#conf-donut .cd-text');
+  const neuronCv   = host.querySelector('#neuron-canvas');
   const input      = host.querySelector('#demo-input');
   const btn        = host.querySelector('#demo-btn');
   const surpriseBtn= host.querySelector('#demo-surprise');
@@ -143,6 +164,132 @@
     return { h, s, matches, total: tokens.length };
   }
 
+  /* ---- Word contribution heatmap ---- */
+  function renderHeatmap(r) {
+    if (!heatmap) return;
+    if (!r.matches.length) { heatmap.innerHTML = ''; heatmap.classList.remove('show'); return; }
+    heatmap.classList.add('show');
+    heatmap.innerHTML = r.matches.map(m => {
+      const cls = m.type === 'happy' ? 'hm-happy' :
+                  m.type === 'sad'   ? 'hm-sad'   : 'hm-neutral';
+      return `<span class="hm-word ${cls}">${m.t}</span>`;
+    }).join(' ');
+  }
+
+  /* ---- Confidence donut ---- */
+  function renderDonut(pct, mood) {
+    if (!donutArc || !donutText) return;
+    pct = Math.max(0, Math.min(100, Math.round(pct)));
+    donutArc.setAttribute('stroke-dasharray', pct + ' ' + (100 - pct));
+    donutText.textContent = pct + '%';
+    donutHost.classList.remove('cd-happy','cd-sad','cd-neutral','cd-unknown');
+    donutHost.classList.add('cd-' + (mood || 'unknown'));
+  }
+
+  /* ---- Tiny neural-net firing animation behind the mood gauge ----
+     Three layers: 3 input nodes → 2 hidden → 1 output. On each run(),
+     we schedule pulses that ride the edges toward the winning output. */
+  let neuronPulses = [];
+  let neuronRafId = null;
+  const NEURON_NODES = {
+    inputs:  [{x: 0.10, y: 0.25}, {x: 0.10, y: 0.50}, {x: 0.10, y: 0.75}],
+    hidden:  [{x: 0.50, y: 0.35}, {x: 0.50, y: 0.65}],
+    output:  [{x: 0.90, y: 0.50}]
+  };
+  function sizeNeuronCanvas() {
+    if (!neuronCv) return;
+    const r = neuronCv.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    neuronCv.width = Math.max(1, Math.floor(r.width * dpr));
+    neuronCv.height = Math.max(1, Math.floor(r.height * dpr));
+    const ctx = neuronCv.getContext('2d');
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function drawNeurons(tint) {
+    if (!neuronCv) return;
+    const ctx = neuronCv.getContext('2d');
+    if (!ctx) return;
+    const w = neuronCv.clientWidth;
+    const h = neuronCv.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+
+    // Edges
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(30,30,46,.12)';
+    NEURON_NODES.inputs.forEach(a => {
+      NEURON_NODES.hidden.forEach(b => {
+        ctx.beginPath();
+        ctx.moveTo(a.x * w, a.y * h);
+        ctx.lineTo(b.x * w, b.y * h);
+        ctx.stroke();
+      });
+    });
+    NEURON_NODES.hidden.forEach(a => {
+      NEURON_NODES.output.forEach(b => {
+        ctx.beginPath();
+        ctx.moveTo(a.x * w, a.y * h);
+        ctx.lineTo(b.x * w, b.y * h);
+        ctx.stroke();
+      });
+    });
+
+    // Nodes
+    const nodeColor = 'rgba(30,30,46,.22)';
+    [].concat(NEURON_NODES.inputs, NEURON_NODES.hidden, NEURON_NODES.output).forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x * w, n.y * h, 4, 0, Math.PI * 2);
+      ctx.fillStyle = nodeColor;
+      ctx.fill();
+    });
+
+    // Pulses
+    const now = performance.now();
+    neuronPulses = neuronPulses.filter(p => now - p.start < p.dur);
+    neuronPulses.forEach(p => {
+      const t = (now - p.start) / p.dur;
+      const ease = t * t * (3 - 2 * t);
+      const px = (p.ax + (p.bx - p.ax) * ease) * w;
+      const py = (p.ay + (p.by - p.ay) * ease) * h;
+      ctx.beginPath();
+      ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+  }
+  function neuronLoop() {
+    drawNeurons();
+    if (neuronPulses.length) {
+      neuronRafId = requestAnimationFrame(neuronLoop);
+    } else {
+      neuronRafId = null;
+    }
+  }
+  function fireNeurons(mood, intensity) {
+    if (!neuronCv || reducedMotion) return;
+    const color = mood === 'happy' ? '#16a34a'
+                : mood === 'sad'   ? '#ef4444'
+                                   : '#94a3b8';
+    const count = Math.max(3, Math.min(14, Math.round(intensity * 10)));
+    const now = performance.now();
+    for (let i = 0; i < count; i++) {
+      const inp = NEURON_NODES.inputs[i % NEURON_NODES.inputs.length];
+      const hid = NEURON_NODES.hidden[i % NEURON_NODES.hidden.length];
+      const out = NEURON_NODES.output[0];
+      neuronPulses.push({
+        ax: inp.x, ay: inp.y, bx: hid.x, by: hid.y,
+        start: now + i * 60, dur: 420, color
+      });
+      neuronPulses.push({
+        ax: hid.x, ay: hid.y, bx: out.x, by: out.y,
+        start: now + i * 60 + 380, dur: 420, color
+      });
+    }
+    if (!neuronRafId) neuronRafId = requestAnimationFrame(neuronLoop);
+  }
+  sizeNeuronCanvas();
+  window.addEventListener('resize', sizeNeuronCanvas);
+  drawNeurons();
+
   function renderBrain() {
     const happyWords = Array.from(trained.happy).map(w =>
       `<span class="brain-word brain-happy">${w}</span>`).join('');
@@ -161,10 +308,14 @@
       cursor.style.left = '50%';
       cursor.classList.remove('bounce');
       label.textContent = 'Type something — I\'ll guess in real time!';
+      renderHeatmap({ matches: [] });
+      renderDonut(0, 'unknown');
+      if (window.saiLilyReact) window.saiLilyReact('idle');
       return;
     }
 
     const r = classify(text);
+    renderHeatmap(r);
 
     // Drop chips into their buckets with a tiny stagger
     r.matches.forEach((m, i) => {
@@ -184,20 +335,36 @@
     const pos = 50 + net * 44;
     cursor.style.left = pos + '%';
 
-    let emoji, msg;
+    let emoji, msg, mood;
     if (r.h + r.s === 0) {
       emoji = '🤔'; msg = "Hmm, no words I know yet. Try 'love', 'cool', 'sad', or teach me new ones!";
+      mood = 'unknown';
     } else if (net > 0.2) {
       emoji = r.h >= 3 ? '😄' : '🙂';
       msg = `Happy! I spotted ${r.h} happy word${r.h>1?'s':''}.`;
+      mood = 'happy';
     } else if (net < -0.2) {
       emoji = r.s >= 3 ? '😢' : '🙁';
       msg = `Sad. I spotted ${r.s} sad word${r.s>1?'s':''}.`;
+      mood = 'sad';
     } else {
       emoji = '😐'; msg = `Mixed! ${r.h} happy and ${r.s} sad. I'm balanced.`;
+      mood = 'neutral';
     }
     face.textContent = emoji;
     label.textContent = msg;
+
+    // Confidence donut: |net| → 0–100%, with a floor so small signals still show.
+    const confPct = mood === 'unknown' ? 0 : Math.round(Math.abs(net) * 100);
+    renderDonut(confPct, mood);
+
+    // Fire neurons through the network
+    fireNeurons(mood, Math.max(0.3, Math.abs(net)));
+
+    // Let Lily react
+    if (window.saiLilyReact) {
+      window.saiLilyReact(mood === 'unknown' ? 'thinking' : mood);
+    }
 
     // Bouncy animation on big reactions
     if (!reducedMotion && !isLive) {
