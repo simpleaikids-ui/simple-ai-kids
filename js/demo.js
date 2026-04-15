@@ -55,17 +55,23 @@
         <button id="demo-btn" class="btn demo-btn" type="button">What's the Mood? 🤖</button>
       </div>
 
-      <!-- Seesaw mood meter -->
-      <div class="mood-seesaw" aria-hidden="true">
-        <div class="seesaw-labels">
-          <span class="ml ml-sad">☹️ Sad</span>
-          <span class="ml ml-mid">😐</span>
-          <span class="ml ml-happy">Happy 😄</span>
+      <!-- Mood gauge: floating face + pointer above a gradient bar -->
+      <div class="mood-gauge" aria-hidden="true">
+        <div class="mg-cursor" id="mg-cursor" style="left:50%">
+          <div class="mg-face" id="mg-face">😐</div>
+          <div class="mg-pointer"></div>
         </div>
-        <div class="seesaw-track">
-          <div class="seesaw-beam" id="seesaw-beam"></div>
-          <div class="seesaw-ball" id="seesaw-ball">😐</div>
-          <div class="seesaw-fulcrum"></div>
+        <div class="mg-bar">
+          <div class="mg-tick" style="left:0%"></div>
+          <div class="mg-tick" style="left:25%"></div>
+          <div class="mg-tick" style="left:50%"></div>
+          <div class="mg-tick" style="left:75%"></div>
+          <div class="mg-tick" style="left:100%"></div>
+        </div>
+        <div class="mg-labels">
+          <span class="mg-label ml-sad">☹️ Sad</span>
+          <span class="mg-label ml-mid">😐 Neutral</span>
+          <span class="mg-label ml-happy">Happy 😄</span>
         </div>
       </div>
 
@@ -110,8 +116,8 @@
   const input      = host.querySelector('#demo-input');
   const btn        = host.querySelector('#demo-btn');
   const surpriseBtn= host.querySelector('#demo-surprise');
-  const ball       = host.querySelector('#seesaw-ball');
-  const beam       = host.querySelector('#seesaw-beam');
+  const cursor     = host.querySelector('#mg-cursor');
+  const face       = host.querySelector('#mg-face');
   const label      = host.querySelector('#demo-label');
   const bSad       = host.querySelector('#bucket-sad');
   const bHappy     = host.querySelector('#bucket-happy');
@@ -151,9 +157,9 @@
     bSad.innerHTML = bHappy.innerHTML = bNeutral.innerHTML = '';
 
     if (!text) {
-      ball.textContent = '😐';
-      beam.style.transform = 'rotate(0deg)';
-      ball.style.left = '50%';
+      face.textContent = '😐';
+      cursor.style.left = '50%';
+      cursor.classList.remove('bounce');
       label.textContent = 'Type something — I\'ll guess in real time!';
       return;
     }
@@ -172,40 +178,37 @@
       }
     });
 
-    // Seesaw math: net mood from -1 (sad) … 0 … +1 (happy)
+    // Gauge math: net mood from -1 (sad) … 0 … +1 (happy) → 6%–94% of bar
     let net = 0;
     if (r.h + r.s > 0) net = (r.h - r.s) / (r.h + r.s);
-    const tilt = Math.max(-14, Math.min(14, net * 14));  // degrees
-    const pos  = 50 + net * 34; // ball position % (stays inside beam)
+    const pos = 50 + net * 44;
+    cursor.style.left = pos + '%';
 
-    beam.style.transform = reducedMotion ? '' : `rotate(${-tilt}deg)`;
-    ball.style.left = pos + '%';
-
-    let face, msg;
+    let emoji, msg;
     if (r.h + r.s === 0) {
-      face = '🤔'; msg = "Hmm, no words I know yet. Try 'love', 'cool', 'sad', or teach me new ones!";
+      emoji = '🤔'; msg = "Hmm, no words I know yet. Try 'love', 'cool', 'sad', or teach me new ones!";
     } else if (net > 0.2) {
-      face = r.h >= 3 ? '😄' : '🙂';
+      emoji = r.h >= 3 ? '😄' : '🙂';
       msg = `Happy! I spotted ${r.h} happy word${r.h>1?'s':''}.`;
     } else if (net < -0.2) {
-      face = r.s >= 3 ? '😢' : '🙁';
+      emoji = r.s >= 3 ? '😢' : '🙁';
       msg = `Sad. I spotted ${r.s} sad word${r.s>1?'s':''}.`;
     } else {
-      face = '😐'; msg = `Mixed! ${r.h} happy and ${r.s} sad. I'm balanced.`;
+      emoji = '😐'; msg = `Mixed! ${r.h} happy and ${r.s} sad. I'm balanced.`;
     }
-    ball.textContent = face;
+    face.textContent = emoji;
     label.textContent = msg;
 
     // Bouncy animation on big reactions
     if (!reducedMotion && !isLive) {
-      ball.classList.remove('bounce');
-      void ball.offsetWidth;
-      ball.classList.add('bounce');
+      cursor.classList.remove('bounce');
+      void cursor.offsetWidth;
+      cursor.classList.add('bounce');
     }
 
     // Confetti when very happy and user clicked the button
-    if (face === '😄' && !isLive && typeof window.fireConfetti === 'function') {
-      const br = ball.getBoundingClientRect();
+    if (emoji === '😄' && !isLive && typeof window.fireConfetti === 'function') {
+      const br = face.getBoundingClientRect();
       window.fireConfetti(br.left + br.width/2, br.top + br.height/2);
     }
     // Sound cue on button (not live)

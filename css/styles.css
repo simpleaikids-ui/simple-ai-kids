@@ -1826,9 +1826,81 @@ html[data-theme="dark"] .mascot-bubble { background: #fff3d6; }
    ghosted stickers, Fool-the-AI, difficulty chips, a11y.
    ============================================================ */
 
-/* ---- Homepage seesaw mood meter ---- */
+/* ---- Homepage mood gauge (replaces seesaw) ---- */
+.mood-gauge {
+  position: relative;
+  margin: 22px auto 8px;
+  max-width: 720px;
+  padding: 72px 32px 20px; /* top room for the floating face */
+  background: #fffbea;
+  border-radius: 20px;
+  border: 2px dashed #fde68a;
+}
+.mg-cursor {
+  position: absolute;
+  top: 12px;
+  transform: translateX(-50%);
+  transition: left .55s cubic-bezier(.34,1.56,.64,1);
+  display: flex; flex-direction: column; align-items: center;
+  pointer-events: none;
+}
+.mg-face {
+  font-size: 2.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,.12));
+  transition: transform .3s ease;
+}
+.mg-pointer {
+  width: 0; height: 0;
+  margin-top: 4px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 12px solid #fb923c;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.15));
+}
+.mg-cursor.bounce .mg-face { animation: mg-bounce .6s ease; }
+@keyframes mg-bounce {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.3) rotate(-6deg); }
+  70% { transform: scale(.95) rotate(4deg); }
+}
+.mg-bar {
+  position: relative;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ef4444 0%, #fca5a5 20%, #fde68a 50%, #bbf7d0 80%, #16a34a 100%);
+  border: 2px solid rgba(0,0,0,.12);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.08);
+}
+.mg-tick {
+  position: absolute;
+  top: -6px;
+  width: 2px; height: 26px;
+  background: rgba(0,0,0,.18);
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+.mg-labels {
+  display: flex; justify-content: space-between;
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: .95rem;
+  color: #64748b;
+}
+.mg-labels .ml-sad   { color: #ef4444; }
+.mg-labels .ml-mid   { color: #64748b; }
+.mg-labels .ml-happy { color: #16a34a; }
+
+@media (max-width: 560px) {
+  .mood-gauge { padding: 64px 20px 18px; }
+  .mg-face { font-size: 2.3rem; }
+  .mg-labels { font-size: .85rem; }
+  .mg-labels .ml-mid { display: none; }
+}
+
+/* ---- Legacy seesaw rules (kept no-op in case of stale HTML cached) ---- */
 .mood-seesaw { margin: 20px auto 8px; max-width: 720px; padding: 18px 28px 22px;
-  background: #fffbea; border-radius: 20px; border: 2px dashed #fde68a; }
+  background: #fffbea; border-radius: 20px; border: 2px dashed #fde68a; display: none; }
 .seesaw-labels { display: flex; justify-content: space-between; align-items: center;
   font-weight: 700; font-size: .95rem; margin-bottom: 14px; color: #64748b;
   padding: 0 12px; }
