@@ -1,7 +1,7 @@
 // Simple AI Projects for Kids — service worker
 // Network-first for HTML/JS/CSS (so code updates take effect on next load).
 // Cache-first for images/fonts/static assets.
-const CACHE = 'sai-kids-v10';
+const CACHE = 'sai-kids-v12';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
