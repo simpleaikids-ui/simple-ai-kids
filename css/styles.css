@@ -1661,12 +1661,18 @@ html[data-theme="dark"] .mascot-bubble { background: #fff3d6; }
    CHALLENGE OF THE WEEK
    ===================================================================== */
 .cow-widget {
-  margin: 28px 0;
-  padding: 20px 24px;
+  max-width: 1060px;
+  margin: 28px auto;
+  padding: 28px 32px;
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   border: 3px solid #f59e0b;
-  border-radius: 20px;
+  border-radius: 24px;
+  box-shadow: 8px 8px 0 #1e1e2e;
   position:relative; overflow:hidden;
+}
+.cow-widget .container { padding: 0; max-width: none; }
+@media (max-width: 560px) {
+  .cow-widget { padding: 22px 20px; border-radius: 20px; box-shadow: 5px 5px 0 #1e1e2e; }
 }
 [data-theme="dark"] .cow-widget { background:linear-gradient(135deg,#422006,#78350f); border-color:#d97706; color:#fef3c7; }
 .cow-widget h2 { margin:8px 0 6px; color:#78350f; }
