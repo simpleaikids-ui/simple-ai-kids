@@ -17,5 +17,5 @@
 
 /projects/:slug   /projects/:slug.html   200
 
-# Fallback: anything else that's not a file -> home (SPA-style 404)
-/*                /index.html            404
+# 404 fallback is handled by `not_found_handling` in wrangler.toml
+# (Workers Assets mode doesn't allow status 404 in _redirects).
