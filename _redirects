@@ -1,21 +1,4 @@
-# Cloudflare Pages redirects
-# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
-# Format: source  destination  status
-
-# Pretty URLs -> real .html files (so /about works as well as /about.html)
-/about            /about.html            200
-/grown-ups        /grown-ups.html        200
-/glossary         /glossary.html         200
-/safety           /safety.html           200
-/path             /path.html             200
-/ai-mistakes      /ai-mistakes.html      200
-
-/ages/5-8         /ages/5-8.html         200
-/ages/9-12        /ages/9-12.html        200
-/ages/13-15       /ages/13-15.html       200
-/ages/16-plus     /ages/16-plus.html     200
-
-/projects/:slug   /projects/:slug.html   200
-
-# 404 fallback is handled by `not_found_handling` in wrangler.toml
-# (Workers Assets mode doesn't allow status 404 in _redirects).
+# Cloudflare Pages / Workers Assets redirects
+# Kept minimal — all internal links already use .html paths, so no
+# rewrites are needed. 404s are handled via not_found_handling in
+# wrangler.toml.
