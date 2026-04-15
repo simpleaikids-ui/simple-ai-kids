@@ -73,11 +73,16 @@ a { color: inherit; }
   padding: 56px 0 40px;
   text-align: center;
   background:
-    radial-gradient(circle at 20% 20%, #ffd6e0 0%, transparent 40%),
-    radial-gradient(circle at 80% 30%, #d6e4ff 0%, transparent 40%),
-    radial-gradient(circle at 50% 90%, #d6ffe0 0%, transparent 40%),
+    /* Soft white-to-transparent veil so text reads cleanly */
+    linear-gradient(180deg, rgba(253,250,245,.92) 0%, rgba(253,250,245,.70) 22%, rgba(253,250,245,0) 46%, rgba(253,250,245,.55) 92%, #fdfaf5 100%),
+    url("../images/hero-bg.jpg") center 62% / cover no-repeat,
     #fdfaf5;
 }
+/* Home page gets the illustrated background + more room to let it breathe */
+body[data-band="home"] .hero { min-height: 620px; padding-bottom: 64px; }
+/* Hide the floating mascot on the home hero — the illustration is the star */
+body[data-band="home"] .hero .mascot-wrap,
+body[data-band="home"] .hero .float-layer { display: none; }
 .hero h1 {
   font-size: clamp(2rem, 5vw, 3.2rem);
   margin: 0 0 12px;
@@ -2274,4 +2279,30 @@ h2.section-title {
 
 /* Footer spacing */
 footer { padding: 32px 0 40px; }
+
+/* Home hero: WebP upgrade + legibility over the illustration */
+@supports (background-image: image-set(url("a.webp") type("image/webp"))) {
+  body[data-band="home"] .hero {
+    background:
+      linear-gradient(180deg, rgba(253,250,245,.92) 0%, rgba(253,250,245,.70) 22%, rgba(253,250,245,0) 46%, rgba(253,250,245,.55) 92%, #fdfaf5 100%),
+      image-set(
+        url("../images/hero-bg.webp") type("image/webp") 1x,
+        url("../images/hero-bg.jpg")  type("image/jpeg") 1x
+      ) center 62% / cover no-repeat,
+      #fdfaf5;
+  }
+}
+body[data-band="home"] .hero h1 {
+  text-shadow: 0 2px 0 rgba(255,255,255,.85), 0 0 18px rgba(255,255,255,.65);
+}
+body[data-band="home"] .hero p.lead {
+  text-shadow: 0 1px 0 rgba(255,255,255,.9);
+  font-weight: 500;
+}
+body[data-band="home"] .hero .btn {
+  box-shadow: 0 4px 0 rgba(0,0,0,.15);
+}
+@media (max-width: 560px) {
+  body[data-band="home"] .hero { min-height: 520px; }
+}
 
