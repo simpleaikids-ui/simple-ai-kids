@@ -2077,3 +2077,104 @@ body[data-band="5-8"] .project-thumb { font-size: 3.2rem; }
 
 /* ---- Sticker container position for absolute 'locked' badge ---- */
 .sticker { position: relative; }
+
+/* ================================================================
+   Layout polish v2 — bigger logo, demo card parity, rhythm
+   ================================================================ */
+
+/* Wider content lane to match modern screens */
+.container { max-width: 1180px; padding: 0 28px; }
+
+/* Nav: larger logo with a sparkle mark, taller bar */
+.nav { padding: 16px 0; }
+.nav-logo {
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo::before {
+  content: "✨";
+  font-size: 1.4rem;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.08));
+}
+.nav-links { gap: 22px; }
+.nav-links a { font-size: 1.02rem; padding: 8px 12px; }
+@media (max-width: 720px) {
+  .nav-logo { font-size: 1.45rem; }
+  .nav-logo::before { font-size: 1.15rem; }
+  .nav-links { gap: 10px; }
+  .nav-links a { font-size: .95rem; padding: 6px 8px; }
+}
+
+/* Hero rhythm */
+.hero { padding: 72px 0 56px; }
+.hero h1 { font-size: clamp(2.2rem, 5.2vw, 3.4rem); margin-bottom: 16px; }
+.hero p.lead { font-size: 1.22rem; margin-bottom: 28px; }
+.hero .btn + .btn { margin-left: 10px; }
+@media (max-width: 560px) {
+  .hero .btn { display: block; max-width: 320px; margin: 0 auto 10px; }
+  .hero .btn + .btn { margin-left: auto; }
+}
+
+/* Demo card — match the visual weight of other main-page cards */
+.demo-shell {
+  max-width: 1060px;
+  padding: 40px 36px;
+  border-radius: 28px;
+  box-shadow: 10px 10px 0 #1e1e2e;
+}
+.demo-head h2 { font-size: clamp(1.8rem, 3.2vw, 2.2rem); margin-top: 10px; }
+.demo-head p  { font-size: 1.05rem; max-width: 620px; margin: 6px auto 0; }
+.demo-tag { font-size: .95rem; padding: 6px 18px; }
+.demo-io input { font-size: 1.1rem; padding: 14px 16px; }
+@media (max-width: 560px) {
+  .demo-shell { padding: 28px 20px; border-radius: 22px; box-shadow: 6px 6px 0 #1e1e2e; }
+}
+
+/* Section rhythm: consistent vertical spacing */
+section { padding: 56px 0; }
+.age-cards { padding: 56px 0 32px; }
+h2.section-title {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+/* Age cards — equal heights, a touch more air */
+.age-cards .grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.age-card {
+  padding: 32px 24px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  min-height: 220px;
+}
+.age-card .emoji { font-size: 3.4rem; margin-bottom: 4px; }
+.age-card h3 { font-size: 1.5rem; }
+.age-card p { font-size: 1rem; line-height: 1.5; }
+
+/* Quick-links row between demo and age cards becomes a real callout */
+.container > p > a.btn-ghost + a.btn-ghost { margin-left: 12px; }
+@media (max-width: 560px) {
+  .container > p > a.btn-ghost {
+    display: block; max-width: 360px; margin: 0 auto 10px;
+  }
+  .container > p > a.btn-ghost + a.btn-ghost { margin-left: auto; }
+}
+
+/* Featured strip — bigger heading, more breathing room */
+.featured { padding: 56px 0; border-radius: 0; }
+.featured h3 { font-size: clamp(1.8rem, 3vw, 2.2rem); }
+.featured p  { font-size: 1.1rem; max-width: 720px; }
+
+/* Sticker wall — center and pad consistently */
+.sticker-wall { padding-top: 48px; padding-bottom: 48px; }
+.sticker-wall h2 { text-align: center; margin-bottom: 8px; }
+.sticker-wall .sub { text-align: center; margin-bottom: 20px; }
+
+/* Footer spacing */
+footer { padding: 32px 0 40px; }
+
