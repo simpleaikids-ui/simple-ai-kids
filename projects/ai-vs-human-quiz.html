@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI vs. Human Quiz · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › AI vs. Human Quiz</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🤔 ★★★</span>
+      <span class="meta-pill">⏱ 3 hours</span>
+      <span class="meta-pill">🧰 HTML + JS</span>
+    </div>
+
+    <h1>AI vs. Human Quiz</h1>
+    <p class="lead">Build a web page that shows mystery texts or images — half made by AI, half by humans. Players guess which is which, and you track the scores.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/ai-vs-human-quiz.png" data-alt="AI vs. Human Quiz">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI vs. Human Quiz">
+<defs><linearGradient id="ahq" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fce7f3"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#ahq)"/>
+<rect x="160" y="60" width="320" height="130" rx="16" fill="#fff" stroke="#1e1e2e" stroke-width="4"/>
+<text x="320" y="110" text-anchor="middle" font-size="14" fill="#475569">"A soft rain fell on the</text>
+<text x="320" y="130" text-anchor="middle" font-size="14" fill="#475569">windowsill, and she sighed…"</text>
+<text x="320" y="165" text-anchor="middle" font-size="12" fill="#94a3b8">Round 3 of 10</text>
+<!-- buttons -->
+<rect x="160" y="220" width="140" height="60" rx="14" fill="#60a5fa"/>
+<text x="230" y="258" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">🤖 AI</text>
+<rect x="340" y="220" width="140" height="60" rx="14" fill="#f472b6"/>
+<text x="410" y="258" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">🧑 HUMAN</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A standalone static web page with 10 rounds. Each round shows a piece of content; the player picks AI or human. At the end, accuracy + which rounds stumped the most people.</p>
+
+    <div class="video-slot"
+         data-title="Watch: AI vs. Human Quiz"
+         data-note="Drop a walkthrough MP4 in videos/ai-vs-human-quiz.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A text editor (VS Code, Sublime, or just the browser)</li>
+      <li>A collection of 20 pairs of AI/human content (you'll gather these)</li>
+      <li>Basic HTML + JavaScript</li>
+      <li>About 3 hours</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How to build a small interactive web app with zero frameworks</li>
+      <li>How to measure human performance on a task</li>
+      <li>Which content types are easiest/hardest to tell apart</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      This project is also great social/ethics content. The teen has to <em>collect</em> both AI and human content — which means they'll learn what both look like up close. No backend needed, all client-side.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Gather 10 human-made texts (from classic books, Wikipedia, news articles — cite each) and 10 AI-made texts (paste prompts into a chatbot, save outputs).</li>
+      <li>Keep pairs of similar topics. AI haiku vs human haiku. AI product description vs human review.</li>
+      <li>Create <code>index.html</code> with a minimal skeleton:
+<pre class="code"><code>&lt;!doctype html&gt;
+&lt;html&gt;&lt;head&gt;&lt;title&gt;AI or Human?&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="card"&gt;&lt;/div&gt;
+  &lt;button onclick="guess('ai')"&gt;AI&lt;/button&gt;
+  &lt;button onclick="guess('human')"&gt;Human&lt;/button&gt;
+  &lt;div id="score"&gt;&lt;/div&gt;
+  &lt;script src="quiz.js"&gt;&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre></li>
+      <li>Create <code>quiz.js</code> with your data:
+<pre class="code"><code>const rounds = [
+  { text: "A soft rain fell on the windowsill…", source: "ai" },
+  { text: "To be, or not to be…", source: "human" },
+  // … 18 more
+];
+rounds.sort(() =&gt; Math.random() - 0.5);
+let i = 0, right = 0;
+function show() {
+  if (i &gt;= rounds.length) return finish();
+  document.getElementById("card").textContent = rounds[i].text;
+}
+function guess(g) {
+  if (g === rounds[i].source) right++;
+  i++; show();
+}
+function finish() {
+  document.getElementById("score").textContent = \`You got \${right}/\${rounds.length}\`;
+}
+show();</code></pre></li>
+      <li>Style it with CSS — a big text card, clear buttons.</li>
+      <li>Test yourself first. Which ones tripped you up?</li>
+      <li>Playtest with 5 friends. Record the accuracy for each round.</li>
+      <li>Find the <em>hardest</em> round. Why was that one the trickiest?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Everyone gets 100%? Your examples are too obvious — the AI ones are typical GPT-ish. Use a better prompt: "write in the style of [specific author], 1 paragraph." Everyone gets 50% (random)? Great — that means AI is now that good!
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add images.</strong> Mix in AI-generated vs photographed images.</li>
+        <li><strong>Leaderboard.</strong> Save scores to localStorage, show a personal best.</li>
+        <li><strong>Difficulty modes.</strong> Categorize by easy/medium/hard and let players pick.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why cite your human sources?</p>
+        <button>Formality</button>
+        <button>So you&#x27;re not falsely claiming AI content came from a real author (and avoid plagiarism)</button>
+        <button>Required by JavaScript</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">A fair test has…</p>
+        <button>All human content from 1800, all AI from 2024</button>
+        <button>Matched topics and styles between AI and human samples</button>
+        <button>Only questions you find easy</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="ai-art-explorer.html">AI Art Explorer →</a>
+      <a class="btn btn-ghost" href="sentiment-analyzer.html">Sentiment Analyzer →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

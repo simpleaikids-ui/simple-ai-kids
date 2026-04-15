@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Path · Simple AI Projects for Kids</title>
+  <meta name="description" content="See the full learning path — a tree of AI projects that build on each other. Earned projects light up.">
+  <meta property="og:title" content="Learning Path · Simple AI Projects for Kids">
+  <meta property="og:description" content="A tree of AI projects that build on each other.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="images/faces/lily.png">
+  <link rel="stylesheet" href="css/styles.css?v=10">
+  <script src="js/projects_meta.js"></script>
+</head>
+<body data-band="home">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="grown-ups" href="grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container about-page">
+    <p class="breadcrumb"><a href="index.html">Home</a> › Learning Path</p>
+    <h1>🗺 The Learning Path</h1>
+    <p class="lead">Each project builds on the one before it. Projects you've finished light up ⭐. Arrows show which project unlocks which. You can always skip ahead — but the tree shows the smoothest path.</p>
+
+    <p style="text-align:center">
+      <button class="btn btn-ghost" id="reset-progress" type="button">Reset my progress</button>
+      <span id="progress-count" style="margin-left:10px;color:#666"></span>
+    </p>
+
+    <div class="tree-wrap" id="learning-tree">
+      <svg id="tree-svg" aria-hidden="true"></svg>
+      <div class="tree-layers" id="tree-layers"></div>
+    </div>
+
+    <p style="margin-top:32px">
+      <a class="btn" href="index.html">Back to Home →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="about.html">About Us</a> ·
+        <a href="grown-ups.html">For Grown-Ups</a> ·
+        <a href="glossary.html">Glossary</a> ·
+        <a href="safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="js/common.js?v=10" defer></script>
+  <script>
+  (function(){
+    const meta = window.PROJECTS_META || {};
+    const stickers = (() => {
+      try { return JSON.parse(localStorage.getItem('sai_stickers_v1') || '{}'); }
+      catch(e){ return {}; }
+    })();
+    const bands = [
+      ['5-8',  'Ages 5–8 — Discover',  '#fde68a'],
+      ['9-12', 'Ages 9–12 — Build',    '#bbf7d0'],
+      ['13-15','Ages 13–15 — Code',    '#bae6fd'],
+      ['16',   'Ages 16+ — Ship',      '#fbcfe8']
+    ];
+    const host = document.getElementById('tree-layers');
+    const svg  = document.getElementById('tree-svg');
+
+    // Progress counter
+    const doneCount = Object.keys(stickers).filter(k => stickers[k]).length;
+    const totalCount = Object.keys(meta).length;
+    document.getElementById('progress-count').textContent =
+      totalCount ? '⭐ ' + doneCount + ' / ' + totalCount + ' completed' : '';
+
+    // Reset button
+    document.getElementById('reset-progress').addEventListener('click', function(){
+      if (!confirm('Clear all your completed stickers? This only resets your progress on this device.')) return;
+      try { localStorage.removeItem('sai_stickers_v1'); } catch(e){}
+      location.reload();
+    });
+
+    if (!Object.keys(meta).length) {
+      host.innerHTML = '<p style="text-align:center;color:#b91c1c">Could not load project list. Make sure <code>js/projects_meta.js</code> is present.</p>';
+      return;
+    }
+
+    // Build layered rows; remember each card's DOM id so we can draw arrows.
+    const idOf = function(slug){ return 'tnode-' + slug; };
+    host.innerHTML = bands.map(function(b){
+      const band = b[0], label = b[1], color = b[2];
+      const nodes = Object.keys(meta)
+        .filter(function(s){ return meta[s].band === band; })
+        .sort(function(a, c){ return (meta[a].prereqs||[]).length - (meta[c].prereqs||[]).length; });
+      const cards = nodes.map(function(slug){
+        const m = meta[slug];
+        const d = !!stickers[slug];
+        const tagline = (m.tags || []).slice(0,2).join(' · ');
+        const timeMap = { quick:'⏱ ~10 min', short:'⏱ 15–30 min', medium:'⏱ 30–60 min', long:'⏱ 1 hr+' };
+        return '<a id="' + idOf(slug) + '" class="tree-node ' + (d?'done':'') + '" href="projects/' + slug + '.html">'
+          + '<div class="tree-node-title">' + (d ? '⭐ ' : '') + m.title + '</div>'
+          + '<div class="tree-node-meta">' + tagline + '</div>'
+          + '<div class="tree-node-time">' + (timeMap[m.time]||'') + '</div>'
+          + '</a>';
+      }).join('');
+      return '<div class="tree-band" style="--band-color:' + color + '">'
+        + '<h2>' + label + ' <span class="tb-count">' + nodes.length + ' projects</span></h2>'
+        + '<div class="tree-row">' + cards + '</div>'
+        + '</div>';
+    }).join('');
+
+    // Draw arrows from prereq → project using absolute SVG overlay
+    function drawArrows() {
+      const wrap = document.getElementById('learning-tree');
+      const rect = wrap.getBoundingClientRect();
+      svg.setAttribute('width',  rect.width);
+      svg.setAttribute('height', rect.height);
+      svg.setAttribute('viewBox', '0 0 ' + rect.width + ' ' + rect.height);
+      let defs = '<defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker>'
+               + '<marker id="arrowhead-done" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/></marker></defs>';
+      const paths = [];
+      Object.keys(meta).forEach(function(slug){
+        (meta[slug].prereqs || []).forEach(function(prereq){
+          const from = document.getElementById(idOf(prereq));
+          const to   = document.getElementById(idOf(slug));
+          if (!from || !to) return;
+          const fr = from.getBoundingClientRect();
+          const tr = to.getBoundingClientRect();
+          const x1 = fr.left + fr.width/2 - rect.left;
+          const y1 = fr.bottom - rect.top;
+          const x2 = tr.left + tr.width/2 - rect.left;
+          const y2 = tr.top - rect.top;
+          const midY = (y1 + y2) / 2;
+          const d = 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + midY + ', ' + x2 + ' ' + midY + ', ' + x2 + ' ' + (y2-4);
+          const doneFlag = stickers[prereq] && stickers[slug];
+          paths.push('<path d="' + d + '" fill="none" stroke="' + (doneFlag?'#22c55e':'#bbb') + '" stroke-width="' + (doneFlag?2.5:1.5) + '" stroke-dasharray="' + (doneFlag?'0':'4,4') + '" marker-end="url(' + (doneFlag?'#arrowhead-done':'#arrowhead') + ')"/>');
+        });
+      });
+      svg.innerHTML = defs + paths.join('');
+    }
+    drawArrows();
+    window.addEventListener('resize', drawArrows);
+    // Re-draw after fonts load / content settles
+    setTimeout(drawArrows, 100);
+    setTimeout(drawArrows, 500);
+  })();
+  </script>
+</body>
+</html>

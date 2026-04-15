@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mood Playlist Maker · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › Mood Playlist Maker</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🎵 ★★★</span>
+      <span class="meta-pill">⏱ 3 hours</span>
+      <span class="meta-pill">🧰 Colab + Spotify</span>
+    </div>
+
+    <h1>Mood Playlist Maker</h1>
+    <p class="lead">Pull your music library's "audio features" from Spotify, cluster the songs by mood, and generate playlists automatically — happy, chill, angry, sad.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/mood-playlist-maker.png" data-alt="Mood Playlist Maker">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mood Playlist Maker">
+<defs><linearGradient id="mpm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#166534"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#mpm)"/>
+<!-- scatter -->
+<g transform="translate(60 60)">
+<rect width="220" height="200" rx="12" fill="#0b1220" stroke="#334155"/>
+<g fill="#22c55e"><circle cx="40" cy="40" r="6"/><circle cx="60" cy="50" r="6"/><circle cx="50" cy="60" r="6"/></g>
+<g fill="#ef4444"><circle cx="180" cy="160" r="6"/><circle cx="170" cy="180" r="6"/><circle cx="190" cy="175" r="6"/></g>
+<g fill="#fbbf24"><circle cx="170" cy="50" r="6"/><circle cx="180" cy="40" r="6"/><circle cx="160" cy="60" r="6"/></g>
+<g fill="#60a5fa"><circle cx="40" cy="170" r="6"/><circle cx="60" cy="180" r="6"/><circle cx="50" cy="160" r="6"/></g>
+</g>
+<!-- 4 playlists -->
+<g font-family="monospace" fill="#fff" font-size="14">
+<text x="320" y="80">🟢 Happy</text>
+<text x="320" y="110">🟡 Hype</text>
+<text x="320" y="140">🔵 Chill</text>
+<text x="320" y="170">🔴 Sad</text>
+</g>
+<g transform="translate(440 60)">
+<rect width="160" height="210" rx="12" fill="#fff"/>
+<text x="80" y="26" text-anchor="middle" font-size="14" font-weight="800">Mood Playlists</text>
+<line x1="10" y1="36" x2="150" y2="36" stroke="#1e1e2e"/>
+<g font-size="12" fill="#1e1e2e">
+<text x="14" y="60">🟢 Song A</text>
+<text x="14" y="80">🟢 Song B</text>
+<text x="14" y="100">🟡 Song C</text>
+<text x="14" y="120">🟡 Song D</text>
+<text x="14" y="140">🔵 Song E</text>
+<text x="14" y="160">🔵 Song F</text>
+<text x="14" y="180">🔴 Song G</text>
+</g>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A notebook that reads your library (or a public playlist), gets audio features (energy, valence, tempo…), runs K-means, and spits out 4 auto-generated playlists labeled by mood.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Mood Playlist Maker"
+         data-note="Drop a walkthrough MP4 in videos/mood-playlist-maker.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Google Colab</li>
+      <li>A Spotify account + free developer app (for API keys)</li>
+      <li>Basic Python and a little patience</li>
+      <li>About 3 hours</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What Spotify's "audio features" actually measure</li>
+      <li>How K-means clustering groups items without labels</li>
+      <li>Why unsupervised clusters rarely line up with human labels</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Spotify developer account is free and requires an email signup. API keys go in a <code>.env</code>. Session-level tokens expire after 1 hour — normal. No purchases.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Sign up at <a href="https://developer.spotify.com" target="_blank" rel="noopener"><strong>developer.spotify.com</strong></a>. Create an app. Copy your Client ID and Client Secret.</li>
+      <li>In Colab:
+<pre class="code"><code>!pip install -q spotipy scikit-learn matplotlib pandas
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+import os
+os.environ["SPOTIPY_CLIENT_ID"]="…"
+os.environ["SPOTIPY_CLIENT_SECRET"]="…"
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials())</code></pre></li>
+      <li>Pick a source playlist (any public one). Grab tracks:
+<pre class="code"><code>PL = "37i9dQZF1DXcBWIGoYBM5M"   # Today's Top Hits
+tracks = sp.playlist_tracks(PL)["items"]
+ids = [t["track"]["id"] for t in tracks if t["track"]]
+names = [t["track"]["name"] for t in tracks if t["track"]]</code></pre></li>
+      <li>Fetch audio features:
+<pre class="code"><code>import pandas as pd
+feats = sp.audio_features(ids)
+df = pd.DataFrame(feats)[["danceability","energy","valence","tempo","acousticness"]]
+df["name"] = names</code></pre></li>
+      <li>Cluster into 4 moods:
+<pre class="code"><code>from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+X = StandardScaler().fit_transform(df[["danceability","energy","valence","tempo","acousticness"]])
+df["cluster"] = KMeans(n_clusters=4, n_init=10, random_state=0).fit_predict(X)</code></pre></li>
+      <li>Label clusters by inspecting each group's averages. High valence + high energy = happy. Low energy + low valence = sad. Map them manually.</li>
+      <li>Print your 4 playlists:
+<pre class="code"><code>for c in sorted(df["cluster"].unique()):
+    print(f"\n=== Cluster {c} ===")
+    print(df[df["cluster"]==c]["name"].tolist()[:10])</code></pre></li>
+      <li>Sanity check: do the songs in "happy" actually feel happy? Write down 3 that don't, and explain why.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      <code>401</code>? Token expired — re-run the auth cell. Features = <code>None</code>? Spotify deprecated the audio-features endpoint for certain apps in 2024 — use a <em>user</em> token (OAuth flow) instead of client-credentials.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Visualize in 2D.</strong> Use PCA or UMAP to plot clusters. Color by K's guess.</li>
+        <li><strong>K tuning.</strong> Try K=3, 5, 6. Which feels most like real moods?</li>
+        <li><strong>Hybrid ranking.</strong> Blend clusters with play count or release year.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What does K-means actually do?</p>
+        <button>Labels songs using genre tags</button>
+        <button>Groups items so points within a cluster are close in feature space</button>
+        <button>Reads lyrics</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Cluster 2 mixes a punk track and a lullaby — why?</p>
+        <button>Spotify bug</button>
+        <button>Clustering is unsupervised; close in &lt;em&gt;your&lt;/em&gt; features ≠ close in human mood</button>
+        <button>Random chance</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="sentiment-analyzer.html">Sentiment Analyzer →</a>
+      <a class="btn btn-ghost" href="movie-recommender.html">Movie Recommender →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

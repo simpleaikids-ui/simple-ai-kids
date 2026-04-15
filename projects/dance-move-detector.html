@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dance Move Detector · Ages 9–12</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="9-12">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/9-12.html">Ages 9–12</a> › Dance Move Detector</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">💃 ★★☆</span>
+      <span class="meta-pill">⏱ 60 min</span>
+      <span class="meta-pill">🧰 Webcam</span>
+    </div>
+
+    <h1>Dance Move Detector</h1>
+    <p class="lead">Teach the computer your best dance poses — then play a pose-matching game where the screen shows a move and you have to nail it!</p>
+
+    <div class="scene-slot" data-img="../images/scenes/dance-move-detector.png" data-alt="Dance Move Detector">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dance Move Detector">
+<defs><linearGradient id="dm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fce7f3"/><stop offset="1" stop-color="#ede9fe"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#dm)"/>
+<!-- 4 stick-figure poses -->
+<g stroke="#1e1e2e" stroke-width="4" fill="none" stroke-linecap="round">
+<!-- tpose -->
+<circle cx="90" cy="80" r="14" fill="#fcd5b4"/>
+<line x1="90" y1="94" x2="90" y2="170"/>
+<line x1="40" y1="130" x2="140" y2="130"/>
+<line x1="90" y1="170" x2="70" y2="220"/>
+<line x1="90" y1="170" x2="110" y2="220"/>
+<text x="90" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#1e1e2e">T-pose</text>
+<!-- flamingo -->
+<circle cx="230" cy="80" r="14" fill="#fcd5b4"/>
+<line x1="230" y1="94" x2="230" y2="170"/>
+<line x1="230" y1="120" x2="200" y2="100"/>
+<line x1="230" y1="120" x2="265" y2="140"/>
+<line x1="230" y1="170" x2="230" y2="220"/>
+<line x1="230" y1="170" x2="260" y2="150"/>
+<text x="230" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#1e1e2e">Flamingo</text>
+<!-- ninja -->
+<circle cx="370" cy="80" r="14" fill="#fcd5b4"/>
+<line x1="370" y1="94" x2="370" y2="170"/>
+<line x1="370" y1="120" x2="340" y2="150"/>
+<line x1="370" y1="120" x2="400" y2="150"/>
+<path d="M340 150 L400 150" />
+<line x1="370" y1="170" x2="350" y2="220"/>
+<line x1="370" y1="170" x2="390" y2="220"/>
+<text x="370" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#1e1e2e">Ninja</text>
+<!-- robot -->
+<circle cx="520" cy="80" r="14" fill="#fcd5b4"/>
+<line x1="520" y1="94" x2="520" y2="170"/>
+<path d="M520 120 L490 120 L490 150"/>
+<path d="M520 120 L550 120 L550 150"/>
+<line x1="520" y1="170" x2="505" y2="220"/>
+<line x1="520" y1="170" x2="535" y2="220"/>
+<text x="520" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#1e1e2e">Robot</text>
+</g>
+<text x="320" y="30" text-anchor="middle" font-size="22" font-weight="800" fill="#1e1e2e">Strike the pose! 💃</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A full-body pose game. You train the model on 4 dance moves (like T-pose, flamingo, ninja, robot), then a Scratch game flashes a move on screen and scores you for matching it fast.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Dance Move Detector"
+         data-note="Drop a walkthrough MP4 in videos/dance-move-detector.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a webcam and enough space to stand back from it</li>
+      <li>A free <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> account</li>
+      <li>About 60 minutes</li>
+      <li>Room to dance!</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How body pose detection is different from object classification</li>
+      <li>Why consistent lighting and a clean background help</li>
+      <li>How to score players on reaction time in Scratch</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      The child needs space to move — 2 meters back from the webcam is ideal. Warn younger siblings not to walk into the frame during training (it confuses the model). Same platform as Rock-Paper-Scissors (ML for Kids).
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>In <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a>, create a new <strong>Image</strong> project called <em>DanceMoves</em>.</li>
+      <li>Add four classes: <strong>tpose</strong>, <strong>flamingo</strong> (one leg up), <strong>ninja</strong> (arms crossed), <strong>robot</strong> (arms in stiff angles).</li>
+      <li>Stand back from the webcam. For each move, take 40 photos — face the camera, slight left, slight right, arms slightly different each time.</li>
+      <li>Add a <strong>nothing</strong> class with 30 photos of the empty room.</li>
+      <li>Train the model. Test each pose — should get ~90% confidence on the right class.</li>
+      <li>Open Scratch via ML4K's <em>Make → Scratch 3</em>.</li>
+      <li>Create a new project. Add 4 costume sprites, one per move (you can draw stick figures).</li>
+      <li>Build the game loop:
+<pre class="code"><code>when green flag clicked
+set [score v] to 0
+repeat (10)
+  pick random costume (1 to 4)
+  say [Do THIS pose!] for 1 sec
+  wait (3) secs
+  if &lt;(recognise current pose) = (current costume name)&gt; then
+    change [score v] by 1
+    say [✓] for 0.5 secs
+say (join [Final score: ] (score))</code></pre></li>
+      <li>Play! Try to get 10/10.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Model is 50/50 between two poses? They look too similar to the webcam. Exaggerate — bigger arm angles, wider stance. Also retrain with 20 more examples.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add your own moves.</strong> Invent 4 new poses. Name them whatever you want.</li>
+        <li><strong>Add a timer.</strong> Only count the score if the pose matches within 2 seconds.</li>
+        <li><strong>Multiplayer.</strong> Two players take turns. High score wins.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why take photos from slightly different angles?</p>
+        <button>To fill disk space</button>
+        <button>So the model works even when you stand a bit differently</button>
+        <button>It&#x27;s required</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why is a "nothing" class useful?</p>
+        <button>Fills gaps</button>
+        <button>So the model isn&#x27;t forced to pick one of your poses when nobody is there</button>
+        <button>For dancing</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="rock-paper-scissors-webcam.html">Rock-Paper-Scissors Webcam →</a>
+      <a class="btn btn-ghost" href="voice-controlled-maze.html">Voice-Controlled Maze →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

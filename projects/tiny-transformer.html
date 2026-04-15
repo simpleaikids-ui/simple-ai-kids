@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiny Transformer From Scratch · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › Tiny Transformer From Scratch</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">✨ ★★★★</span>
+      <span class="meta-pill">⏱ Weekend</span>
+      <span class="meta-pill">🧰 PyTorch GPU</span>
+    </div>
+
+    <h1>Tiny Transformer From Scratch</h1>
+    <p class="lead">Follow Karpathy's "Let's build GPT" and implement a working transformer in PyTorch — attention, positional encoding, the works. Train it on Shakespeare.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/tiny-transformer.png" data-alt="Tiny Transformer From Scratch">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tiny Transformer From Scratch">
+<defs><linearGradient id="tt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#312e81"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#tt)"/>
+<!-- tokens -->
+<g font-family="monospace" font-size="13" fill="#fde047">
+<rect x="40" y="40" width="30" height="24" rx="3" fill="#0b1220" stroke="#475569"/><text x="55" y="58" text-anchor="middle">t</text>
+<rect x="75" y="40" width="30" height="24" rx="3" fill="#0b1220" stroke="#475569"/><text x="90" y="58" text-anchor="middle">o</text>
+<rect x="110" y="40" width="30" height="24" rx="3" fill="#0b1220" stroke="#475569"/><text x="125" y="58" text-anchor="middle"> </text>
+<rect x="145" y="40" width="30" height="24" rx="3" fill="#0b1220" stroke="#475569"/><text x="160" y="58" text-anchor="middle">b</text>
+<rect x="180" y="40" width="30" height="24" rx="3" fill="#0b1220" stroke="#475569"/><text x="195" y="58" text-anchor="middle">e</text>
+</g>
+<!-- attention matrix -->
+<g transform="translate(250 30)">
+<rect width="140" height="140" rx="6" fill="#0b1220" stroke="#475569"/>
+<g>
+<rect x="10" y="10" width="24" height="24" fill="#22c55e" opacity="0.9"/>
+<rect x="40" y="10" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="70" y="10" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="100" y="10" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="10" y="40" width="24" height="24" fill="#22c55e" opacity="0.5"/>
+<rect x="40" y="40" width="24" height="24" fill="#22c55e" opacity="0.9"/>
+<rect x="70" y="40" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="100" y="40" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="10" y="70" width="24" height="24" fill="#22c55e" opacity="0.3"/>
+<rect x="40" y="70" width="24" height="24" fill="#22c55e" opacity="0.7"/>
+<rect x="70" y="70" width="24" height="24" fill="#22c55e" opacity="0.9"/>
+<rect x="100" y="70" width="24" height="24" fill="#0f172a" opacity="0.3"/>
+<rect x="10" y="100" width="24" height="24" fill="#22c55e" opacity="0.2"/>
+<rect x="40" y="100" width="24" height="24" fill="#22c55e" opacity="0.5"/>
+<rect x="70" y="100" width="24" height="24" fill="#22c55e" opacity="0.7"/>
+<rect x="100" y="100" width="24" height="24" fill="#22c55e" opacity="0.9"/>
+</g>
+<text x="70" y="160" text-anchor="middle" font-size="11" fill="#fff">causal attention</text>
+</g>
+<!-- sample out -->
+<g font-family="monospace" font-size="12" fill="#fde047">
+<text x="420" y="60">&gt; to be or not to be</text>
+<text x="420" y="82">  that is the question</text>
+<text x="420" y="104">  whether 'tis nobler</text>
+<text x="420" y="126">  in the mind to suffer</text>
+<text x="420" y="148">  the slings and arrows</text>
+<text x="420" y="170">  of outrageous fortune</text>
+</g>
+<text x="320" y="240" text-anchor="middle" font-size="22" font-weight="800" fill="#fde047">Build GPT. Run Shakespeare.</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A ~200-line nanoGPT-style character-level transformer trained on the complete works of Shakespeare. You'll generate text samples and be able to explain every line.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Tiny Transformer From Scratch"
+         data-note="Drop a walkthrough MP4 in videos/tiny-transformer.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Colab or a local GPU</li>
+      <li>PyTorch and patience to work through details</li>
+      <li>Weekend</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What attention actually computes (queries, keys, values)</li>
+      <li>Why positional encoding exists</li>
+      <li>How the training signal propagates through a decoder stack</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Based on <a href='https://karpathy.ai/zero-to-hero.html' target='_blank' rel='noopener'>Andrej Karpathy's Zero-to-Hero series</a> — the canonical intro. Watching the video first is strongly recommended (~2 hours). No API cost.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Watch Karpathy's <em>"Let's build GPT: from scratch, in code, spelled out."</em> Takes 2 hours. Worth every minute.</li>
+      <li>Download the Shakespeare dataset:
+<pre class="code"><code>!wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt</code></pre></li>
+      <li>Tokenize at character level. Build <code>stoi</code> (string→int) and <code>itos</code> maps. Encode the whole file as a tensor.</li>
+      <li>Implement the single-head self-attention block from scratch:
+<pre class="code"><code>class Head(nn.Module):
+    def __init__(self, C, H):
+        super().__init__()
+        self.key   = nn.Linear(C, H, bias=False)
+        self.query = nn.Linear(C, H, bias=False)
+        self.value = nn.Linear(C, H, bias=False)
+        self.register_buffer("tril", torch.tril(torch.ones(block_size, block_size)))
+    def forward(self, x):
+        B,T,C = x.shape
+        k = self.key(x); q = self.query(x)
+        wei = q @ k.transpose(-2,-1) * k.shape[-1]**-0.5
+        wei = wei.masked_fill(self.tril[:T,:T] == 0, float("-inf"))
+        wei = F.softmax(wei, dim=-1)
+        return wei @ self.value(x)</code></pre></li>
+      <li>Extend to multi-head. Stack N blocks. Add layer norm and a small feed-forward.</li>
+      <li>Write the training loop. <code>AdamW</code>, <code>lr=3e-4</code>, batch size 64, block_size 256. Expect 30 min on a T4.</li>
+      <li>Target loss: ≤ 1.5. Above that, your model hasn't really learned yet.</li>
+      <li>Generate samples:
+<pre class="code"><code>ctx = torch.zeros((1,1), dtype=torch.long, device=device)
+print(decode(model.generate(ctx, 500)[0].tolist()))</code></pre>
+It should produce fake-Shakespeare that looks remarkably plausible.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Loss stuck at ~3.5? Your embeddings, positional encoding, or mask shape is off. Print intermediate tensor shapes — <code>print(x.shape)</code> at every step until one surprises you.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Switch datasets.</strong> Train on your messaging history or a favorite book. See how voice transfers.</li>
+        <li><strong>Byte-pair tokenization.</strong> Replace character-level with a tiny BPE tokenizer. Sample quality jumps.</li>
+        <li><strong>Flash attention.</strong> Swap manual attention for PyTorch 2.0's <code>scaled_dot_product_attention</code>. 2–4× faster.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="0">
+        <p class="prompt">Attention with Q, K, V, you compute the weight matrix as…</p>
+        <button>softmax((Q·K^T)/√d)</button>
+        <button>Q·V</button>
+        <button>sum(Q)+sum(K)</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why is positional encoding needed?</p>
+        <button>Required by PyTorch</button>
+        <button>Attention is permutation-invariant — without positions it can&#x27;t tell word order</button>
+        <button>To make loss go down</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="fine-tune-llm.html">Fine-Tune a Small LLM →</a>
+      <a class="btn btn-ghost" href="cnn-from-scratch.html">CNN From Scratch →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

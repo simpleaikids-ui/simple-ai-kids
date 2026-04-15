@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teach the Computer to Sort · Ages 5–8</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="5-8">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/5-8.html">Ages 5–8</a> › Teach the Computer to Sort</p>
+
+    <h1>Teach the Computer to Sort</h1>
+    <p class="lead">Train a webcam to tell apart two things — like a banana and an apple, or a happy face and a silly face. Feels like magic!</p>
+
+    <div class="scene-slot" data-img="../images/scenes/teach-sort.png" data-alt="A kid showing an apple and a banana to a smiling computer">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A kid holds fruit up to a smiling computer webcam">
+        <defs>
+          <linearGradient id="sky58" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef3c7"/>
+            <stop offset="100%" stop-color="#fde7f3"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="320" fill="url(#sky58)"/>
+        <!-- sun -->
+        <circle cx="560" cy="70" r="34" fill="#fde047"/>
+        <!-- kid -->
+        <circle cx="160" cy="150" r="36" fill="#fcd5b4"/>
+        <circle cx="150" cy="145" r="3" fill="#333"/>
+        <circle cx="170" cy="145" r="3" fill="#333"/>
+        <path d="M148 160 Q160 170 172 160" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <rect x="128" y="186" width="64" height="80" rx="14" fill="#f472b6"/>
+        <!-- arm holding apple -->
+        <rect x="188" y="200" width="60" height="14" rx="7" fill="#fcd5b4"/>
+        <circle cx="260" cy="208" r="18" fill="#ef4444"/>
+        <path d="M260 190 Q264 180 270 186" stroke="#78350f" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- banana -->
+        <path d="M300 240 Q330 210 360 240 Q348 226 312 246 Z" fill="#fde047" stroke="#a16207" stroke-width="2"/>
+        <!-- computer -->
+        <rect x="400" y="110" width="180" height="130" rx="14" fill="#60a5fa"/>
+        <rect x="414" y="124" width="152" height="92" rx="6" fill="#0f172a"/>
+        <circle cx="490" cy="170" r="18" fill="#22d3ee"/>
+        <circle cx="490" cy="170" r="8" fill="#0f172a"/>
+        <rect x="470" y="240" width="40" height="8" rx="3" fill="#1e3a8a"/>
+        <rect x="420" y="248" width="140" height="10" rx="4" fill="#1e3a8a"/>
+        <!-- smile on screen -->
+        <path d="M460 195 Q490 210 520 195" stroke="#fbbf24" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- sparkles -->
+        <text x="380" y="90" font-size="24">✨</text>
+        <text x="340" y="140" font-size="20">✨</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>You'll show the computer two kinds of things, like an apple and a banana. After a few tries, the computer will guess which one you're holding up — all by itself!</p>
+
+    <div class="video-slot"
+         data-title="Watch: Teaching the Computer to Sort"
+         data-note="Drop your walkthrough MP4 in videos/, or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <div class="concept-diagram">
+      <p class="cd-title">How the Computer Learns — Pictures → Brain → Guess</p>
+      <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pictures flow into a brain and out comes a guess.">
+        <!-- examples -->
+        <g>
+          <rect x="20" y="40" width="90" height="100" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+          <text x="65" y="80" text-anchor="middle" font-size="28">🍎</text>
+          <text x="65" y="120" text-anchor="middle" font-size="28">🍌</text>
+          <text x="65" y="160" text-anchor="middle" font-size="12" fill="#475569">Examples</text>
+        </g>
+        <!-- arrow -->
+        <path d="M120 90 L200 90" stroke="#f472b6" stroke-width="4" marker-end="url(#arr58)"/>
+        <defs>
+          <marker id="arr58" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#f472b6"/>
+          </marker>
+        </defs>
+        <!-- brain -->
+        <g>
+          <circle cx="280" cy="90" r="55" fill="#fde68a" stroke="#f59e0b" stroke-width="3"/>
+          <text x="280" y="100" text-anchor="middle" font-size="40">🧠</text>
+          <text x="280" y="165" text-anchor="middle" font-size="12" fill="#475569">Model</text>
+        </g>
+        <path d="M345 90 L430 90" stroke="#f472b6" stroke-width="4" marker-end="url(#arr58)"/>
+        <!-- guess -->
+        <g>
+          <rect x="440" y="50" width="170" height="80" rx="12" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+          <text x="525" y="90" text-anchor="middle" font-size="18" font-weight="700">It's an Apple!</text>
+          <text x="525" y="110" text-anchor="middle" font-size="12" fill="#166534">95% sure</text>
+          <text x="525" y="160" text-anchor="middle" font-size="12" fill="#475569">Guess</text>
+        </g>
+      </svg>
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a webcam</li>
+      <li>An adult to help open the webpage</li>
+      <li>Two different things to show the camera (fruit, toys, stuffed animals)</li>
+      <li>About 15 minutes</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How computers learn from examples — just like you do</li>
+      <li>Why more examples make the computer smarter</li>
+      <li>That you can teach the computer to recognize anything</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      This project uses <a href="https://teachablemachine.withgoogle.com" target="_blank" rel="noopener">Google's Teachable Machine</a>. No account is needed. Training happens in the browser — webcam images never leave your computer unless you choose to save the model. It works on any Chromebook, Mac, or Windows laptop with a webcam and a modern browser. Kindergartners and 1st graders will need help clicking buttons and reading prompts; by age 7 most kids can drive it themselves.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Ask your grown-up to open <a href="https://teachablemachine.withgoogle.com" target="_blank" rel="noopener"><strong>teachablemachine.withgoogle.com</strong></a> in a browser. Click the big blue button that says <em>Get Started</em>.</li>
+      <li>Click <em>Image Project</em>, then pick <em>Standard image model</em>.</li>
+      <li>You'll see two boxes called <em>Class 1</em> and <em>Class 2</em>. Click the words <em>Class 1</em> and type what's in it, like <em>Apple</em>.</li>
+      <li>Pick up your first thing (the apple) and hold it in front of the webcam. Click and <strong>hold</strong> the Webcam button under Class 1. Move the apple around — spin it, tilt it, move it closer and farther — so the computer sees it from lots of angles. Take about 30 photos.</li>
+      <li>Now rename <em>Class 2</em> (like <em>Banana</em>) and do the same thing for your second object.</li>
+      <li>Click the <em>Train Model</em> button. Wait a few seconds — the computer is studying the pictures!</li>
+      <li>When it's done, hold up your apple in front of the camera. Watch the bar on the right! Then try the banana. Then try showing both! What happens if you show something new, like your hand?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      If the computer guesses wrong, you probably need more examples. Go back to the class that's confusing it and take more photos — especially at different angles and distances.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Make it harder.</strong> Try three classes instead of two — apple, banana, and orange!</li>
+        <li><strong>Face game.</strong> Make classes for "happy face," "sad face," and "silly face." See if the computer can read your feelings.</li>
+        <li><strong>Trick it.</strong> Try showing the computer something totally different. Does it still pick one? That's called <em>overconfidence</em> — computers don't always know when they don't know!</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">If the computer keeps getting the apple wrong, what should you do?</p>
+        <button>Use a bigger apple</button>
+        <button>Take more apple photos from different angles</button>
+        <button>Yell at the computer</button>
+      </div>
+      <div class="q" data-correct="2">
+        <p class="prompt">What does the computer actually learn from?</p>
+        <button>Magic</button>
+        <button>Your instructions</button>
+        <button>The example pictures you show it</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="emoji-detective.html">Emoji Detective →</a>
+      <a class="btn btn-ghost" href="../projects/custom-chatbot.html">Build Your Own Chatbot (Ages 9–12) →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

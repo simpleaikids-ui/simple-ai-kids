@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coming Soon · Simple AI Projects for Kids</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="info">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › Coming Soon</p>
+
+    <h1>🚧 This Project Is Coming Soon!</h1>
+    <p class="lead" id="project-name-line">We're busy building this one. Peek back in a little while — or try one of the projects that's already ready!</p>
+
+    <div class="scene-slot">
+      <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A friendly robot painting with a stack of blueprints.">
+        <defs>
+          <linearGradient id="bgcs" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef3c7"/>
+            <stop offset="100%" stop-color="#fde7f3"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="280" fill="url(#bgcs)"/>
+        <!-- robot -->
+        <g>
+          <rect x="240" y="60" width="160" height="140" rx="24" fill="#60a5fa"/>
+          <circle cx="278" cy="110" r="12" fill="#fff"/>
+          <circle cx="362" cy="110" r="12" fill="#fff"/>
+          <circle cx="278" cy="110" r="5" fill="#0f172a"/>
+          <circle cx="362" cy="110" r="5" fill="#0f172a"/>
+          <path d="M280 150 Q320 170 360 150" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <rect x="314" y="30" width="12" height="30" fill="#0f172a"/>
+          <circle cx="320" cy="28" r="8" fill="#fbbf24"/>
+          <rect x="210" y="100" width="30" height="10" rx="5" fill="#1e3a8a"/>
+          <rect x="400" y="100" width="30" height="10" rx="5" fill="#1e3a8a"/>
+        </g>
+        <!-- paintbrush -->
+        <rect x="430" y="115" width="60" height="8" rx="3" fill="#78350f" transform="rotate(-20 460 119)"/>
+        <rect x="480" y="106" width="24" height="24" rx="4" fill="#ef4444" transform="rotate(-20 492 118)"/>
+        <!-- cones -->
+        <polygon points="80,220 110,160 140,220" fill="#f97316"/>
+        <polygon points="520,240 540,190 560,240" fill="#f97316"/>
+        <text x="320" y="260" text-anchor="middle" font-size="24" font-weight="800" fill="#9a3412">🛠  Building…  🛠</text>
+      </svg>
+    </div>
+
+    <h2>Projects you can try right now</h2>
+    <div class="grid grid-2">
+      <a class="project-card" href="teach-computer-to-sort.html">
+        <div class="project-thumb">🍎🍌</div>
+        <h3>Teach the Computer to Sort</h3>
+        <p>Ages 5–8 · Use a webcam to tell two things apart.</p>
+      </a>
+      <a class="project-card" href="custom-chatbot.html">
+        <div class="project-thumb">💬</div>
+        <h3>Build Your Own Chatbot</h3>
+        <p>Ages 9–12 · Train a Scratch bot to chat back.</p>
+      </a>
+      <a class="project-card" href="movie-recommender.html">
+        <div class="project-thumb">🎬</div>
+        <h3>Movie Recommender</h3>
+        <p>Ages 13–15 · "People who liked this also liked…" in Python.</p>
+      </a>
+      <a class="project-card" href="study-buddy.html">
+        <div class="project-thumb">📚</div>
+        <h3>RAG Study Buddy</h3>
+        <p>Ages 16+ · A chatbot that answers from your class notes.</p>
+      </a>
+    </div>
+
+    <p style="margin-top:28px">
+      <a class="btn btn-ghost" href="../index.html">← Back to Home</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script>
+    // Show the referring project name if it came from ?title=...
+    try {
+      const t = new URLSearchParams(location.search).get('title');
+      if (t) {
+        document.getElementById('project-name-line').innerHTML =
+          '<strong>' + t.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) +
+          '</strong> is still being built! Peek back soon — in the meantime, try one of the ready projects below.';
+      }
+    } catch (e) {}
+  </script>
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

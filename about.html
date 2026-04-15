@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us · Simple AI Projects for Kids</title>
+  <meta name="description" content="Meet the family behind Simple AI Projects for Kids — two parents, two curious kids, and one very opinionated parrot.">
+  <link rel="stylesheet" href="css/styles.css?v=10">
+</head>
+<body data-band="home">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="about.html" aria-current="page">About</a></li>
+        <li><a class="grown-ups" href="grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container about-page">
+    <p class="breadcrumb"><a href="index.html">Home</a> › About Us</p>
+
+    <h1>Hi, we're the family behind Simple AI Kids 👋</h1>
+    <p class="lead">Two parents, two curious kids, and one very opinionated baby-blue Quaker parrot who speaks English <em>and</em> Chinese — on a mission to help kids <em>make</em> with AI instead of just watching it happen.</p>
+
+    <!-- Family photo slot -->
+    <figure class="family-photo-slot" id="family-photo">
+      <div class="photo-frame" data-src="images/family.png" data-alt="Our family portrait with Lily">
+        <!-- Placeholder illustration until the real photo is added -->
+        <svg viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cartoon portrait of our family celebrating Chinese New Year with Lily the parrot">
+          <defs>
+            <linearGradient id="wallBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fef3e2"/>
+              <stop offset="100%" stop-color="#f9e3c9"/>
+            </linearGradient>
+            <linearGradient id="lilyBackAbout" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#bae6fd"/>
+              <stop offset="100%" stop-color="#7dd3fc"/>
+            </linearGradient>
+            <linearGradient id="lilyTailAbout" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8"/>
+              <stop offset="100%" stop-color="#0ea5e9"/>
+            </linearGradient>
+            <radialGradient id="lanternGrad" cx="50%" cy="40%">
+              <stop offset="0%" stop-color="#fecaca"/>
+              <stop offset="100%" stop-color="#dc2626"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Warm wall background -->
+          <rect width="800" height="560" fill="url(#wallBg)"/>
+          <!-- Baseboard / floor line -->
+          <rect y="500" width="800" height="60" fill="#e7c79a"/>
+          <line x1="0" y1="500" x2="800" y2="500" stroke="#b08a60" stroke-width="2"/>
+
+          <!-- ============ Chinese New Year decorations ============ -->
+          <!-- Left side: hanging lucky bag / fu bag -->
+          <g transform="translate(90,60)">
+            <path d="M0 0 L20 0 L10 -14 Z" fill="#dc2626"/>
+            <line x1="10" y1="0" x2="10" y2="24" stroke="#eab308" stroke-width="2"/>
+            <path d="M-14 24 Q10 14 34 24 Q38 70 10 84 Q-18 70 -14 24 Z" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+            <text x="10" y="58" text-anchor="middle" font-size="20" fill="#dc2626" font-weight="800">福</text>
+            <!-- tassel -->
+            <line x1="10" y1="84" x2="10" y2="100" stroke="#dc2626" stroke-width="3"/>
+            <path d="M4 100 L16 100 L14 118 L10 122 L6 118 Z" fill="#dc2626"/>
+          </g>
+
+          <!-- Center: 福 diamond (inverted) -->
+          <g transform="translate(400,85)">
+            <rect x="-44" y="-44" width="88" height="88" transform="rotate(45)" fill="#dc2626" stroke="#b91c1c" stroke-width="3"/>
+            <text x="0" y="12" text-anchor="middle" font-size="50" font-weight="800" fill="#fde047" font-family="Fredoka, serif">福</text>
+          </g>
+
+          <!-- Right side: hanging firecrackers -->
+          <g transform="translate(700,55)">
+            <line x1="0" y1="0" x2="0" y2="14" stroke="#eab308" stroke-width="2"/>
+            <rect x="-14" y="14" width="28" height="18" fill="#eab308" stroke="#b45309" stroke-width="1.5"/>
+            <g>
+              <rect x="-8" y="36" width="16" height="32" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+              <rect x="-10" y="70" width="20" height="32" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+              <rect x="-8" y="104" width="16" height="32" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+              <line x1="-8" y1="52" x2="8" y2="52" stroke="#fde047" stroke-width="1"/>
+              <line x1="-10" y1="86" x2="10" y2="86" stroke="#fde047" stroke-width="1"/>
+              <line x1="-8" y1="120" x2="8" y2="120" stroke="#fde047" stroke-width="1"/>
+            </g>
+            <!-- tassel -->
+            <line x1="0" y1="136" x2="0" y2="152" stroke="#dc2626" stroke-width="2"/>
+            <path d="M-6 152 L6 152 L4 170 L0 174 L-4 170 Z" fill="#dc2626"/>
+          </g>
+
+          <!-- Small side fu lanterns -->
+          <g transform="translate(180,100)">
+            <ellipse cx="0" cy="0" rx="20" ry="24" fill="url(#lanternGrad)" stroke="#7f1d1d" stroke-width="2"/>
+            <rect x="-14" y="-26" width="28" height="6" fill="#eab308"/>
+            <rect x="-14" y="20" width="28" height="6" fill="#eab308"/>
+            <text x="0" y="5" text-anchor="middle" font-size="14" font-weight="800" fill="#fde047">福</text>
+            <line x1="0" y1="26" x2="0" y2="40" stroke="#dc2626" stroke-width="2"/>
+          </g>
+          <g transform="translate(620,100)">
+            <ellipse cx="0" cy="0" rx="20" ry="24" fill="url(#lanternGrad)" stroke="#7f1d1d" stroke-width="2"/>
+            <rect x="-14" y="-26" width="28" height="6" fill="#eab308"/>
+            <rect x="-14" y="20" width="28" height="6" fill="#eab308"/>
+            <text x="0" y="5" text-anchor="middle" font-size="14" font-weight="800" fill="#fde047">春</text>
+            <line x1="0" y1="26" x2="0" y2="40" stroke="#dc2626" stroke-width="2"/>
+          </g>
+
+          <!-- ============ FAMILY ============ -->
+
+          <!-- Daddy (back left) — navy traditional tang suit -->
+          <g>
+            <!-- neck -->
+            <rect x="268" y="248" width="24" height="20" fill="#fcd5b4"/>
+            <!-- body/tang suit -->
+            <path d="M210 280 Q280 260 350 280 L360 440 Q280 460 200 440 Z" fill="#1e293b" stroke="#0f172a" stroke-width="2.5"/>
+            <!-- frog closures (Chinese buttons) -->
+            <circle cx="280" cy="310" r="3" fill="#eab308"/>
+            <circle cx="280" cy="340" r="3" fill="#eab308"/>
+            <circle cx="280" cy="370" r="3" fill="#eab308"/>
+            <circle cx="280" cy="400" r="3" fill="#eab308"/>
+            <!-- collar -->
+            <path d="M250 280 Q280 268 310 280 L300 290 Q280 284 260 290 Z" fill="#334155"/>
+            <!-- head -->
+            <circle cx="280" cy="220" r="46" fill="#fcd5b4" stroke="#1e293b" stroke-width="2.5"/>
+            <!-- hair -->
+            <path d="M234 214 Q240 168 280 162 Q322 168 326 214 Q320 202 280 198 Q242 200 234 214 Z" fill="#1a1a1a"/>
+            <!-- eyes -->
+            <path d="M260 220 Q266 215 272 220" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M288 220 Q294 215 300 220" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- smile -->
+            <path d="M268 240 Q280 248 294 240" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- ears -->
+            <ellipse cx="234" cy="222" rx="5" ry="8" fill="#fcd5b4" stroke="#1e293b" stroke-width="1.5"/>
+            <ellipse cx="326" cy="222" rx="5" ry="8" fill="#fcd5b4" stroke="#1e293b" stroke-width="1.5"/>
+          </g>
+
+          <!-- Mommy (back right) — light gray turtleneck -->
+          <g>
+            <rect x="478" y="258" width="24" height="20" fill="#fcd5b4"/>
+            <!-- turtleneck body -->
+            <path d="M420 290 Q490 270 560 290 L570 450 Q490 464 410 450 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="2.5"/>
+            <!-- turtle collar -->
+            <path d="M462 285 Q490 278 518 285 L518 298 Q490 292 462 298 Z" fill="#94a3b8"/>
+            <!-- head -->
+            <circle cx="490" cy="234" r="44" fill="#fcd5b4" stroke="#1e293b" stroke-width="2.5"/>
+            <!-- hair (long, dark, slightly wavy) -->
+            <path d="M444 232 Q448 178 490 170 Q532 178 538 232 Q542 260 532 294 L450 294 Q440 262 444 232 Z" fill="#2e1b0f"/>
+            <!-- face oval reopened by forehead -->
+            <path d="M456 230 Q470 210 490 208 Q510 210 524 230" fill="#fcd5b4" stroke="none"/>
+            <!-- eyes -->
+            <path d="M472 232 Q478 228 484 232" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M496 232 Q502 228 508 232" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- cheek blush -->
+            <circle cx="466" cy="248" r="4" fill="#fbb6ce" opacity="0.7"/>
+            <circle cx="514" cy="248" r="4" fill="#fbb6ce" opacity="0.7"/>
+            <!-- smile -->
+            <path d="M478 254 Q490 262 502 254" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- Daughter (front left) — pink hanfu, buns with flowers, holding red fish plush -->
+          <g>
+            <!-- hanfu body (pink) -->
+            <path d="M200 430 Q260 410 320 430 L330 540 L190 540 Z" fill="#fda4af" stroke="#be185d" stroke-width="2.5"/>
+            <!-- gold trim -->
+            <path d="M210 430 Q260 420 310 430" stroke="#fbbf24" stroke-width="3" fill="none"/>
+            <!-- sleeves -->
+            <ellipse cx="195" cy="450" rx="18" ry="25" fill="#fda4af" stroke="#be185d" stroke-width="2"/>
+            <ellipse cx="325" cy="450" rx="18" ry="25" fill="#fda4af" stroke="#be185d" stroke-width="2"/>
+            <!-- head -->
+            <circle cx="260" cy="390" r="38" fill="#fcd5b4" stroke="#1e293b" stroke-width="2.5"/>
+            <!-- hair base -->
+            <path d="M222 388 Q226 358 260 354 Q294 358 298 388 Q286 378 260 378 Q234 378 222 388 Z" fill="#1a1a1a"/>
+            <!-- side pigtail buns with flowers -->
+            <circle cx="220" cy="370" r="12" fill="#1a1a1a"/>
+            <circle cx="300" cy="370" r="12" fill="#1a1a1a"/>
+            <!-- pink flowers on buns -->
+            <g transform="translate(220,362)">
+              <circle r="4" fill="#f472b6"/>
+              <circle cx="-4" cy="-3" r="3" fill="#fbcfe8"/>
+              <circle cx="4" cy="-3" r="3" fill="#fbcfe8"/>
+              <circle cx="0" cy="-6" r="3" fill="#fbcfe8"/>
+            </g>
+            <g transform="translate(300,362)">
+              <circle r="4" fill="#f472b6"/>
+              <circle cx="-4" cy="-3" r="3" fill="#fbcfe8"/>
+              <circle cx="4" cy="-3" r="3" fill="#fbcfe8"/>
+              <circle cx="0" cy="-6" r="3" fill="#fbcfe8"/>
+            </g>
+            <!-- eyes -->
+            <path d="M246 388 Q251 384 256 388" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M264 388 Q269 384 274 388" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- cheek blush -->
+            <circle cx="238" cy="400" r="4" fill="#f9a8d4" opacity="0.8"/>
+            <circle cx="282" cy="400" r="4" fill="#f9a8d4" opacity="0.8"/>
+            <!-- smile -->
+            <path d="M250 405 Q260 412 270 405" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+            <!-- Red fish plush in her hands -->
+            <g transform="translate(260,490)">
+              <ellipse cx="0" cy="0" rx="32" ry="22" fill="#dc2626" stroke="#7f1d1d" stroke-width="2"/>
+              <path d="M30 0 L46 -14 L46 14 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="2"/>
+              <circle cx="-12" cy="-4" r="4" fill="#fff"/>
+              <circle cx="-12" cy="-4" r="2" fill="#1e293b"/>
+              <path d="M-4 4 Q0 8 4 4" stroke="#fde047" stroke-width="1.5" fill="none"/>
+              <path d="M-20 -10 Q-10 -14 0 -10 M-20 0 Q-10 -4 0 0 M-20 10 Q-10 6 0 10"
+                    stroke="#fde047" stroke-width="1.2" fill="none" opacity="0.8"/>
+            </g>
+          </g>
+
+          <!-- Son (front right) — red hanfu with dragon -->
+          <g>
+            <!-- hanfu body (red) -->
+            <path d="M450 440 Q510 420 570 440 L580 540 L440 540 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="2.5"/>
+            <!-- gold trim -->
+            <path d="M460 440 Q510 430 560 440" stroke="#fbbf24" stroke-width="3" fill="none"/>
+            <!-- dragon pattern suggestion -->
+            <path d="M470 470 Q490 460 510 470 Q530 480 550 470" stroke="#fbbf24" stroke-width="2" fill="none"/>
+            <path d="M470 490 Q490 480 510 490 Q530 500 550 490" stroke="#fbbf24" stroke-width="2" fill="none" opacity="0.7"/>
+            <!-- sleeves -->
+            <ellipse cx="445" cy="460" rx="18" ry="24" fill="#dc2626" stroke="#7f1d1d" stroke-width="2"/>
+            <ellipse cx="575" cy="460" rx="18" ry="24" fill="#dc2626" stroke="#7f1d1d" stroke-width="2"/>
+            <!-- head -->
+            <circle cx="510" cy="400" r="36" fill="#fcd5b4" stroke="#1e293b" stroke-width="2.5"/>
+            <!-- short black hair -->
+            <path d="M478 395 Q482 368 510 364 Q538 368 542 395 Q530 386 510 384 Q490 386 478 395 Z" fill="#1a1a1a"/>
+            <!-- eyes (squinty happy) -->
+            <path d="M496 398 Q501 394 506 398" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M514 398 Q519 394 524 398" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- cheek blush -->
+            <circle cx="488" cy="410" r="4" fill="#f9a8d4" opacity="0.8"/>
+            <circle cx="532" cy="410" r="4" fill="#f9a8d4" opacity="0.8"/>
+            <!-- big smile -->
+            <path d="M498 415 Q510 424 522 415" stroke="#1e293b" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- ============ LILY perched on Daddy's shoulder ============ -->
+          <g transform="translate(340,225)">
+            <!-- little perch line (invisible, she's on daddy's shoulder) -->
+            <!-- tail -->
+            <path d="M-30 30 Q-44 48 -38 66 L-16 56 Z" fill="url(#lilyTailAbout)" stroke="#1e293b" stroke-width="1.8"/>
+            <path d="M-22 36 Q-34 54 -16 68 L-8 56 Z" fill="#38bdf8" stroke="#1e293b" stroke-width="1.5"/>
+            <!-- body / back (baby blue) -->
+            <path d="M-20 -10 Q-34 10 -28 38 Q-12 52 10 48 L14 18 L10 -12 Z" fill="url(#lilyBackAbout)" stroke="#1e293b" stroke-width="2"/>
+            <!-- chest (white) -->
+            <ellipse cx="16" cy="20" rx="22" ry="28" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+            <!-- wing -->
+            <path d="M-2 6 Q-20 24 -12 46 Q6 42 14 22 Z" fill="#7dd3fc" stroke="#1e293b" stroke-width="1.8"/>
+            <path d="M-6 22 L4 34 M0 14 L10 28" stroke="#0369a1" stroke-width="1.3" fill="none" opacity="0.7"/>
+            <!-- head (white) -->
+            <circle cx="22" cy="-10" r="19" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+            <!-- baby-blue crown -->
+            <path d="M6 -12 Q22 -30 38 -14 Q36 -2 22 0 Q10 -2 6 -12 Z" fill="url(#lilyBackAbout)" stroke="#1e293b" stroke-width="1.5"/>
+            <!-- eye -->
+            <circle cx="28" cy="-10" r="3" fill="#1e293b"/>
+            <circle cx="29" cy="-11" r="0.8" fill="#fff"/>
+            <!-- peach beak -->
+            <path d="M38 -8 Q48 -6 44 4 Q38 4 37 0 Z" fill="#fda4af" stroke="#1e293b" stroke-width="1.3"/>
+            <!-- feet -->
+            <path d="M-8 48 L-10 58 M-2 50 L-3 60 M4 50 L5 60 M10 48 L12 58"
+                  stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- tiny speech bubble -->
+            <g transform="translate(60,-30)">
+              <rect x="0" y="0" width="76" height="26" rx="13" fill="#fff" stroke="#1e293b" stroke-width="2"/>
+              <text x="38" y="17" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">新年好! 🎉</text>
+              <path d="M12 26 L16 32 L20 26 Z" fill="#fff" stroke="#1e293b" stroke-width="2"/>
+            </g>
+          </g>
+
+          <!-- ============ Decorative labels ============ -->
+          <text x="400" y="540" text-anchor="middle" font-size="16" font-family="Fredoka, serif" font-weight="700" fill="#7f1d1d" opacity="0.85">
+            Our family · 我们的家 · with Lily 🍙
+          </text>
+        </svg>
+      </div>
+    </figure>
+
+    <h2>Why we built this</h2>
+    <p>
+      We think AI is the biggest learning opportunity our kids will get — bigger than the calculator, bigger than the internet.
+      But most kids experience AI as a magic black box: they ask a chatbot a question and an answer appears. That's fun, but it's not <em>understanding</em>.
+    </p>
+    <p>
+      We built this site because we wanted our own two kids — and yours — to <strong>make</strong> with AI instead of just consuming it.
+      Train a model. Break a model. See what data does. Notice bias. Build something silly. Build something useful.
+      When kids build, they stop being scared of AI and start being curious about it. That's the mindset we want to hand them.
+    </p>
+    <p>
+      We also believe this fits squarely inside STEM — the same muscles as math, science, engineering, and coding, just pointed at
+      the most exciting tools of this decade. Every project here is hands-on, uses free tools, and is written in language kids can actually read.
+    </p>
+
+    <h2>Meet the family</h2>
+    <div class="family-grid">
+
+      <div class="family-card">
+        <div class="fc-avatar fc-photo fc-daddy" aria-hidden="true"></div>
+        <h3>Daddy</h3>
+        <p class="fc-role">CS Professor · Chief "But Why?" Officer</p>
+        <p>By day, teaches computer science and researches AI. By night, fields approximately 400 "but <em>why</em>?" questions between the dinner table and bedtime — roughly one every 90 seconds. Professional enthusiasm level: can explain neural networks with a fork and two grapes.</p>
+      </div>
+
+      <div class="family-card">
+        <div class="fc-avatar fc-photo fc-mommy" aria-hidden="true"></div>
+        <h3>Mommy</h3>
+        <p class="fc-role">Data Scientist · Head of Code Walkthroughs</p>
+        <p>Turns messy real-world data into smart little models for a living — and writes the code walkthroughs on this site, one patient comment at a time. Firm believer that <em>any</em> spreadsheet can be tamed. Will debug your code <strong>and</strong> your toddler meltdown in the same afternoon.</p>
+      </div>
+
+      <div class="family-card">
+        <div class="fc-avatar fc-photo fc-sister" aria-hidden="true"></div>
+        <h3>Big Sister</h3>
+        <p class="fc-role">Age 10 · Chief Project Tester</p>
+        <p>Official vibe-checker. If a project is boring, she yawns. If it's confusing, she rolls her eyes. If it's <em>actually</em> fun, it goes on the site. Favorite superpower: finding the one typo in 400 lines of code. Fueled exclusively by sweet desserts and milk tea — debugging speed is directly proportional to boba level.</p>
+      </div>
+
+      <div class="family-card">
+        <div class="fc-avatar fc-photo fc-brother" aria-hidden="true"></div>
+        <h3>Little Brother</h3>
+        <p class="fc-role">Age 8 · Chief Sound Effects &amp; Edge-Case Specialist</p>
+        <p>Provides every project's soundtrack — "pew pew", "boink", and an unreasonably good robot voice. Also gifted at making models guess wrong: draws a cat with six legs, feeds the image classifier a potato, laughs for 10 minutes.</p>
+      </div>
+
+      <div class="family-card">
+        <div class="fc-avatar fc-photo fc-lily-photo" aria-hidden="true"></div>
+        <h3>Lily</h3>
+        <p class="fc-role">Age 2 · Chief Distraction Officer</p>
+        <p>Tiny, blue, and fully bilingual — speaks a little English <em>and</em> a little Chinese, and mostly uses both to demand snacks. Has delivered exactly zero useful code reviews, but squawks loudly the moment anyone starts recording a video. 10/10 would perch on your shoulder again.</p>
+      </div>
+
+    </div>
+
+    <h2>Our approach</h2>
+    <ul class="checklist">
+      <li><strong>Everything is hands-on.</strong> No passive reading. Every project ends with something the kid has built or trained.</li>
+      <li><strong>Free tools only.</strong> No paid accounts required. Works on a Chromebook.</li>
+      <li><strong>Safety first.</strong> Grown-up notes on every project explain what data is collected, what stays local, and what needs an adult.</li>
+      <li><strong>Honest about limits.</strong> We teach bias, overconfidence, and "this is just pattern matching" from day one.</li>
+      <li><strong>Fun is not optional.</strong> If a project isn't fun for our kids, it doesn't go up.</li>
+    </ul>
+
+    <h2>Follow along</h2>
+    <p>We're slowly building out a YouTube channel where the kids walk through projects themselves. Links will live here when episodes go up.</p>
+
+    <div class="social-grid">
+
+      <a class="social-card social-yt" href="#" data-placeholder="true" aria-label="YouTube channel — coming soon">
+        <div class="sc-icon">▶️</div>
+        <div class="sc-body">
+          <div class="sc-title">YouTube — Kids' Channel</div>
+          <div class="sc-note">Coming soon</div>
+        </div>
+      </a>
+
+      <a class="social-card social-yt" href="#" data-placeholder="true" aria-label="YouTube channel for parents — coming soon">
+        <div class="sc-icon">▶️</div>
+        <div class="sc-body">
+          <div class="sc-title">YouTube — For Grown-Ups</div>
+          <div class="sc-note">Coming soon</div>
+        </div>
+      </a>
+
+      <a class="social-card social-ig" href="#" data-placeholder="true" aria-label="Instagram — coming soon">
+        <div class="sc-icon">📸</div>
+        <div class="sc-body">
+          <div class="sc-title">Instagram</div>
+          <div class="sc-note">Coming soon</div>
+        </div>
+      </a>
+
+      <a class="social-card social-tt" href="#" data-placeholder="true" aria-label="TikTok — coming soon">
+        <div class="sc-icon">🎵</div>
+        <div class="sc-body">
+          <div class="sc-title">TikTok</div>
+          <div class="sc-note">Coming soon</div>
+        </div>
+      </a>
+
+      <a class="social-card social-gh" href="#" data-placeholder="true" aria-label="GitHub — coming soon">
+        <div class="sc-icon">💻</div>
+        <div class="sc-body">
+          <div class="sc-title">GitHub</div>
+          <div class="sc-note">Project source code</div>
+        </div>
+      </a>
+
+      <a class="social-card social-mail" href="mailto:simpleaikids@gmail.com">
+        <div class="sc-icon">✉️</div>
+        <div class="sc-body">
+          <div class="sc-title">Email us</div>
+          <div class="sc-note">simpleaikids@gmail.com</div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="callout grown-up" style="margin-top:24px">
+      <strong>📨 A note on contact:</strong>
+      Got a project idea, found a bug, or want to suggest a topic? Drop us a line at <a href="mailto:simpleaikids@gmail.com">simpleaikids@gmail.com</a> — we'd love to hear from you!
+    </div>
+
+    <h2>What's next?</h2>
+    <p>
+      <a class="btn" href="index.html">Back to Home →</a>
+      <a class="btn btn-ghost" href="ages/5-8.html">Browse Projects →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="about.html">About Us</a> ·
+        <a href="grown-ups.html">For Grown-Ups</a> ·
+        <a href="glossary.html">Glossary</a> ·
+        <a href="safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 by our family, for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="js/projects_meta.js"></script>
+  <script src="js/common.js?v=10" defer></script>
+</body>
+</html>

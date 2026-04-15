@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Object Detection App · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › Object Detection App</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🔍 ★★★</span>
+      <span class="meta-pill">⏱ Weekend</span>
+      <span class="meta-pill">🧰 Python + webcam</span>
+    </div>
+
+    <h1>Object Detection App</h1>
+    <p class="lead">Use YOLO v8 to count cars in a parking lot, identify plants in your backyard, or read handwritten text in real time from your webcam.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/object-detection-app.png" data-alt="Object Detection App">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Object Detection App">
+<defs><linearGradient id="od" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#od)"/>
+<!-- scene -->
+<rect x="40" y="60" width="560" height="220" rx="12" fill="#475569"/>
+<!-- cars -->
+<g>
+<rect x="80" y="180" width="80" height="40" rx="8" fill="#ef4444"/>
+<circle cx="100" cy="220" r="8" fill="#0f172a"/><circle cx="140" cy="220" r="8" fill="#0f172a"/>
+<rect x="70" y="170" width="100" height="60" fill="none" stroke="#22d3ee" stroke-width="3"/>
+<text x="75" y="165" font-size="11" fill="#22d3ee" font-family="monospace">car 0.95</text>
+</g>
+<g>
+<rect x="230" y="180" width="80" height="40" rx="8" fill="#fbbf24"/>
+<circle cx="250" cy="220" r="8" fill="#0f172a"/><circle cx="290" cy="220" r="8" fill="#0f172a"/>
+<rect x="220" y="170" width="100" height="60" fill="none" stroke="#22d3ee" stroke-width="3"/>
+<text x="225" y="165" font-size="11" fill="#22d3ee" font-family="monospace">car 0.91</text>
+</g>
+<!-- person -->
+<circle cx="420" cy="150" r="12" fill="#fcd5b4"/>
+<rect x="410" y="162" width="20" height="40" fill="#34d399"/>
+<rect x="395" y="140" width="50" height="80" fill="none" stroke="#f472b6" stroke-width="3"/>
+<text x="400" y="135" font-size="11" fill="#f472b6" font-family="monospace">person 0.88</text>
+<!-- dog -->
+<text x="520" y="210" font-size="50">🐕</text>
+<rect x="510" y="170" width="70" height="60" fill="none" stroke="#fde047" stroke-width="3"/>
+<text x="515" y="165" font-size="11" fill="#fde047" font-family="monospace">dog 0.77</text>
+<text x="320" y="45" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">YOLO v8 · live</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A small Python app that processes webcam or video input frame-by-frame and draws bounding boxes + labels on detected objects. Optionally save counts over time to a CSV.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Object Detection App"
+         data-note="Drop a walkthrough MP4 in videos/object-detection-app.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Python 3.10+ locally (or Colab for the first parts)</li>
+      <li>A webcam or video files to analyze</li>
+      <li>A weekend</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How object detection is different from classification</li>
+      <li>The detection pipeline: anchors, NMS, IoU</li>
+      <li>How to pick a confidence threshold that balances precision and recall</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Ultralytics YOLO is free for personal use (AGPL). Commercial use requires a license. No API cost. Pre-trained on COCO — recognizes 80 everyday objects out of the box.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Install:
+<pre class="code"><code>pip install ultralytics opencv-python</code></pre></li>
+      <li>Run detection on a sample image:
+<pre class="code"><code>from ultralytics import YOLO
+model = YOLO("yolov8n.pt")   # nano — small and fast
+results = model("https://ultralytics.com/images/bus.jpg")
+results[0].show()</code></pre></li>
+      <li>Point it at your webcam (Press Q to quit):
+<pre class="code"><code>import cv2
+cap = cv2.VideoCapture(0)
+while True:
+    ret, frame = cap.read()
+    if not ret: break
+    r = model(frame, verbose=False)[0]
+    cv2.imshow("det", r.plot())
+    if cv2.waitKey(1) == ord("q"): break
+cap.release(); cv2.destroyAllWindows()</code></pre></li>
+      <li>Count class instances per frame. Log to CSV:
+<pre class="code"><code>import csv, time
+with open("counts.csv", "w", newline="") as f:
+    w = csv.writer(f); w.writerow(["t","class","count"])
+    # inside loop
+    names = r.names
+    cls_ids = r.boxes.cls.int().tolist()
+    for c in set(cls_ids):
+        w.writerow([time.time(), names[c], cls_ids.count(c)])</code></pre></li>
+      <li>Play with the confidence threshold (<code>model(frame, conf=0.5)</code>). Watch false positives drop as you raise it — but true positives disappear too.</li>
+      <li>Pick one of three missions: count cars in a parking lot video, identify all plants in a garden clip, or detect handwritten digits (train on MNIST for this).</li>
+      <li>Write a reflection: what types of objects does YOLO miss or confuse? Why?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Webcam shows black? Another app may have it — close Zoom, browser tabs. Bad detections? Try YOLOv8s or YOLOv8m (larger, slower, more accurate). Class not in COCO? Fine-tune on your own labeled dataset with <code>model.train(data="your.yaml")</code>.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Train on your own classes.</strong> Use <a href='https://roboflow.com' target='_blank' rel='noopener'>Roboflow</a> to label 100 of your own images, export YOLO format, fine-tune.</li>
+        <li><strong>Track objects across frames.</strong> Use <code>model.track()</code> so each car keeps the same ID.</li>
+        <li><strong>Deploy as a web app.</strong> Wrap with Gradio or Streamlit, deploy on Hugging Face Spaces.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Detection ≠ classification because…</p>
+        <button>Slower</button>
+        <button>Detection predicts &lt;em&gt;where&lt;/em&gt; (bounding boxes) AND &lt;em&gt;what&lt;/em&gt;; classification only &lt;em&gt;what&lt;/em&gt;</button>
+        <button>Detection is newer</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's NMS for?</p>
+        <button>Speed</button>
+        <button>Removing duplicate overlapping boxes for the same object</button>
+        <button>A dataset name</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="train-image-classifier.html">Train an Image Classifier →</a>
+      <a class="btn btn-ghost" href="cnn-from-scratch.html">CNN From Scratch →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

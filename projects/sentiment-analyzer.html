@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sentiment Analyzer · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › Sentiment Analyzer</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">😊 ★★★</span>
+      <span class="meta-pill">⏱ 90 min</span>
+      <span class="meta-pill">🧰 Colab</span>
+    </div>
+
+    <h1>Sentiment Analyzer</h1>
+    <p class="lead">Score tweets, lyrics, or game reviews as positive or negative — then chart the mood of an artist, a game, or a season of your favorite show.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/sentiment-analyzer.png" data-alt="Sentiment Analyzer">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sentiment Analyzer">
+<defs><linearGradient id="sa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0fdf4"/><stop offset="1" stop-color="#fef2f2"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#sa)"/>
+<text x="60" y="80" font-size="18" fill="#166534">😊 "This album is incredible!"</text>
+<text x="60" y="130" font-size="18" fill="#dc2626">😠 "Worst show I've seen."</text>
+<text x="60" y="180" font-size="18" fill="#475569">😐 "It was fine, I guess."</text>
+<!-- bar chart -->
+<g transform="translate(420 50)">
+<rect width="180" height="220" rx="10" fill="#fff" stroke="#1e1e2e" stroke-width="2"/>
+<rect x="20" y="140" width="30" height="60" fill="#22c55e"/>
+<rect x="70" y="170" width="30" height="30" fill="#94a3b8"/>
+<rect x="120" y="110" width="30" height="90" fill="#ef4444"/>
+<line x1="10" y1="200" x2="170" y2="200" stroke="#1e1e2e" stroke-width="2"/>
+<text x="35" y="220" text-anchor="middle" font-size="11">pos</text>
+<text x="85" y="220" text-anchor="middle" font-size="11">neu</text>
+<text x="135" y="220" text-anchor="middle" font-size="11">neg</text>
+<text x="90" y="35" text-anchor="middle" font-size="13" font-weight="800">Mood</text>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A Python program that takes a bunch of text (reviews, lyrics, tweets) and tags each one positive/negative/neutral. Visualize the results as a bar chart or time-series line.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Sentiment Analyzer"
+         data-note="Drop a walkthrough MP4 in videos/sentiment-analyzer.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Google Colab</li>
+      <li>A text dataset (Kaggle reviews, lyric API, exported tweets)</li>
+      <li>About 90 minutes</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How pre-trained sentiment models work (zero-shot, no training needed)</li>
+      <li>How to wrangle messy real-world text</li>
+      <li>When sentiment models fail (sarcasm, slang, code-switching)</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Use public datasets — Kaggle's "Amazon Reviews" or a lyric API. Scraping Twitter/X requires paid API access. Good moment to talk about the limits of sentiment analysis (false positives on "this is sick!").
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Pick your corpus. Easy start: <a href='https://www.kaggle.com/datasets' target='_blank' rel='noopener'>Kaggle Amazon Reviews (small)</a>. Medium: lyrics from a single artist. Hard: exported Discord messages.</li>
+      <li>In Colab, install:
+<pre class="code"><code>!pip install -q transformers pandas matplotlib</code></pre></li>
+      <li>Load a small pretrained sentiment model:
+<pre class="code"><code>from transformers import pipeline
+clf = pipeline("sentiment-analysis")   # default is distilbert-base-uncased-finetuned-sst-2-english
+print(clf("This album is incredible"))
+print(clf("Worst experience of my life"))</code></pre></li>
+      <li>Load your data:
+<pre class="code"><code>import pandas as pd
+df = pd.read_csv("reviews.csv").head(200)</code></pre></li>
+      <li>Score every row. Batch it so it's fast:
+<pre class="code"><code>texts = df["text"].astype(str).tolist()
+results = clf(texts, truncation=True)
+df["sentiment"] = [r["label"] for r in results]
+df["confidence"] = [r["score"] for r in results]</code></pre></li>
+      <li>Chart it:
+<pre class="code"><code>import matplotlib.pyplot as plt
+df["sentiment"].value_counts().plot.bar()
+plt.title("Sentiment distribution"); plt.show()</code></pre></li>
+      <li>Find the bot's <em>mistakes</em>. Sort by confidence ascending — low-confidence predictions are often errors. Read 10. What patterns do you see?</li>
+      <li>Honesty round: manually label 30 rows. Compare to the model. What's its accuracy? Which types of text fail?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      <code>CUDA out of memory</code>? Use <code>clf(texts, batch_size=8)</code>. <code>Sequence too long</code>? <code>truncation=True</code>. Getting all POSITIVE? Check — if your data really is all positive, that's correct, not a bug.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Time series mood.</strong> Chart sentiment per month. Is the artist getting happier?</li>
+        <li><strong>Multilingual.</strong> Swap to <code>nlptown/bert-base-multilingual-uncased-sentiment</code>. Analyze Spanish or French text.</li>
+        <li><strong>Sarcasm hunt.</strong> Train a tiny classifier on a sarcasm dataset and compare.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why does sentiment often fail on "this is sick!"?</p>
+        <button>Model hates slang</button>
+        <button>&quot;Sick&quot; is slang for cool but literally negative — context matters</button>
+        <button>Unicode issue</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">How do you audit a sentiment model's accuracy?</p>
+        <button>Trust it</button>
+        <button>Hand-label a sample and compare</button>
+        <button>Raise batch_size</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="python-chatbot.html">Python Chatbot →</a>
+      <a class="btn btn-ghost" href="movie-recommender.html">Movie Recommender →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

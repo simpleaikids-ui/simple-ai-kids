@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python Chatbot · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › Python Chatbot</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🐍 ★★★</span>
+      <span class="meta-pill">⏱ 2–3 hours</span>
+      <span class="meta-pill">🧰 Colab</span>
+    </div>
+
+    <h1>Python Chatbot</h1>
+    <p class="lead">Build a chatbot in pure Python — first as a rule-based toy, then upgrade it to a real AI chatbot using an API.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/python-chatbot.png" data-alt="Python Chatbot">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Python Chatbot">
+<defs><linearGradient id="pyc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#pyc)"/>
+<rect x="60" y="50" width="520" height="230" rx="14" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+<rect x="60" y="50" width="520" height="26" rx="14" fill="#1e293b"/>
+<circle cx="78" cy="63" r="5" fill="#ef4444"/><circle cx="94" cy="63" r="5" fill="#fbbf24"/><circle cx="110" cy="63" r="5" fill="#22c55e"/>
+<g font-family="monospace" font-size="14">
+<text x="80" y="110" fill="#22d3ee">&gt;&gt;&gt; from anthropic import Anthropic</text>
+<text x="80" y="135" fill="#22d3ee">&gt;&gt;&gt; bot("hello")</text>
+<text x="80" y="160" fill="#fde047">"Hey there! 👋"</text>
+<text x="80" y="190" fill="#22d3ee">&gt;&gt;&gt; bot("explain black holes")</text>
+<text x="80" y="215" fill="#fde047">"Imagine a vacuum cleaner so</text>
+<text x="80" y="232" fill="#fde047"> strong even light gets sucked in…"</text>
+<rect x="80" y="245" width="10" height="16" fill="#22d3ee"><animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/></rect>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>Two versions of the same chatbot: Version 1 uses if/elif rules (~50 lines). Version 2 calls Claude or GPT via an API (~30 lines). You'll compare how they behave.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Python Chatbot"
+         data-note="Drop a walkthrough MP4 in videos/python-chatbot.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A Google account (for Colab)</li>
+      <li>Basic Python (functions, dicts, if/elif)</li>
+      <li>Anthropic or OpenAI API key — parent required if under 18</li>
+      <li>About 2–3 hours</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How simple rule-based bots work and where they break</li>
+      <li>How to call an LLM API from Python</li>
+      <li>How system prompts shape an AI's behavior</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      The API portion costs ~\$0.10. If your teen is under 18, create the API account with your email and share the key via a .env file. Discuss rate limits and the importance of never committing keys to GitHub.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Open <a href="https://colab.research.google.com" target="_blank" rel="noopener"><strong>colab.research.google.com</strong></a>, start a new notebook.</li>
+      <li><strong>Version 1 — Rule-based:</strong>
+<pre class="code"><code>def bot(msg):
+    msg = msg.lower()
+    if any(w in msg for w in ["hi", "hello", "hey"]):
+        return "Hey there!"
+    if "bye" in msg:
+        return "See ya 👋"
+    if "name" in msg:
+        return "I'm a Python bot!"
+    if "?" in msg:
+        return "Hmm, good question. I'm just a baby bot."
+    return "I don't know what that means."
+
+while True:
+    m = input("You: ")
+    if not m: break
+    print("Bot:", bot(m))</code></pre></li>
+      <li>Chat with Version 1 for 2 minutes. Write down 3 questions it <em>can't</em> handle.</li>
+      <li><strong>Version 2 — API-powered:</strong>
+<pre class="code"><code>!pip install anthropic
+import os
+from anthropic import Anthropic
+os.environ["ANTHROPIC_API_KEY"] = "sk-ant-…"   # paste here
+client = Anthropic()
+
+def bot(history):
+    msg = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=300,
+        system="You are a friendly chatbot for teens. Keep replies short and fun.",
+        messages=history,
+    )
+    return msg.content[0].text
+
+history = []
+while True:
+    m = input("You: ")
+    if not m: break
+    history.append({"role": "user", "content": m})
+    reply = bot(history)
+    history.append({"role": "assistant", "content": reply})
+    print("Bot:", reply)</code></pre></li>
+      <li>Chat with Version 2. Ask it the 3 questions Version 1 failed on.</li>
+      <li>Change the <code>system</code> prompt — make it a grumpy pirate. Notice how the tone changes.</li>
+      <li>Track how much memory (history) the bot has. What happens after 20 turns?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      <code>401 Unauthorized</code> = key is wrong. <code>429</code> = you're rate-limited, wait a minute. <em>ANTHROPIC_API_KEY missing</em> = make sure you pasted it into the <code>os.environ</code> line.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add streaming.</strong> Use <code>client.messages.stream</code> so replies type out word-by-word.</li>
+        <li><strong>Add personas.</strong> Let the user pick between "Pirate", "Robot", "Shakespeare." Each has a different system prompt.</li>
+        <li><strong>Add file input.</strong> Let the bot read a text file and answer questions about it (mini-RAG!).</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's the system prompt for?</p>
+        <button>Making the code run</button>
+        <button>Setting the bot&#x27;s personality and rules</button>
+        <button>Nothing, it&#x27;s optional</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why is the rule-based bot limited?</p>
+        <button>Python is slow</button>
+        <button>You have to manually code every case</button>
+        <button>It runs out of memory</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="custom-chatbot.html">Build Your Own Chatbot →</a>
+      <a class="btn btn-ghost" href="sentiment-analyzer.html">Sentiment Analyzer →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

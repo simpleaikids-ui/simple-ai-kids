@@ -1,0 +1,14 @@
+{
+  "name": "Simple AI Projects for Kids",
+  "short_name": "AI for Kids",
+  "description": "Fun, hands-on AI projects kids can actually build.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8e7",
+  "theme_color": "#ffcc33",
+  "icons": [
+    { "src": "images/faces/lily.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "images/faces/lily.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

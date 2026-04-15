@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Ethics Case Study · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › AI Ethics Case Study</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">⚖️ ★★★</span>
+      <span class="meta-pill">⏱ 1 week</span>
+      <span class="meta-pill">🧰 Research + code</span>
+    </div>
+
+    <h1>AI Ethics Case Study</h1>
+    <p class="lead">Pick a real-world AI failure — bias in hiring, a recommender rabbit hole, a wrongful face-recognition arrest — reproduce it in code, and propose a fix.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/ai-ethics-case-study.png" data-alt="AI Ethics Case Study">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Ethics Case Study">
+<defs><linearGradient id="eth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#fecaca"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#eth)"/>
+<!-- scales -->
+<rect x="310" y="70" width="20" height="140" fill="#78350f"/>
+<rect x="280" y="60" width="80" height="10" rx="3" fill="#78350f"/>
+<line x1="280" y1="70" x2="200" y2="140" stroke="#78350f" stroke-width="4"/>
+<line x1="360" y1="70" x2="440" y2="140" stroke="#78350f" stroke-width="4"/>
+<circle cx="200" cy="150" r="40" fill="#fbbf24"/>
+<text x="200" y="160" text-anchor="middle" font-size="30">⚡</text>
+<text x="200" y="210" text-anchor="middle" font-size="12" font-weight="800">Accuracy</text>
+<circle cx="440" cy="150" r="40" fill="#60a5fa"/>
+<text x="440" y="160" text-anchor="middle" font-size="30">⚖️</text>
+<text x="440" y="210" text-anchor="middle" font-size="12" font-weight="800">Fairness</text>
+<!-- base -->
+<rect x="260" y="210" width="120" height="20" rx="4" fill="#78350f"/>
+<text x="320" y="260" text-anchor="middle" font-size="14" font-weight="800" fill="#7f1d1d">The hard tradeoff</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A 4-page report + Jupyter notebook. You'll pick a real case, build a tiny reproduction (same kind of system and data), quantify the failure, and propose a concrete mitigation you actually tested.</p>
+
+    <div class="video-slot"
+         data-title="Watch: AI Ethics Case Study"
+         data-note="Drop a walkthrough MP4 in videos/ai-ethics-case-study.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Python, scikit-learn, pandas</li>
+      <li>Willingness to read papers and news articles critically</li>
+      <li>About a week of part-time effort</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How to read an ML paper or audit report</li>
+      <li>How to measure group fairness (demographic parity, equalized odds)</li>
+      <li>Why fixes are hard — accuracy often trades off against fairness</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      This is a rich conversation space. Case studies to suggest: COMPAS recidivism, Amazon's abandoned hiring tool, Twitter's image-cropping bias, ProPublica's facial-recognition studies. Encourage reading the original papers, not just summaries.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Pick a case. Recommended starters: <em>COMPAS recidivism</em> (ProPublica, 2016), <em>Amazon hiring algorithm</em> (Reuters, 2018), <em>gender-shaded face recognition</em> (Buolamwini, 2018).</li>
+      <li>Read the original study + at least 2 critiques. Write a 1-page summary: who was affected, how was bias measured, what was the proposed fix?</li>
+      <li>Reproduce a mini-version. For COMPAS, use the public dataset (<a href='https://github.com/propublica/compas-analysis' target='_blank' rel='noopener'>github.com/propublica/compas-analysis</a>). Train a logistic regression to predict recidivism.</li>
+      <li>Measure <strong>demographic parity</strong>: is the positive rate the same across racial groups?</li>
+      <li>Measure <strong>equalized odds</strong>: are the true-positive and false-positive rates equal across groups?</li>
+      <li>Test a mitigation: reweight the training data, or post-process thresholds per group. Fairlearn has helpers:
+<pre class="code"><code>pip install fairlearn
+from fairlearn.postprocessing import ThresholdOptimizer
+top = ThresholdOptimizer(estimator=model, constraints="equalized_odds")
+top.fit(X, y, sensitive_features=race)</code></pre></li>
+      <li>Measure accuracy, false positive rate, and fairness metric before/after. Make a table.</li>
+      <li>Write up your findings in 4 pages: context, method, result, and — crucially — <strong>the tradeoff</strong>. What did fairness cost?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Dataset has missing values / weird encodings? Real-world data is messy — that's part of the lesson. Document every cleaning step. Don't silently drop columns.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Interview someone affected.</strong> If safe and appropriate, include perspective from people impacted by the system you're studying.</li>
+        <li><strong>Counterfactual analysis.</strong> For individual predictions, flip the sensitive attribute and compare. Should it change?</li>
+        <li><strong>Policy angle.</strong> Propose one concrete policy (not technical) that would prevent the failure.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Demographic parity requires…</p>
+        <button>Equal accuracy across groups</button>
+        <button>Equal rate of positive predictions across groups</button>
+        <button>Equal dataset sizes</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">After applying a fairness fix, accuracy often…</p>
+        <button>Stays the same for free</button>
+        <button>Drops somewhat — the tradeoff is real and worth documenting</button>
+        <button>Improves</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="rl-game-agent.html">RL Game Agent →</a>
+      <a class="btn btn-ghost" href="fine-tune-llm.html">Fine-Tune a Small LLM →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

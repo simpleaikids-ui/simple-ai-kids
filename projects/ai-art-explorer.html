@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Art Explorer · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › AI Art Explorer</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🎨 ★★☆</span>
+      <span class="meta-pill">⏱ 90 min (+ open-ended)</span>
+      <span class="meta-pill">🧰 Colab</span>
+    </div>
+
+    <h1>AI Art Explorer</h1>
+    <p class="lead">Make images with Stable Diffusion — then keep a prompt journal. Figure out which words work, which don't, and why the same prompt gives different pictures every time.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/ai-art-explorer.png" data-alt="AI Art Explorer">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Art Explorer">
+<defs><linearGradient id="aae" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#aae)"/>
+<!-- prompt -->
+<rect x="40" y="40" width="260" height="50" rx="25" fill="#0f172a"/>
+<text x="60" y="72" font-size="13" fill="#fde047" font-family="monospace">"a red panda astronaut… 🚀"</text>
+<!-- arrow -->
+<path d="M310 65 L360 65" stroke="#fff" stroke-width="4" fill="none" marker-end="url(#a-aae)"/>
+<defs><marker id="a-aae" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker></defs>
+<!-- 4 mini images -->
+<g transform="translate(380 30)">
+<rect width="70" height="70" rx="8" fill="#fde68a"/><text x="35" y="50" text-anchor="middle" font-size="30">🚀</text>
+<rect x="90" width="70" height="70" rx="8" fill="#fca5a5"/><text x="125" y="50" text-anchor="middle" font-size="30">🐼</text>
+<rect y="90" width="70" height="70" rx="8" fill="#bbf7d0"/><text x="35" y="140" text-anchor="middle" font-size="30">🍜</text>
+<rect x="90" y="90" width="70" height="70" rx="8" fill="#c4b5fd"/><text x="125" y="140" text-anchor="middle" font-size="30">🎨</text>
+</g>
+<!-- gallery label -->
+<text x="320" y="290" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">Your prompt journal</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A prompt journal and a gallery of ~20 generations. You'll document which keywords change the style, which break the model, and share your three favorites.</p>
+
+    <div class="video-slot"
+         data-title="Watch: AI Art Explorer"
+         data-note="Drop a walkthrough MP4 in videos/ai-art-explorer.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Google Colab (free GPU)</li>
+      <li>A Hugging Face account (free)</li>
+      <li>About 90 minutes, then as long as you want</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How text-to-image models turn text into pixels (roughly)</li>
+      <li>What "seed" means and why it matters for reproducibility</li>
+      <li>The ethics of AI art — training data and artist credit</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Stable Diffusion models can occasionally generate unexpected NSFW output. Stick to SFW-finetuned models (e.g. "stable-diffusion-2-1-base" or newer). Discuss the training-data ethics conversation — models learned from millions of artists' work, often without consent.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Create a free account at <a href="https://huggingface.co" target="_blank" rel="noopener"><strong>huggingface.co</strong></a> and accept the Stable Diffusion model license.</li>
+      <li>Open Colab → Runtime → Change runtime type → GPU (T4 is free).</li>
+      <li>Install:
+<pre class="code"><code>!pip install -q diffusers transformers accelerate</code></pre></li>
+      <li>Load the model:
+<pre class="code"><code>import torch
+from diffusers import StableDiffusionPipeline
+pipe = StableDiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-2-1-base", torch_dtype=torch.float16)
+pipe.to("cuda")</code></pre></li>
+      <li>Your first image:
+<pre class="code"><code>img = pipe("a red panda astronaut eating ramen in space, digital art").images[0]
+img</code></pre></li>
+      <li><strong>Prompt journal:</strong> open a text doc. Run 10 prompts. For each, save the prompt, the seed, and paste the image.</li>
+      <li>Experiment: keep the subject, change the style. "…, oil painting", "…, pixel art", "…, photorealistic", "…, in the style of Studio Ghibli." What shifts?</li>
+      <li>Lock the seed to get reproducibility:
+<pre class="code"><code>g = torch.Generator("cuda").manual_seed(42)
+img = pipe("a red panda astronaut", generator=g).images[0]</code></pre></li>
+      <li>Push the limits: try prompts about hands, text in the image, or "photo of a 1980s album cover." Where does it fail?</li>
+      <li>Write a one-page reflection: who should get credit for an AI image? Why?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      <code>Out of memory</code>? Use <code>pipe.enable_attention_slicing()</code>. Images look blurry? Try 30–50 inference steps: <code>pipe(prompt, num_inference_steps=40)</code>. Model won't load? Make sure you accepted the license on Hugging Face.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Image-to-image.</strong> Start from a rough sketch and let the model finish it with <code>StableDiffusionImg2ImgPipeline</code>.</li>
+        <li><strong>ControlNet.</strong> Use a pose or edge map as input. Much more controllable than prompts alone.</li>
+        <li><strong>Compare models.</strong> Try SDXL, Flux, or DALL·E 3 via API. Same prompt — who wins?</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="0">
+        <p class="prompt">What's a seed?</p>
+        <button>A random number that determines the generation</button>
+        <button>A type of loss function</button>
+        <button>File size</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why does the same prompt give different images?</p>
+        <button>The model is broken</button>
+        <button>The seed (and randomness) change each run</button>
+        <button>Internet connection varies</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="train-image-classifier.html">Train an Image Classifier →</a>
+      <a class="btn btn-ghost" href="ai-vs-human-quiz.html">AI vs. Human Quiz →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

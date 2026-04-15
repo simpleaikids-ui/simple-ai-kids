@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Movie Recommender · Ages 13–15</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="13-15">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/13-15.html">Ages 13–15</a> › Movie Recommender</p>
+
+    <h1>Movie Recommender</h1>
+    <p class="lead">Build a "people who liked this also liked…" recommender using real data from MovieLens. Your model will learn what movies go together — and start guessing.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/movies.png" data-alt="Movie posters connecting to a recommendation engine">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Movie posters linked by similarity lines around a recommender.">
+        <defs>
+          <linearGradient id="bg1315" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f172a"/>
+            <stop offset="100%" stop-color="#312e81"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="320" fill="url(#bg1315)"/>
+        <!-- stars -->
+        <g fill="#fde047">
+          <circle cx="60"  cy="40"  r="2"/>
+          <circle cx="120" cy="80"  r="1.5"/>
+          <circle cx="580" cy="60"  r="2"/>
+          <circle cx="500" cy="30"  r="1.5"/>
+          <circle cx="30"  cy="200" r="1.5"/>
+          <circle cx="610" cy="250" r="2"/>
+        </g>
+        <!-- movie posters -->
+        <g>
+          <rect x="40"  y="70"  width="90" height="130" rx="8" fill="#ef4444"/>
+          <text x="85"  y="140" text-anchor="middle" font-size="30">🚀</text>
+          <rect x="40"  y="205" width="90" height="14" rx="3" fill="#fde047"/>
+        </g>
+        <g>
+          <rect x="40"  y="70" width="90" height="130" rx="8" fill="#ef4444" transform="translate(120 40)"/>
+          <text x="205" y="180" text-anchor="middle" font-size="30">🧙</text>
+        </g>
+        <g>
+          <rect x="510" y="110" width="90" height="130" rx="8" fill="#10b981"/>
+          <text x="555" y="180" text-anchor="middle" font-size="30">🐠</text>
+        </g>
+        <g>
+          <rect x="510" y="30"  width="90" height="70"  rx="8" fill="#f59e0b"/>
+          <text x="555" y="75"  text-anchor="middle" font-size="22">🏰</text>
+        </g>
+        <!-- central engine -->
+        <circle cx="320" cy="170" r="62" fill="#a78bfa" opacity="0.3"/>
+        <circle cx="320" cy="170" r="44" fill="#fbbf24"/>
+        <text x="320" y="180" text-anchor="middle" font-size="36">🎬</text>
+        <!-- similarity lines -->
+        <g stroke="#fbbf24" stroke-width="2" stroke-dasharray="4 4" opacity="0.7" fill="none">
+          <line x1="130" y1="135" x2="280" y2="170"/>
+          <line x1="260" y1="170" x2="280" y2="170"/>
+          <line x1="510" y1="170" x2="380" y2="170"/>
+          <line x1="555" y1="95"  x2="360" y2="150"/>
+        </g>
+        <text x="320" y="270" text-anchor="middle" fill="#fde047" font-size="16" font-weight="700">"People who liked this also liked…"</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A working movie recommender. Type in a movie you love, and it returns 5 other movies that similar viewers rated highly. No fancy UI yet — just a Colab notebook that prints real recommendations.</p>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A Google account (to use Google Colab)</li>
+      <li>About 2 hours</li>
+      <li>No installs — everything runs in the browser</li>
+      <li>Basic Python knowledge (variables, lists, functions)</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What <em>collaborative filtering</em> is, and why Netflix &amp; Spotify use it</li>
+      <li>How to work with a real dataset (loading, cleaning, filtering)</li>
+      <li>How to compute similarity between items using cosine similarity</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Google Colab is free and runs in the browser. The MovieLens 100K dataset is a publicly available research dataset with no personal data — just anonymized user ratings. All computation happens on Google's servers; nothing is installed locally. Students should use a personal or school Google account; no credit card is required.
+    </div>
+
+    <div class="video-slot"
+         data-title="Watch: Building the Recommender in Colab"
+         data-note="Drop an MP4 in videos/ or set data-yt to a YouTube ID to add a walkthrough.">
+    </div>
+
+    <h2>The Idea Behind It</h2>
+    <p>If two people both rated <em>Toy Story</em> 5 stars, they probably have similar taste. If one of them also loved <em>Finding Nemo</em>, the other probably will too. Collaborative filtering turns this common-sense idea into math: for each movie, we build a "fingerprint" of how people rated it, then find movies with similar fingerprints.</p>
+
+    <div class="concept-diagram">
+      <p class="cd-title">Collaborative Filtering — Users × Movies → Similarity</p>
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="User-movie rating matrix becomes a similarity matrix.">
+        <defs>
+          <marker id="arr1315" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#6366f1"/>
+          </marker>
+        </defs>
+        <!-- rating matrix -->
+        <g>
+          <text x="85" y="30" text-anchor="middle" font-size="12" font-weight="700">Ratings</text>
+          <rect x="20"  y="40" width="130" height="120" fill="#fff" stroke="#94a3b8"/>
+          <g font-size="14" text-anchor="middle" fill="#1e293b">
+            <text x="50"  y="65">★5</text><text x="85"  y="65">—</text><text x="120" y="65">★4</text>
+            <text x="50"  y="95">★4</text><text x="85"  y="95">★5</text><text x="120" y="95">—</text>
+            <text x="50"  y="125">—</text><text x="85"  y="125">★5</text><text x="120" y="125">★5</text>
+            <text x="50"  y="155">★3</text><text x="85"  y="155">★4</text><text x="120" y="155">★4</text>
+          </g>
+        </g>
+        <path d="M155 100 L225 100" stroke="#6366f1" stroke-width="3" marker-end="url(#arr1315)"/>
+        <!-- cosine -->
+        <g>
+          <rect x="230" y="65" width="160" height="70" rx="12" fill="#ede9fe" stroke="#6366f1" stroke-width="3"/>
+          <text x="310" y="95"  text-anchor="middle" font-size="14" font-weight="700">cosine similarity</text>
+          <text x="310" y="118" text-anchor="middle" font-size="12" fill="#475569">compare fingerprints</text>
+        </g>
+        <path d="M395 100 L465 100" stroke="#6366f1" stroke-width="3" marker-end="url(#arr1315)"/>
+        <!-- recs -->
+        <g>
+          <rect x="470" y="40" width="150" height="120" rx="10" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+          <text x="545" y="65"  text-anchor="middle" font-size="13" font-weight="700">Top 5 for you</text>
+          <text x="545" y="90"  text-anchor="middle" font-size="12">🚀 Toy Story 2</text>
+          <text x="545" y="108" text-anchor="middle" font-size="12">🐠 Finding Nemo</text>
+          <text x="545" y="126" text-anchor="middle" font-size="12">🧙 Shrek</text>
+          <text x="545" y="144" text-anchor="middle" font-size="12">🏰 Monsters Inc</text>
+        </g>
+      </svg>
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Open <a href="https://colab.research.google.com" target="_blank" rel="noopener"><strong>colab.research.google.com</strong></a>. Click <em>File</em> → <em>New notebook</em>. Sign in with your Google account.</li>
+      <li>In the first cell, paste this code to download the dataset:
+        <pre class="code"><code>!wget -q https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
+!unzip -q -o ml-latest-small.zip</code></pre>
+        Click the ▶ play button on the left of the cell. Wait a few seconds.
+      </li>
+      <li>Add a new cell and load the data:
+        <pre class="code"><code>import pandas as pd
+ratings = pd.read_csv("ml-latest-small/ratings.csv")
+movies  = pd.read_csv("ml-latest-small/movies.csv")
+print(ratings.head())
+print(movies.head())</code></pre>
+        You should see tables of user ratings and movie titles.
+      </li>
+      <li>Pivot the ratings into a matrix of users × movies:
+        <pre class="code"><code>ratings_matrix = ratings.pivot_table(
+    index="userId", columns="movieId", values="rating"
+).fillna(0)
+print(ratings_matrix.shape)</code></pre>
+      </li>
+      <li>Compute similarity between every pair of movies:
+        <pre class="code"><code>from sklearn.metrics.pairwise import cosine_similarity
+movie_similarity = cosine_similarity(ratings_matrix.T)
+print("Similarity matrix shape:", movie_similarity.shape)</code></pre>
+      </li>
+      <li>Write a helper function that takes a movie title and returns recommendations:
+        <pre class="code"><code>def recommend(title, n=5):
+    match = movies[movies["title"].str.contains(title, case=False)]
+    if match.empty:
+        return f"No movie found containing '{title}'."
+    movie_id = match.iloc[0]["movieId"]
+    idx = ratings_matrix.columns.get_loc(movie_id)
+    scores = list(enumerate(movie_similarity[idx]))
+    scores = sorted(scores, key=lambda x: x[1], reverse=True)[1:n+1]
+    rec_ids = [ratings_matrix.columns[i] for i, _ in scores]
+    return movies[movies["movieId"].isin(rec_ids)]["title"].tolist()
+
+print(recommend("Toy Story"))</code></pre>
+      </li>
+      <li>Try it with your favorite movies! Some will work, some won't (the dataset is small). See how it does with <em>Star Wars</em>, <em>Harry Potter</em>, <em>Shrek</em>.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Getting <code>KeyError</code>? The movie probably isn't in this dataset — try another. Weird recommendations? That's real! Small datasets give noisy results. In Try This Next, you'll explore why.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Upgrade the dataset.</strong> Swap in MovieLens 1M (10× more ratings). See if recommendations feel better.</li>
+        <li><strong>Add a filter.</strong> Only recommend movies with at least 20 ratings — this removes noise from rarely-rated obscure titles.</li>
+        <li><strong>Compare approaches.</strong> Try content-based filtering too (recommend based on genre tags). Which feels more useful?</li>
+        <li><strong>Build a UI.</strong> Use Streamlit or Gradio to turn this into a real web app you can share.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What does cosine similarity measure here?</p>
+        <button>How popular a movie is</button>
+        <button>How similar two movies' rating patterns are</button>
+        <button>The movie's runtime</button>
+      </div>
+      <div class="q" data-correct="2">
+        <p class="prompt">Why might recommendations feel random on a small dataset?</p>
+        <button>Python is slow</button>
+        <button>Cosine similarity is broken</button>
+        <button>Not enough ratings — the fingerprints are noisy</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="python-chatbot.html">Python Chatbot →</a>
+      <a class="btn btn-ghost" href="../projects/study-buddy.html">RAG Study Buddy (Ages 16+) →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

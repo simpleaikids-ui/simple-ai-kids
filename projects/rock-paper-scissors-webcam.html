@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rock-Paper-Scissors Webcam · Ages 9–12</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="9-12">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/9-12.html">Ages 9–12</a> › Rock-Paper-Scissors Webcam</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">✊ ★★☆</span>
+      <span class="meta-pill">⏱ 45 min</span>
+      <span class="meta-pill">🧰 Webcam</span>
+    </div>
+
+    <h1>Rock-Paper-Scissors Webcam</h1>
+    <p class="lead">Train your webcam to see ✊ ✋ ✌️ — then hook it up to Scratch and play rock-paper-scissors against the computer!</p>
+
+    <div class="scene-slot" data-img="../images/scenes/rock-paper-scissors-webcam.png" data-alt="Rock-Paper-Scissors Webcam">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rock-Paper-Scissors Webcam">
+<defs><linearGradient id="rps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#rps)"/>
+<text x="100" y="180" text-anchor="middle" font-size="96">✊</text>
+<text x="320" y="180" text-anchor="middle" font-size="96">✋</text>
+<text x="540" y="180" text-anchor="middle" font-size="96">✌️</text>
+<text x="320" y="60" text-anchor="middle" font-size="26" font-weight="800" fill="#1e1e2e">Rock · Paper · Scissors</text>
+<rect x="260" y="240" width="120" height="50" rx="10" fill="#0f172a"/>
+<text x="320" y="273" text-anchor="middle" font-size="18" fill="#fde047">Webcam AI</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A working rock-paper-scissors game where you play with <em>your real hand</em>, not buttons. The computer sees your move and picks one of its own. First to 5 wins!</p>
+
+    <div class="video-slot"
+         data-title="Watch: Rock-Paper-Scissors Webcam"
+         data-note="Drop a walkthrough MP4 in videos/rock-paper-scissors-webcam.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a webcam</li>
+      <li>A free <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> account (a grown-up sets this up)</li>
+      <li>About 45 minutes</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How to train an image classifier</li>
+      <li>How the number of examples changes the model's accuracy</li>
+      <li>How to wire a trained model into a Scratch game</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      ML for Kids by Dale Lane is free and designed for classrooms. Student data stays inside the platform. You'll create a teacher account, then give the student a class code. Budget 10 extra minutes for first-time setup.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Log into <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> and create a new <strong>Image</strong> project called <em>RPS</em>.</li>
+      <li>Click <em>Train</em>. Create three buckets: <strong>rock</strong>, <strong>paper</strong>, <strong>scissors</strong>.</li>
+      <li>Use the webcam to add <strong>~30 images per bucket</strong>. For each pose, move your hand left, right, up, and down. Show it at different distances.</li>
+      <li>Add a fourth bucket: <strong>nothing</strong>. Take 30 photos of an empty background or your face. This teaches the model what "no move" looks like.</li>
+      <li>Click <em>Learn &amp; Test</em> → <em>Train new machine learning model</em>. Wait ~30 seconds.</li>
+      <li>Test it! Show each pose — the confidence bar should jump to the right bucket. If not, add more examples.</li>
+      <li>Click <em>Make</em> → <em>Scratch 3</em>. A Scratch window opens with blocks for your model.</li>
+      <li>Start a new Scratch project. Add this logic:
+<pre class="code"><code>when green flag clicked
+forever
+  set [move v] to (recognise image (costume #) as label)
+  if &lt;(move) = [rock]&gt; then say [I saw rock! Picking paper 📄] for 2 secs
+  if &lt;(move) = [paper]&gt; then say [I saw paper! Picking scissors ✂️] for 2 secs
+  if &lt;(move) = [scissors]&gt; then say [I saw scissors! Picking rock ✊] for 2 secs</code></pre>
+(The exact blocks depend on the ML4K Scratch extension — the <em>recognise image</em> block will appear once you connect your project.)</li>
+      <li>Keep score! Add two variables: <em>you</em> and <em>computer</em>. Update them using rock-paper-scissors rules.</li>
+      <li>Play 5 rounds. Who wins?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      The model picks "rock" no matter what? Check if your hand fills enough of the frame — zoom in. Are lighting conditions different now than when you trained? Retrain with examples in your current lighting.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add Lizard and Spock.</strong> Expand to Rock-Paper-Scissors-Lizard-Spock. Add two more gestures and the win/loss logic.</li>
+        <li><strong>Build a fair computer.</strong> Instead of always beating you, make the computer pick <em>randomly</em>. Who wins more?</li>
+        <li><strong>Best of 7.</strong> Add a "who won the match" screen after 7 rounds.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why add a "nothing" class?</p>
+        <button>To fill space</button>
+        <button>So the model knows what &quot;no gesture&quot; looks like</button>
+        <button>Teachers require it</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Your model confuses paper and scissors. What's the fix?</p>
+        <button>Give up</button>
+        <button>Retrain with clearer, more varied examples of each</button>
+        <button>Rewrite Scratch</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="dance-move-detector.html">Dance Move Detector →</a>
+      <a class="btn btn-ghost" href="custom-chatbot.html">Build Your Own Chatbot →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

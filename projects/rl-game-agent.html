@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RL Game Agent · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › RL Game Agent</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🕹️ ★★★★</span>
+      <span class="meta-pill">⏱ Weekend</span>
+      <span class="meta-pill">🧰 Colab</span>
+    </div>
+
+    <h1>RL Game Agent</h1>
+    <p class="lead">Train an agent to beat a simple game using Stable-Baselines3 + Gymnasium. Watch it go from random flailing to competent play in ~10 minutes.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/rl-game-agent.png" data-alt="RL Game Agent">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RL Game Agent">
+<defs><linearGradient id="rl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#7f1d1d"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#rl)"/>
+<!-- ground -->
+<line x1="40" y1="240" x2="600" y2="240" stroke="#fde047" stroke-width="3"/>
+<!-- cart -->
+<rect x="250" y="210" width="80" height="30" fill="#22d3ee"/>
+<circle cx="270" cy="245" r="8" fill="#0f172a"/>
+<circle cx="310" cy="245" r="8" fill="#0f172a"/>
+<!-- pole -->
+<line x1="290" y1="210" x2="330" y2="130" stroke="#fbbf24" stroke-width="6" stroke-linecap="round"/>
+<circle cx="330" cy="130" r="10" fill="#f472b6"/>
+<!-- label -->
+<text x="320" y="70" text-anchor="middle" font-size="22" font-weight="800" fill="#fde047">CartPole · PPO</text>
+<text x="320" y="95" text-anchor="middle" font-size="14" fill="#fff">reward: +487 (and rising)</text>
+<!-- graph -->
+<g transform="translate(460 180)">
+<rect width="150" height="60" rx="6" fill="#0b1220" stroke="#334155"/>
+<polyline points="10,55 30,50 50,42 70,35 90,25 110,18 130,14 140,10" fill="none" stroke="#22c55e" stroke-width="2"/>
+<text x="75" y="52" text-anchor="middle" font-size="9" fill="#fff">reward</text>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A PPO agent trained to balance CartPole, land LunarLander, or play Atari Breakout. You'll record video of before/after and analyze the learning curve.</p>
+
+    <div class="video-slot"
+         data-title="Watch: RL Game Agent"
+         data-note="Drop a walkthrough MP4 in videos/rl-game-agent.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Google Colab</li>
+      <li>Patience for training runs</li>
+      <li>A weekend</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>The agent/environment loop: observation → action → reward</li>
+      <li>What PPO does at a high level</li>
+      <li>Why reward shaping is hard and easy to mess up</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      No API cost. Colab + Gymnasium + SB3 is self-contained. Lunar Lander and Breakout take a few GPU hours — not instant but feasible on free Colab.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Install:
+<pre class="code"><code>!pip install -q gymnasium[box2d] stable-baselines3[extra] moviepy</code></pre></li>
+      <li><strong>Warm-up — CartPole (5 min run):</strong>
+<pre class="code"><code>import gymnasium as gym
+from stable_baselines3 import PPO
+env = gym.make("CartPole-v1")
+model = PPO("MlpPolicy", env, verbose=1)
+model.learn(total_timesteps=50_000)
+model.save("cartpole")</code></pre></li>
+      <li>Evaluate:
+<pre class="code"><code>from stable_baselines3.common.evaluation import evaluate_policy
+print(evaluate_policy(model, env, n_eval_episodes=10))</code></pre></li>
+      <li>Record a video of the trained agent playing.</li>
+      <li><strong>Main event — LunarLander (~30 min run):</strong>
+<pre class="code"><code>env = gym.make("LunarLander-v3")
+model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./tb/")
+model.learn(total_timesteps=500_000)</code></pre></li>
+      <li>Launch TensorBoard in Colab: <code>%load_ext tensorboard</code>, then <code>%tensorboard --logdir ./tb</code>. Watch the reward curve go up.</li>
+      <li>Record before/after videos. Write 3 observations about the agent's behavior.</li>
+      <li><strong>Stretch — Atari Breakout:</strong> use <code>AtariWrapper</code> and train for 2M steps. Requires GPU. Expect 2–4 hours.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Reward stuck at random? Try more timesteps — 50K isn't enough for LunarLander, aim for 500K. Agent learned a weird trick (e.g. flips upside down)? Reward hacking! Shape the reward to penalize it.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Try different algorithms.</strong> PPO vs DQN vs A2C on the same env. Which learns fastest?</li>
+        <li><strong>Custom environment.</strong> Build your own Gym env for a game you designed.</li>
+        <li><strong>Curriculum.</strong> Start easy, gradually crank difficulty. Faster learning?</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's PPO trying to do?</p>
+        <button>Memorize expert demos</button>
+        <button>Find a policy that maximizes cumulative reward, with a trust-region-like constraint</button>
+        <button>Minimize loss like in supervised learning</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">Your agent spins in circles forever but gets points. That's…</p>
+        <button>Reward hacking — the reward function has a loophole</button>
+        <button>A bug in SB3</button>
+        <button>Fine, ship it</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="cnn-from-scratch.html">CNN From Scratch →</a>
+      <a class="btn btn-ghost" href="tiny-transformer.html">Tiny Transformer From Scratch →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

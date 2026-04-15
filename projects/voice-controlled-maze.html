@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice-Controlled Maze · Ages 9–12</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="9-12">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/9-12.html">Ages 9–12</a> › Voice-Controlled Maze</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🎙️ ★★★</span>
+      <span class="meta-pill">⏱ 60 min</span>
+      <span class="meta-pill">🧰 Mic</span>
+    </div>
+
+    <h1>Voice-Controlled Maze</h1>
+    <p class="lead">Yell "up," "down," "left," and "right" to guide a character through a maze. Build a voice-recognition model and wire it to Scratch.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/voice-controlled-maze.png" data-alt="Voice-Controlled Maze">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Voice-Controlled Maze">
+<defs><linearGradient id="vm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ede9fe"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#vm)"/>
+<!-- maze grid -->
+<g stroke="#1e1e2e" stroke-width="4" fill="none">
+<rect x="60" y="50" width="350" height="220"/>
+<line x1="110" y1="50" x2="110" y2="170"/>
+<line x1="160" y1="130" x2="220" y2="130"/>
+<line x1="260" y1="50" x2="260" y2="180"/>
+<line x1="160" y1="220" x2="320" y2="220"/>
+<line x1="360" y1="100" x2="360" y2="270"/>
+</g>
+<circle cx="90" cy="80" r="14" fill="#f472b6"/>
+<text x="390" y="260" font-size="20">🏁</text>
+<!-- mic -->
+<rect x="480" y="100" width="60" height="110" rx="30" fill="#1e1e2e"/>
+<rect x="505" y="210" width="10" height="30" fill="#1e1e2e"/>
+<rect x="480" y="235" width="60" height="8" rx="2" fill="#1e1e2e"/>
+<!-- speech bubbles -->
+<text x="560" y="90" font-size="18" fill="#1e1e2e">"up!"</text>
+<text x="560" y="140" font-size="18" fill="#1e1e2e">"left!"</text>
+<text x="560" y="190" font-size="18" fill="#1e1e2e">"go!"</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A maze game where the player can't touch the keyboard. They shout directions and the character moves. Works best with 2 players — one speaks, one cheers.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Voice-Controlled Maze"
+         data-note="Drop a walkthrough MP4 in videos/voice-controlled-maze.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a microphone</li>
+      <li>A quiet-ish room</li>
+      <li>Teachable Machine (audio project) or <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a></li>
+      <li>About 60 minutes</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How audio models are different from image models (they listen in chunks)</li>
+      <li>Why background noise matters</li>
+      <li>How to build a simple maze in Scratch</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Audio projects are sensitive to noise. Pick a quiet time. Younger siblings in the background will get into the training data and confuse the model later. For Teachable Machine Audio, Chrome or Edge is required.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Go to <a href="https://teachablemachine.withgoogle.com" target="_blank" rel="noopener"><strong>teachablemachine.withgoogle.com</strong></a>. Click <em>Audio Project</em>.</li>
+      <li>Record <strong>20 seconds</strong> of <em>Background Noise</em> (required — this is the "quiet" class).</li>
+      <li>Add four classes: <strong>up</strong>, <strong>down</strong>, <strong>left</strong>, <strong>right</strong>. For each, click record and say the word — then repeat it in slightly different tones — at least 20 times per class. Teachable Machine will show you samples.</li>
+      <li>Click <em>Train Model</em>. Test by saying the words. The bars should jump correctly.</li>
+      <li>Click <em>Export Model</em> → copy the sharable link (keeps the model hosted by Google).</li>
+      <li>Open Scratch via <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> with the same classes, or use the Teachable Machine Scratch extension in Scratch Lab (<em>lab.scratch.mit.edu</em>).</li>
+      <li>Draw a maze: use the pencil tool to draw walls on the stage. Add a sprite as the player character.</li>
+      <li>Build the movement logic:
+<pre class="code"><code>when green flag clicked
+go to x: (-200) y: (-150)
+forever
+  set [cmd v] to (recognise audio as label)
+  if &lt;(cmd) = [up]&gt;    then change y by 10
+  if &lt;(cmd) = [down]&gt;  then change y by -10
+  if &lt;(cmd) = [left]&gt;  then change x by -10
+  if &lt;(cmd) = [right]&gt; then change x by 10
+  if &lt;touching [maze wall v]?&gt; then say [Ouch!] for 0.5 secs &gt; go to x: (-200) y: (-150)</code></pre></li>
+      <li>Play! Shout your way to the finish line.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      "left" and "right" keep getting confused? Their sounds are actually similar. Record more examples. Try louder, clearer pronunciations. Or pick words that sound more different — "west" and "east."
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Timer.</strong> Add a timer. How fast can you finish?</li>
+        <li><strong>Two-player relay.</strong> One player says the moves, the other has to keep their hands behind their back.</li>
+        <li><strong>Language experiment.</strong> Train it in a different language. Does it still work if you mix languages?</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's the Background Noise class for?</p>
+        <button>Required filler</button>
+        <button>So the model knows what quiet sounds like and doesn&#x27;t trigger randomly</button>
+        <button>Music</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">Why might "left" and "right" get confused?</p>
+        <button>They sound similar in short audio clips</button>
+        <button>Scratch is broken</button>
+        <button>The microphone dislikes you</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="dance-move-detector.html">Dance Move Detector →</a>
+      <a class="btn btn-ghost" href="custom-chatbot.html">Build Your Own Chatbot →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

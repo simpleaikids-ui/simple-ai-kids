@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Full-Stack AI Product · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › Full-Stack AI Product</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🚀 ★★★★</span>
+      <span class="meta-pill">⏱ 2 weeks</span>
+      <span class="meta-pill">🧰 Fullstack</span>
+    </div>
+
+    <h1>Full-Stack AI Product</h1>
+    <p class="lead">Build and deploy a real AI web app — from prompt design through UI, cost modeling, and latency tuning. Ship it to real users.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/full-stack-ai-product.png" data-alt="Full-Stack AI Product">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Full-Stack AI Product">
+<defs><linearGradient id="fs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#fs)"/>
+<!-- browser -->
+<rect x="40" y="40" width="260" height="200" rx="10" fill="#fff"/>
+<rect x="40" y="40" width="260" height="24" rx="10" fill="#e5e7eb"/>
+<circle cx="56" cy="52" r="4" fill="#ef4444"/><circle cx="70" cy="52" r="4" fill="#fbbf24"/><circle cx="84" cy="52" r="4" fill="#22c55e"/>
+<rect x="56" y="80" width="228" height="50" rx="6" fill="#f1f5f9"/>
+<text x="68" y="110" font-size="12" fill="#475569">Rewrite politely…</text>
+<rect x="56" y="140" width="60" height="28" rx="6" fill="#6366f1"/>
+<text x="86" y="158" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Go</text>
+<rect x="56" y="180" width="228" height="40" rx="6" fill="#ede9fe"/>
+<text x="68" y="206" font-size="12" fill="#4338ca">"Thanks! Let's reschedule…"</text>
+<!-- arrow -->
+<path d="M310 140 L360 140" stroke="#22d3ee" stroke-width="4" marker-end="url(#a-fs)"/>
+<defs><marker id="a-fs" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#22d3ee"/></marker></defs>
+<!-- server -->
+<rect x="370" y="60" width="220" height="170" rx="10" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+<g font-family="monospace" font-size="11" fill="#22d3ee">
+<text x="384" y="90">POST /api/generate</text>
+<text x="384" y="115" fill="#fde047">→ Claude API</text>
+<text x="384" y="140" fill="#fff">latency p50: 1.2s</text>
+<text x="384" y="160" fill="#fff">cost: \$0.003/req</text>
+<text x="384" y="185" fill="#f472b6">↳ Vercel (edge)</text>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A deployed AI web app — your choice of use case — with a real UI (React or Next.js), an LLM backend, cost tracking, and at least 5 real users testing it.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Full-Stack AI Product"
+         data-note="Drop a walkthrough MP4 in videos/full-stack-ai-product.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Node.js, Next.js or React + a minimal Python backend (or Next.js API routes)</li>
+      <li>An Anthropic or OpenAI API key (\$5–20 of credit)</li>
+      <li>Vercel or Fly.io account (free tier)</li>
+      <li>About 2 weeks</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>How to design prompts that don't break in production</li>
+      <li>How to cost-model an LLM feature <em>before</em> shipping</li>
+      <li>How to collect real user feedback and act on it</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Budget ~\$20 total. Watch the API spend dashboard daily. Discuss data-handling: never log personal info; never send private data to third-party models without disclosure.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li><strong>Pick a use case.</strong> Something specific: a tutor for one class, a tone-rewriter, a recipe generator from ingredients you have. Avoid "general chatbot."</li>
+      <li><strong>Design the prompt.</strong> Start on paper. Define the role, constraints, edge cases. Test in a playground with 10 real inputs.</li>
+      <li><strong>Cost model.</strong> Estimate tokens per request × price × expected daily requests = monthly cost. If this is >\$50, redesign.</li>
+      <li><strong>Scaffold a Next.js app:</strong>
+<pre class="code"><code>npx create-next-app@latest my-ai-app --ts --tailwind --app
+cd my-ai-app
+npm i @anthropic-ai/sdk</code></pre></li>
+      <li>Create an API route <code>app/api/generate/route.ts</code>:
+<pre class="code"><code>import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic();
+export async function POST(req: Request) {
+  const { input } = await req.json();
+  const msg = await client.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 400,
+    system: "You are a polite tone-rewriter. Rewrite the input keeping meaning but making it warmer.",
+    messages: [{ role: "user", content: input }],
+  });
+  return Response.json({ text: msg.content[0].text });
+}</code></pre></li>
+      <li>Build the UI (<code>app/page.tsx</code>) with a textarea, submit button, and result pane. Add loading state and an error state.</li>
+      <li><strong>Deploy.</strong> Push to GitHub, connect to Vercel. Add <code>ANTHROPIC_API_KEY</code> in Vercel env. Done.</li>
+      <li><strong>User test.</strong> Send to 5 friends. Record what breaks. Fix the top 2 issues.</li>
+      <li><strong>Write a retrospective.</strong> Cost per user. Latency p50/p95. Worst failure mode. What you'd change next time.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Rate-limit errors under load? Add exponential backoff. Unexpected API cost spike? Add per-user daily caps. Response feels wrong? 80% of the time it's the prompt, 20% the model.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Streaming.</strong> Stream tokens back to the browser so the UI fills in as the model types.</li>
+        <li><strong>Cache.</strong> Cache recent responses for identical inputs. Cuts cost and latency.</li>
+        <li><strong>A/B test prompts.</strong> Send 50/50 traffic to two prompts, measure thumbs up/down.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">When should you cost-model an LLM feature?</p>
+        <button>After launch</button>
+        <button>Before building — it may not be viable</button>
+        <button>Only if it&#x27;s slow</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">Response feels wrong 70% of the time. First thing to check:</p>
+        <button>The model</button>
+        <button>The system prompt and examples</button>
+        <button>Rewrite the UI</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="fine-tune-llm.html">Fine-Tune a Small LLM →</a>
+      <a class="btn btn-ghost" href="object-detection-app.html">Object Detection App →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

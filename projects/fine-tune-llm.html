@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fine-Tune a Small LLM · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › Fine-Tune a Small LLM</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🦙 ★★★★</span>
+      <span class="meta-pill">⏱ Weekend</span>
+      <span class="meta-pill">🧰 Colab GPU</span>
+    </div>
+
+    <h1>Fine-Tune a Small LLM</h1>
+    <p class="lead">Fine-tune Llama 3.2 1B on your own writing (or a favorite author's). Discover how much data it actually takes to change a model's voice.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/fine-tune-llm.png" data-alt="Fine-Tune a Small LLM">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fine-Tune a Small LLM">
+<defs><linearGradient id="ftl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#312e81"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#ftl)"/>
+<!-- base model -->
+<circle cx="150" cy="160" r="70" fill="#60a5fa"/>
+<text x="150" y="165" text-anchor="middle" font-size="40">🦙</text>
+<text x="150" y="250" text-anchor="middle" font-size="12" fill="#fff">base model</text>
+<!-- + adapter -->
+<text x="240" y="170" font-size="48" fill="#fff">+</text>
+<rect x="290" y="120" width="90" height="80" rx="12" fill="#fbbf24"/>
+<text x="335" y="165" text-anchor="middle" font-size="30">📝</text>
+<text x="335" y="250" text-anchor="middle" font-size="12" fill="#fff">your text (LoRA)</text>
+<!-- = -->
+<text x="400" y="170" font-size="48" fill="#fff">=</text>
+<!-- tuned -->
+<circle cx="520" cy="160" r="70" fill="#f472b6"/>
+<text x="520" y="165" text-anchor="middle" font-size="40">🦙</text>
+<text x="520" y="250" text-anchor="middle" font-size="12" fill="#fff">tuned on you</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A LoRA-fine-tuned version of a 1B-parameter LLM that sounds like a target author or like you. You'll produce before/after samples and a short writeup.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Fine-Tune a Small LLM"
+         data-note="Drop a walkthrough MP4 in videos/fine-tune-llm.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Colab Pro (\$10/mo, for A100) — or patience on T4</li>
+      <li>A Hugging Face account + Llama license accepted</li>
+      <li>5–50 KB of target text (blog posts, essays, novel excerpts)</li>
+      <li>A weekend</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What LoRA is and why it's the right tool for this</li>
+      <li>How to prepare a chat-format dataset</li>
+      <li>How tiny data changes outputs — and where it fails</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Llama 3.2 is free but requires license acceptance on Hugging Face. LoRA adapters are only ~20 MB. No API cost. If using a dead author's work, double-check public domain status (pre-1928 in the US is safe).
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Gather your text. ~20 KB of your own writing is enough; ~200 KB gives noticeably more faithful voice.</li>
+      <li>Format as a simple chat dataset — pairs of (prompt, response). Or plain completion lines — you pick the format.</li>
+      <li>Accept the Llama 3.2 license on <strong>huggingface.co/meta-llama/Llama-3.2-1B</strong>.</li>
+      <li>In Colab with GPU:
+<pre class="code"><code>!pip install -q transformers peft trl datasets bitsandbytes
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import LoraConfig, get_peft_model
+import torch
+
+tok = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B", torch_dtype=torch.bfloat16, device_map="auto")</code></pre></li>
+      <li>Apply LoRA:
+<pre class="code"><code>lora = LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","v_proj"], lora_dropout=0.05, task_type="CAUSAL_LM")
+model = get_peft_model(model, lora)
+model.print_trainable_parameters()   # should be &lt;1% of total</code></pre></li>
+      <li>Use <code>trl.SFTTrainer</code> with 3–5 epochs and batch_size=1 on T4, bs=4 on A100. Expect 30 min – 2 hours.</li>
+      <li>Generate before/after samples for the same prompt. Save both. Show a friend.</li>
+      <li>Write the reflection: where does the fine-tune pick up the voice? Where does it fail? What broke?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      CUDA OOM on T4? Drop to <code>r=8</code>, <code>bs=1</code>, sequence length 512. Loss plateau after epoch 1? Your dataset might be too small or too repetitive. Garbled output? Your tokenizer and formatting are mismatched — print one batch and check.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>QLoRA 8B.</strong> Jump to Llama 3.2 3B or 8B using 4-bit quantization.</li>
+        <li><strong>Preference data.</strong> Generate 2 responses, pick better, train with DPO.</li>
+        <li><strong>Evaluate it.</strong> Build a 20-prompt eval set. Blind-rate the base model vs the fine-tuned one.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">Why LoRA instead of full fine-tune?</p>
+        <button>Slower but safer</button>
+        <button>Trains ~1% of parameters — fits on a free GPU and resists overfitting</button>
+        <button>Required by Llama</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">You fine-tune on 5 KB of text. The model forgets how to count. Why?</p>
+        <button>5 KB is way too little and you overfit on style</button>
+        <button>Llama can&#x27;t count</button>
+        <button>GPU issue</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="study-buddy.html">RAG-Powered Study Buddy →</a>
+      <a class="btn btn-ghost" href="full-stack-ai-product.html">Full-Stack AI Product →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

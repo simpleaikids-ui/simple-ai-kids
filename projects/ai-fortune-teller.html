@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Fortune Teller · Ages 9–12</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="9-12">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/9-12.html">Ages 9–12</a> › AI Fortune Teller</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🔮 ★★☆</span>
+      <span class="meta-pill">⏱ 45 min</span>
+      <span class="meta-pill">🧰 Browser</span>
+    </div>
+
+    <h1>AI Fortune Teller</h1>
+    <p class="lead">Build a silly fortune-telling chatbot — then investigate how the examples you give it change what it predicts. A lesson in bias, disguised as magic!</p>
+
+    <div class="scene-slot" data-img="../images/scenes/ai-fortune-teller.png" data-alt="AI Fortune Teller">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Fortune Teller">
+<defs><radialGradient id="ft" cx="50%" cy="50%"><stop offset="0" stop-color="#ede9fe"/><stop offset="1" stop-color="#312e81"/></radialGradient></defs>
+<rect width="640" height="320" fill="url(#ft)"/>
+<!-- crystal ball -->
+<ellipse cx="320" cy="170" rx="110" ry="110" fill="#a78bfa" opacity="0.7"/>
+<ellipse cx="320" cy="170" rx="90" ry="90" fill="#c4b5fd" opacity="0.9"/>
+<ellipse cx="290" cy="145" rx="24" ry="14" fill="#fff" opacity="0.8"/>
+<!-- stand -->
+<rect x="260" y="260" width="120" height="28" rx="6" fill="#fbbf24"/>
+<rect x="270" y="240" width="100" height="22" rx="4" fill="#fde047"/>
+<!-- text inside ball -->
+<text x="320" y="168" text-anchor="middle" font-size="28">🔮</text>
+<text x="320" y="200" text-anchor="middle" font-size="12" font-weight="800" fill="#0f172a">I see… pizza!</text>
+<!-- stars -->
+<g fill="#fde047">
+<text x="80" y="60" font-size="22">✨</text>
+<text x="540" y="80" font-size="22">✨</text>
+<text x="100" y="260" font-size="18">✨</text>
+<text x="540" y="250" font-size="18">✨</text>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A fortune-telling chatbot that classifies your mood from a sentence and spits out a silly prediction. You'll train two versions: one with cheerful examples, one with grumpy ones — and see how the same input gets opposite fortunes.</p>
+
+    <div class="video-slot"
+         data-title="Watch: AI Fortune Teller"
+         data-note="Drop a walkthrough MP4 in videos/ai-fortune-teller.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a browser</li>
+      <li>A free <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> account</li>
+      <li>About 45 minutes</li>
+      <li>A notebook to plan example sentences</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What bias in training data looks like — concretely</li>
+      <li>How to label sentences and train a text classifier</li>
+      <li>How your choices shape what an AI says</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Great bias/ethics teaching moment. After the kid trains the grumpy version, discuss: does this look like anything they've seen online (social feeds, recommendations)? The point isn't that AI is bad — it's that humans' choices shape it.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Create a new <strong>Text</strong> project called <em>Fortune</em> in ML for Kids.</li>
+      <li>Add two labels: <strong>happy</strong> and <strong>sad</strong>.</li>
+      <li><strong>Version 1 (balanced):</strong> add 10 happy-sounding sentences and 10 sad-sounding sentences. Examples: "I'm excited about tomorrow" (happy), "My cat is sick" (sad).</li>
+      <li>Train the model. Test: type "I'm not sure how I feel." What does it predict?</li>
+      <li>Open Scratch via ML4K. Wire up:
+<pre class="code"><code>when green flag clicked
+ask [How are you feeling today?] and wait
+set [mood v] to (recognise text (answer) as label)
+if &lt;(mood) = [happy]&gt; then say [Your fortune: Good pizza awaits! 🍕] for 3 secs
+if &lt;(mood) = [sad]&gt; then say [Your fortune: Extra hugs incoming 🤗] for 3 secs</code></pre></li>
+      <li>Save and test the fortune teller with 3 friends or family.</li>
+      <li><strong>Version 2 (biased):</strong> make a second project. Now put 10 happy sentences under <em>happy</em>… but also 10 grumpy-leaning sentences under <em>happy</em> (things like "Fine, I guess" or "Whatever"). The <em>sad</em> label only has very extreme sadness.</li>
+      <li>Train. Test: "I had a great day!" — does it still say happy? Try "Fine, I guess." Then try neutral things.</li>
+      <li>Write in your notebook: <em>Did the second fortune teller give different predictions? Why?</em></li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Both versions give the same prediction? Your examples might not be different enough. Version 2 should have clearly ambiguous sentences under "happy" so the model's sense of "happy" gets warped.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add a third mood.</strong> Introduce <strong>sleepy</strong> with its own examples and fortune.</li>
+        <li><strong>Break it on purpose.</strong> Feed the model sentences in a new topic (food, weather). How does it do?</li>
+        <li><strong>Ethics moment.</strong> Write 3 sentences about how biased training data could hurt people in the real world.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What is bias in a trained model?</p>
+        <button>When the model runs slow</button>
+        <button>When the examples the model saw unfairly shape its predictions</button>
+        <button>A type of backpack</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">How do you fix bias?</p>
+        <button>Add more varied, balanced examples and audit the predictions</button>
+        <button>Nothing, it&#x27;s permanent</button>
+        <button>Yell at the computer</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="custom-chatbot.html">Build Your Own Chatbot →</a>
+      <a class="btn btn-ghost" href="pet-classifier.html">Pet Classifier →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

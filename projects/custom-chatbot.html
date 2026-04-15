@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build Your Own Chatbot · Ages 9–12</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="9-12">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/9-12.html">Ages 9–12</a> › Build Your Own Chatbot</p>
+
+    <h1>Build Your Own Chatbot</h1>
+    <p class="lead">Teach a Scratch chatbot to recognize three kinds of messages — greetings, questions, and goodbyes — and reply the right way every time.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/chatbot.png" data-alt="A kid typing to a friendly chatbot">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kid chatting with a smiling bubble-shaped robot">
+        <defs>
+          <linearGradient id="bg912" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="100%" stop-color="#ede9fe"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="320" fill="url(#bg912)"/>
+        <!-- chat bubbles -->
+        <rect x="50" y="60" width="200" height="60" rx="24" fill="#fff" stroke="#60a5fa" stroke-width="3"/>
+        <text x="70" y="97" font-size="18" fill="#1e293b">Hi bot! 👋</text>
+        <rect x="340" y="150" width="240" height="60" rx="24" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+        <text x="360" y="187" font-size="18" fill="#1e293b">Hey friend! 🤖</text>
+        <!-- kid -->
+        <circle cx="140" cy="230" r="30" fill="#fcd5b4"/>
+        <circle cx="132" cy="226" r="3" fill="#333"/>
+        <circle cx="148" cy="226" r="3" fill="#333"/>
+        <path d="M130 240 Q140 248 150 240" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <rect x="112" y="260" width="56" height="56" rx="12" fill="#a78bfa"/>
+        <!-- robot -->
+        <rect x="440" y="40" width="120" height="100" rx="24" fill="#34d399"/>
+        <circle cx="470" cy="80" r="10" fill="#fff"/>
+        <circle cx="530" cy="80" r="10" fill="#fff"/>
+        <circle cx="470" cy="80" r="4" fill="#0f172a"/>
+        <circle cx="530" cy="80" r="4" fill="#0f172a"/>
+        <path d="M470 110 Q500 125 530 110" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="494" y="20" width="12" height="20" fill="#0f172a"/>
+        <circle cx="500" cy="18" r="6" fill="#fbbf24"/>
+        <text x="395" y="110" font-size="22">✨</text>
+        <text x="300" y="60" font-size="22">💬</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A chatbot that knows when you're saying hello, asking a question, or saying goodbye. You'll train it on your own examples, then hook it up to Scratch so it can chat back.</p>
+
+    <div class="video-slot"
+         data-title="Watch: Training Your Chatbot"
+         data-note="Set data-yt='YOUTUBE_ID' or data-src='../videos/chatbot.mp4' to add a walkthrough.">
+    </div>
+
+    <div class="concept-diagram">
+      <p class="cd-title">How the Bot Picks an Answer</p>
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A message is sorted into greeting, question, or goodbye.">
+        <defs>
+          <marker id="arr912" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/>
+          </marker>
+        </defs>
+        <rect x="20" y="80" width="130" height="50" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+        <text x="85" y="110" text-anchor="middle" font-size="14">"Hi bot!"</text>
+        <path d="M155 105 L220 105" stroke="#a78bfa" stroke-width="3" marker-end="url(#arr912)"/>
+        <rect x="225" y="65" width="140" height="80" rx="14" fill="#ede9fe" stroke="#a78bfa" stroke-width="3"/>
+        <text x="295" y="100" text-anchor="middle" font-size="14" font-weight="700">Classifier</text>
+        <text x="295" y="122" text-anchor="middle" font-size="12" fill="#475569">(trained model)</text>
+        <path d="M370 80 L430 40" stroke="#a78bfa" stroke-width="3" marker-end="url(#arr912)"/>
+        <path d="M370 105 L430 105" stroke="#a78bfa" stroke-width="3" marker-end="url(#arr912)"/>
+        <path d="M370 130 L430 170" stroke="#a78bfa" stroke-width="3" marker-end="url(#arr912)"/>
+        <rect x="435" y="20" width="180" height="36" rx="10" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+        <text x="525" y="43" text-anchor="middle" font-size="14">greeting → "Hi friend!"</text>
+        <rect x="435" y="85" width="180" height="36" rx="10" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+        <text x="525" y="108" text-anchor="middle" font-size="14">question → "Hmm…"</text>
+        <rect x="435" y="150" width="180" height="36" rx="10" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+        <text x="525" y="173" text-anchor="middle" font-size="14">goodbye → "Bye!"</text>
+      </svg>
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a browser (Chromebook works great)</li>
+      <li>A free <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> account (a grown-up helps set this up)</li>
+      <li>About 45 minutes</li>
+      <li>A notebook to plan your chatbot's replies</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What "training data" means and why more is better</li>
+      <li>How a computer can understand what kind of message you're typing</li>
+      <li>How to connect a model to a game in Scratch</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      This uses <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> by Dale Lane, a free, kid-focused tool that pairs with Scratch. An adult needs to create a teacher/student account (it's free), and students get a class code. Data and examples stay within ML4Kids. You'll find a short teacher's guide on their site. Budget an extra 10 minutes for account setup if you haven't used it before.
+    </div>
+
+    <h2>Plan It First (No Computer Needed)</h2>
+    <p>Before you touch the computer, grab a notebook and plan these three things:</p>
+    <ol class="steps">
+      <li>Write down <strong>5 different ways</strong> someone might say hello. (Hi! Hey there. What's up? Howdy! Good morning.)</li>
+      <li>Write down <strong>5 different questions</strong> someone might ask. (What's your name? How old are you? What's your favorite color?)</li>
+      <li>Write down <strong>5 different ways</strong> someone might say goodbye. (Bye! See ya. Talk later. Gotta go. Peace!)</li>
+    </ol>
+
+    <h2>Build It</h2>
+    <ol class="steps">
+      <li>Log in to <a href="https://machinelearningforkids.co.uk" target="_blank" rel="noopener">Machine Learning for Kids</a> and click <em>Go to your projects</em> → <em>+ Add a new project</em>.</li>
+      <li>Name it <em>My Chatbot</em>. Pick <strong>Text</strong> as the type of learning. Click <em>Create</em>.</li>
+      <li>Click your project → <em>Train</em>. Add three labels: <strong>greeting</strong>, <strong>question</strong>, <strong>goodbye</strong>.</li>
+      <li>Type your 5 examples for each label into the correct box. (This is the <em>training data</em>!) The more examples, the smarter your bot.</li>
+      <li>Click the <em>Learn &amp; Test</em> button, then <em>Train new machine learning model</em>. Wait about a minute.</li>
+      <li>Once it's trained, type a new sentence into the test box. Your model will guess which label fits. Try to stump it!</li>
+      <li>Now click <em>Make</em> → <em>Scratch 3</em>. A Scratch window opens with new blocks specific to your model.</li>
+      <li>Drag this script onto your sprite (the cat): when green flag clicked → forever → ask "Say something!" → if <em>recognise text (answer) as greeting</em> → say "Hi friend!"</li>
+      <li>Add two more branches for <em>question</em> ("Hmm, let me think…") and <em>goodbye</em> ("Catch you later!").</li>
+      <li>Click the green flag and talk to your chatbot!</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Does the bot always pick the same label? You probably need more variety in your examples. Add 5 more to the label that's being ignored. Does it get confused by short messages? Add some short examples to your training data.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add a new kind of message.</strong> Try adding a <em>compliment</em> label. What happens when you say "You're cool"?</li>
+        <li><strong>Make your bot moody.</strong> Have it reply differently on different days using Scratch's <em>pick random</em> block.</li>
+        <li><strong>Ethics moment:</strong> Train the bot on only <em>formal</em> greetings. Does it get confused when someone says "sup"? That's a kind of <em>bias</em> — the bot only knows what it's seen.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="2">
+        <p class="prompt">What is "training data"?</p>
+        <button>The code your bot runs</button>
+        <button>A secret password</button>
+        <button>The examples you give the model to learn from</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">If your bot always guesses "greeting," what's the likely cause?</p>
+        <button>Too few goodbye/question examples — unbalanced data</button>
+        <button>The bot is tired</button>
+        <button>Scratch is broken</button>
+      </div>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's <em>bias</em> in a chatbot?</p>
+        <button>When it takes too long to reply</button>
+        <button>When it only knows the kinds of examples it was shown</button>
+        <button>When it shouts</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="rock-paper-scissors-webcam.html">Rock-Paper-Scissors Webcam →</a>
+      <a class="btn btn-ghost" href="../projects/movie-recommender.html">Movie Recommender (Ages 13–15) →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

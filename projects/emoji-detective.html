@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emoji Detective · Ages 5–8</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="5-8">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/5-8.html">Ages 5–8</a> › Emoji Detective</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">🙋 ★★☆</span>
+      <span class="meta-pill">⏱ 20 min</span>
+      <span class="meta-pill">🧰 Webcam</span>
+    </div>
+
+    <h1>Emoji Detective</h1>
+    <p class="lead">Teach the computer to recognize your thumbs-up, thumbs-down, and silliest face — then play Emoji Detective with a friend!</p>
+
+    <div class="scene-slot" data-img="../images/scenes/emoji-detective.png" data-alt="Emoji Detective">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emoji Detective">
+<defs><linearGradient id="ed58" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+<rect width="640" height="320" fill="url(#ed58)"/>
+<!-- webcam -->
+<rect x="240" y="40" width="160" height="100" rx="10" fill="#1e1e2e"/>
+<circle cx="320" cy="90" r="24" fill="#22d3ee"/><circle cx="320" cy="90" r="10" fill="#0f172a"/>
+<!-- three pose squares -->
+<g transform="translate(40 180)">
+<rect width="160" height="100" rx="14" fill="#bbf7d0" stroke="#16a34a" stroke-width="3"/>
+<text x="80" y="65" text-anchor="middle" font-size="48">👍</text>
+<text x="80" y="92" text-anchor="middle" font-size="12" font-weight="700">thumbs-up</text>
+</g>
+<g transform="translate(240 180)">
+<rect width="160" height="100" rx="14" fill="#fecaca" stroke="#dc2626" stroke-width="3"/>
+<text x="80" y="65" text-anchor="middle" font-size="48">👎</text>
+<text x="80" y="92" text-anchor="middle" font-size="12" font-weight="700">thumbs-down</text>
+</g>
+<g transform="translate(440 180)">
+<rect width="160" height="100" rx="14" fill="#fde68a" stroke="#f59e0b" stroke-width="3"/>
+<text x="80" y="65" text-anchor="middle" font-size="48">🤪</text>
+<text x="80" y="92" text-anchor="middle" font-size="12" font-weight="700">silly face</text>
+</g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A webcam-powered game. You train the computer on three poses (👍 👎 🤪), then you and a friend take turns showing poses — the computer calls out what you did!</p>
+
+    <div class="video-slot"
+         data-title="Watch: Emoji Detective"
+         data-note="Drop a walkthrough MP4 in videos/emoji-detective.mp4 or set data-yt='YOUTUBE_ID'.">
+    </div>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>A computer with a webcam</li>
+      <li>A grown-up to help at the start</li>
+      <li>About 20 minutes</li>
+      <li>A friend to play with at the end (optional but fun!)</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>That AI gets smarter with more examples</li>
+      <li>Why showing poses from <em>different angles</em> matters</li>
+      <li>What happens when you don't give the model a "nothing" option</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up Notes</strong>
+      Uses Google's Teachable Machine (browser-based, images never leave the device). Make sure the webcam is working before you start. Good lighting helps a LOT — a bright lamp in front of the child works better than overhead light.
+    </div>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Open <a href="https://teachablemachine.withgoogle.com" target="_blank" rel="noopener"><strong>teachablemachine.withgoogle.com</strong></a>. Click <em>Get Started</em> → <em>Image Project</em> → <em>Standard image model</em>.</li>
+      <li>You'll see two class boxes. Click <em>+ Add a class</em> so you have three total.</li>
+      <li>Rename them: <strong>thumbs-up</strong>, <strong>thumbs-down</strong>, <strong>silly face</strong>.</li>
+      <li>Click <em>Webcam</em> under thumbs-up. Hold up 👍 and press <strong>and hold</strong> the record button. Move your thumb — close, far, left, right — take about 30 pictures.</li>
+      <li>Do the same for thumbs-down (👎).</li>
+      <li>For silly face, stick out your tongue, cross your eyes, make your silliest face. 30 pictures.</li>
+      <li>Click the big <em>Train Model</em> button. Wait 10–20 seconds.</li>
+      <li>Once it's trained, show the camera a thumbs-up! The bar should jump to <em>thumbs-up</em>. Try all three.</li>
+      <li><strong>Play Emoji Detective:</strong> close your eyes and have your friend make a pose behind you. Open eyes, look at the camera guess, then turn around to check. Did the computer call it right?</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 If something goes wrong…</strong>
+      Does it always pick the same class? Take <em>more</em> examples for the class it's ignoring. Does it get confused between two classes? Make them look more different — bigger motions, different distances.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add a "nothing" class.</strong> Take 30 photos of just the empty room. Does the model get better?</li>
+        <li><strong>Test with different lighting.</strong> Turn on a different lamp. Does it still work? Why or why not?</li>
+        <li><strong>Invite different people.</strong> Does your model work on your sibling's thumbs-up? Why might it fail?</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's the best way to make your model smarter?</p>
+        <button>Yell at it</button>
+        <button>More examples from different angles</button>
+        <button>Fewer photos</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">Why might the model get your sibling's thumbs-up wrong?</p>
+        <button>It only knows &lt;em&gt;your&lt;/em&gt; thumbs-up</button>
+        <button>It&#x27;s lazy</button>
+        <button>It hates your sibling</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="teach-computer-to-sort.html">Teach the Computer to Sort →</a>
+      <a class="btn btn-ghost" href="rock-paper-scissors-webcam.html">Rock-Paper-Scissors Webcam →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>

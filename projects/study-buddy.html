@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG-Powered Study Buddy · Ages 16+</title>
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+</head>
+<body data-band="16">
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="nav-logo" href="../index.html">Simple AI<span>Kids</span></a>
+      <ul class="nav-links">
+        <li><a href="../ages/5-8.html">Ages 5–8</a></li>
+        <li><a href="../ages/9-12.html">Ages 9–12</a></li>
+        <li><a href="../ages/13-15.html">Ages 13–15</a></li>
+        <li><a href="../ages/16-plus.html">Ages 16+</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a class="grown-ups" href="../grown-ups.html">For Grown-Ups</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="project container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> › <a href="../ages/16-plus.html">Ages 16+</a> › RAG-Powered Study Buddy</p>
+
+    <h1>RAG-Powered Study Buddy</h1>
+    <p class="lead">Build a chatbot that answers questions about <em>your</em> class notes. Learn the same Retrieval-Augmented Generation architecture real companies deploy — embeddings, vector search, and prompted LLM responses.</p>
+
+    <div class="scene-slot" data-img="../images/scenes/study-buddy.png" data-alt="A stack of notes feeding into a chatbot terminal">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Notes, embeddings, and a chatbot terminal answering a question.">
+        <defs>
+          <linearGradient id="bg16" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0f172a"/>
+            <stop offset="100%" stop-color="#1e293b"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="320" fill="url(#bg16)"/>
+        <!-- notes stack -->
+        <g transform="translate(40 70)">
+          <rect x="0"  y="20" width="130" height="160" rx="8" fill="#fde68a" transform="rotate(-6 65 100)"/>
+          <rect x="8"  y="12" width="130" height="160" rx="8" fill="#fff"/>
+          <line x1="20" y1="32" x2="128" y2="32" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="20" y1="52" x2="128" y2="52" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="20" y1="72" x2="118" y2="72" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="20" y1="92" x2="128" y2="92" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="20" y1="112" x2="100" y2="112" stroke="#94a3b8" stroke-width="2"/>
+          <text x="74" y="160" text-anchor="middle" font-size="12" fill="#475569">Your notes</text>
+        </g>
+        <!-- vector cloud -->
+        <g transform="translate(230 90)" opacity="0.95">
+          <circle cx="50" cy="40" r="36" fill="#a78bfa" opacity="0.25"/>
+          <g fill="#c4b5fd">
+            <circle cx="30" cy="30" r="4"/>
+            <circle cx="60" cy="20" r="4"/>
+            <circle cx="75" cy="50" r="4"/>
+            <circle cx="35" cy="60" r="4"/>
+            <circle cx="55" cy="50" r="4"/>
+            <circle cx="25" cy="75" r="4"/>
+            <circle cx="70" cy="75" r="4"/>
+          </g>
+          <text x="50" y="110" text-anchor="middle" font-size="12" fill="#e2e8f0">Vector DB</text>
+        </g>
+        <!-- arrows -->
+        <path d="M180 150 L225 130" stroke="#22d3ee" stroke-width="3" fill="none"/>
+        <path d="M325 140 L380 140" stroke="#22d3ee" stroke-width="3" fill="none"/>
+        <!-- terminal -->
+        <g transform="translate(380 60)">
+          <rect width="220" height="200" rx="12" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+          <rect width="220" height="24" rx="12" fill="#1e293b"/>
+          <circle cx="14" cy="12" r="4" fill="#ef4444"/>
+          <circle cx="28" cy="12" r="4" fill="#fbbf24"/>
+          <circle cx="42" cy="12" r="4" fill="#22c55e"/>
+          <text x="14" y="55"  font-family="monospace" font-size="11" fill="#22d3ee">$ python chat.py</text>
+          <text x="14" y="80"  font-family="monospace" font-size="11" fill="#fde047">Ask: What's mitosis?</text>
+          <text x="14" y="110" font-family="monospace" font-size="11" fill="#e2e8f0">› Cell division making</text>
+          <text x="14" y="126" font-family="monospace" font-size="11" fill="#e2e8f0">  two identical cells…</text>
+          <text x="14" y="150" font-family="monospace" font-size="10" fill="#64748b">[bio-notes.pdf:chunk_3]</text>
+          <rect x="14" y="165" width="8" height="14" fill="#22d3ee">
+            <animate attributeName="opacity" values="0;1;0" dur="1.1s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+      </svg>
+    </div>
+
+    <h2>What You'll Make</h2>
+    <p>A CLI (or optionally a small web UI) that takes a folder of your notes — PDFs, Markdown, or plain text — and lets you ask questions. The bot retrieves the most relevant chunks from your notes and uses an LLM to write a grounded answer with citations. This is the same architecture behind Notion Q&amp;A, ChatGPT with custom data, and countless "chat with your docs" products.</p>
+
+    <h2>What You'll Need</h2>
+    <ul class="checklist">
+      <li>Python 3.10+ and a terminal</li>
+      <li>An Anthropic or OpenAI API key (~$1 of credit is enough for this project)</li>
+      <li>A folder of study notes (start with 5–20 pages)</li>
+      <li>About a weekend</li>
+      <li>Basic familiarity with Python, virtual environments, and pip</li>
+    </ul>
+
+    <h2>What You'll Learn</h2>
+    <ul class="checklist">
+      <li>What embeddings are and how semantic similarity works</li>
+      <li>How vector databases enable fast retrieval across millions of chunks</li>
+      <li>Why chunking strategy matters (and how to break your notes correctly)</li>
+      <li>Prompt design for grounded, citation-backed answers</li>
+      <li>Real-world tradeoffs: cost per query, latency, and when RAG fails</li>
+    </ul>
+
+    <div class="callout grown-up">
+      <strong>🧑‍🍳 Grown-Up / Self Notes</strong>
+      Keep the API key in a local <code>.env</code> file; never commit it. Watch your API usage — chatting about one document costs fractions of a cent, but embedding a 500-page book can run a dollar or two. If you're under 18, you'll need parent approval to create an API account.
+    </div>
+
+    <div class="video-slot"
+         data-title="Watch: Building a RAG Study Buddy"
+         data-note="Drop an MP4 in videos/ or set data-yt to a YouTube walkthrough ID.">
+    </div>
+
+    <div class="concept-diagram">
+      <p class="cd-title">RAG Pipeline — Index, Retrieve, Generate</p>
+      <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Documents are chunked, embedded, retrieved, then used by the LLM.">
+        <defs>
+          <marker id="arr16" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#22d3ee"/>
+          </marker>
+        </defs>
+        <!-- docs -->
+        <rect x="10"  y="40" width="90" height="70" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+        <text x="55"  y="78" text-anchor="middle" font-size="14">📄 Docs</text>
+        <path d="M100 75 L135 75" stroke="#22d3ee" stroke-width="3" marker-end="url(#arr16)"/>
+        <!-- chunks -->
+        <rect x="140" y="40" width="90" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="185" y="70" text-anchor="middle" font-size="13" font-weight="700">Chunk</text>
+        <text x="185" y="90" text-anchor="middle" font-size="11" fill="#475569">size + overlap</text>
+        <path d="M230 75 L265 75" stroke="#22d3ee" stroke-width="3" marker-end="url(#arr16)"/>
+        <!-- embed -->
+        <rect x="270" y="40" width="110" height="70" rx="8" fill="#ede9fe" stroke="#6366f1" stroke-width="2"/>
+        <text x="325" y="70" text-anchor="middle" font-size="13" font-weight="700">Embed</text>
+        <text x="325" y="90" text-anchor="middle" font-size="11" fill="#475569">→ vectors</text>
+        <path d="M380 75 L415 75" stroke="#22d3ee" stroke-width="3" marker-end="url(#arr16)"/>
+        <!-- vector db -->
+        <rect x="420" y="40" width="100" height="70" rx="8" fill="#0f172a"/>
+        <text x="470" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#22d3ee">Vector DB</text>
+        <text x="470" y="90" text-anchor="middle" font-size="11" fill="#94a3b8">Chroma</text>
+        <!-- query flow -->
+        <rect x="10" y="140" width="120" height="60" rx="8" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+        <text x="70" y="175" text-anchor="middle" font-size="13" font-weight="700">User question</text>
+        <path d="M130 170 L250 170" stroke="#f472b6" stroke-width="3" marker-end="url(#arr16)"/>
+        <rect x="255" y="140" width="130" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="320" y="168" text-anchor="middle" font-size="13" font-weight="700">Retrieve top-k</text>
+        <text x="320" y="186" text-anchor="middle" font-size="11" fill="#475569">(similar chunks)</text>
+        <path d="M385 170 L440 170" stroke="#f472b6" stroke-width="3" marker-end="url(#arr16)"/>
+        <rect x="445" y="140" width="170" height="60" rx="8" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <text x="530" y="165" text-anchor="middle" font-size="13" font-weight="700">LLM → grounded</text>
+        <text x="530" y="185" text-anchor="middle" font-size="11" fill="#475569">answer + citation</text>
+        <!-- vertical link -->
+        <path d="M470 110 L470 140" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+
+    <h2>The Architecture</h2>
+    <p>RAG works in three phases:</p>
+    <ol>
+      <li><strong>Index time:</strong> Split documents into chunks, embed each chunk into a vector, store in a database.</li>
+      <li><strong>Query time:</strong> Embed the user's question, find the most similar chunks in the database.</li>
+      <li><strong>Generation:</strong> Stuff the retrieved chunks into the LLM's context and ask for an answer.</li>
+    </ol>
+
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Set up your project:
+        <pre class="code"><code>mkdir study-buddy &amp;&amp; cd study-buddy
+python -m venv .venv
+source .venv/bin/activate        # on Windows: .venv\Scripts\activate
+pip install anthropic chromadb pypdf python-dotenv</code></pre>
+        Create a <code>.env</code> file with <code>ANTHROPIC_API_KEY=sk-ant-...</code>.
+      </li>
+      <li>Create a <code>notes/</code> folder and drop some PDFs or <code>.md</code> files in it.</li>
+      <li>Write <code>ingest.py</code> — load docs, chunk them, embed them, store them:
+        <pre class="code"><code>import os, glob
+from pypdf import PdfReader
+import chromadb
+from dotenv import load_dotenv
+load_dotenv()
+
+client = chromadb.PersistentClient(path="./db")
+coll = client.get_or_create_collection("notes")
+
+def chunks(text, size=800, overlap=100):
+    for i in range(0, len(text), size - overlap):
+        yield text[i:i+size]
+
+def load(path):
+    if path.endswith(".pdf"):
+        return "\n".join(p.extract_text() or "" for p in PdfReader(path).pages)
+    return open(path, encoding="utf-8").read()
+
+ids, docs, metas = [], [], []
+for path in glob.glob("notes/**/*", recursive=True):
+    if not os.path.isfile(path): continue
+    text = load(path)
+    for i, chunk in enumerate(chunks(text)):
+        ids.append(f"{path}:{i}")
+        docs.append(chunk)
+        metas.append({"source": path, "chunk": i})
+
+coll.add(ids=ids, documents=docs, metadatas=metas)
+print(f"Indexed {len(ids)} chunks.")</code></pre>
+        Run it: <code>python ingest.py</code>. Chroma uses a default embedding model, so no extra API setup needed.
+      </li>
+      <li>Write <code>chat.py</code> — retrieve + generate:
+        <pre class="code"><code>import os, chromadb
+from anthropic import Anthropic
+from dotenv import load_dotenv
+load_dotenv()
+
+db = chromadb.PersistentClient(path="./db").get_collection("notes")
+llm = Anthropic()
+
+SYSTEM = """You answer questions using ONLY the provided notes.
+If the notes don't contain the answer, say so.
+Cite sources like [source.pdf:chunk_3] inline."""
+
+def answer(question, k=4):
+    hits = db.query(query_texts=[question], n_results=k)
+    context = "\n\n".join(
+        f"[{m['source']}:{m['chunk']}] {d}"
+        for d, m in zip(hits["documents"][0], hits["metadatas"][0])
+    )
+    msg = llm.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=800,
+        system=SYSTEM,
+        messages=[{"role": "user",
+                   "content": f"Notes:\n{context}\n\nQuestion: {question}"}],
+    )
+    return msg.content[0].text
+
+if __name__ == "__main__":
+    while True:
+        q = input("\nAsk: ").strip()
+        if not q: break
+        print("\n" + answer(q))</code></pre>
+        Run it: <code>python chat.py</code>, then ask questions about your notes.
+      </li>
+      <li>Evaluate honestly. Ask questions your notes <em>should</em> answer, and ones they shouldn't. Does the bot know when to say "I don't know"? If it hallucinates, why?</li>
+      <li>Tune chunk size, overlap, and <code>k</code> (number of retrieved chunks). Small chunks = precise but lose context. Large chunks = more context but noisier retrieval.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>🪄 Common issues…</strong>
+      <strong>PDFs with poor OCR:</strong> <code>pypdf</code> extracts garbage from scanned PDFs. Swap in <code>pytesseract</code> for OCR. <strong>Irrelevant retrievals:</strong> Your chunks may be too big or your question phrasing too vague. Try hybrid search (keyword + vector). <strong>Hallucinations:</strong> Tighten the system prompt and add refusal examples.
+    </div>
+
+    <h2>Try This Next</h2>
+    <div class="try-next">
+      <ul>
+        <li><strong>Add a web UI</strong> with Gradio or Streamlit. Deploy it on Hugging Face Spaces for free.</li>
+        <li><strong>Measure retrieval quality.</strong> Build a test set of 20 Q&amp;A pairs. Compute hit-rate: does the correct source chunk appear in the top-k?</li>
+        <li><strong>Go hybrid.</strong> Add BM25 keyword search alongside vector search. Compare the two, then combine.</li>
+        <li><strong>Swap the model.</strong> Try GPT-4o-mini, Claude Haiku, and a local Llama model. Compare cost, latency, and answer quality.</li>
+        <li><strong>Add memory.</strong> Let the bot remember the last few turns so you can ask follow-ups.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h3>🎯 Quick Quiz</h3>
+      <div class="q" data-correct="1">
+        <p class="prompt">What's the point of the vector database?</p>
+        <button>To store the LLM's weights</button>
+        <button>Fast similarity search over embedded chunks</button>
+        <button>To count API tokens</button>
+      </div>
+      <div class="q" data-correct="0">
+        <p class="prompt">A tradeoff of very large chunks:</p>
+        <button>More context per hit, but noisier retrieval</button>
+        <button>Always better answers</button>
+        <button>Reduces API cost to zero</button>
+      </div>
+      <div class="q" data-correct="2">
+        <p class="prompt">Why ask the LLM to cite sources?</p>
+        <button>To use more tokens</button>
+        <button>To sound formal</button>
+        <button>So you can verify the answer came from the notes (not a hallucination)</button>
+      </div>
+    </div>
+
+    <h2>What's Next?</h2>
+    <p>
+      <a class="btn" href="full-stack-ai-product.html">Full-Stack AI Product →</a>
+      <a class="btn btn-ghost" href="fine-tune-llm.html">Fine-Tune a Small LLM →</a>
+    </p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="../grown-ups.html">For Grown-Ups</a> ·
+        <a href="../glossary.html">Glossary</a> ·
+        <a href="../safety.html">Safety</a>
+      </div>
+      <small>Simple AI Projects for Kids — made with 💛 for curious kids.</small>
+    </div>
+  </footer>
+
+  <script src="../js/projects_meta.js"></script>
+  <script src="../js/common.js?v=10" defer></script>
+</body>
+</html>
