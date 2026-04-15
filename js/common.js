@@ -483,7 +483,7 @@
     soon.forEach(c => c.classList.add('coming-soon-card'));
     const details = document.createElement('details');
     details.className = 'coming-soon-group';
-    details.innerHTML = '<summary>🔭 Almost ready — coming soon (' + soon.length + ')</summary><div class="grid grid-3 coming-soon-grid"></div>';
+    details.innerHTML = '<summary>🔭 Almost ready (' + soon.length + ')</summary><div class="grid grid-3 coming-soon-grid"></div>';
     const innerGrid = details.querySelector('.coming-soon-grid');
     soon.forEach(c => innerGrid.appendChild(c));
     grid.parentNode.insertBefore(details, grid.nextSibling);
