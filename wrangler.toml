@@ -1,0 +1,10 @@
+# Cloudflare Pages project config.
+# Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+#
+# This site is 100% static HTML/CSS/JS — no build step, no Functions.
+# `pages_build_output_dir = "."` tells Cloudflare Pages to publish the
+# repository root as-is, which is where index.html lives.
+
+name = "simple-ai-kids"
+compatibility_date = "2026-04-15"
+pages_build_output_dir = "."
