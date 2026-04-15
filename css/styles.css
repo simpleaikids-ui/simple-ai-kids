@@ -1155,7 +1155,20 @@ html[data-theme="dark"] .lead,
 html[data-theme="dark"] .fc-role,
 html[data-theme="dark"] .sc-note,
 html[data-theme="dark"] small { color: var(--text-soft); }
-html[data-theme="dark"] .hero { filter: brightness(0.9); }
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] .band-header {
+  background:
+    radial-gradient(circle at 20% 20%, #3b1e3a 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, #1e2a4a 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, #1a3a2e 0%, transparent 40%),
+    #0b1222;
+}
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .band-header h1 { color: #f8fafc; }
+html[data-theme="dark"] .hero p.lead,
+html[data-theme="dark"] .band-header p.lead,
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .band-header p { color: #e2e8f0; }
 html[data-theme="dark"] .callout { background: #312e4a; }
 html[data-theme="dark"] .callout.grown-up { background: #3b3a5c; }
 html[data-theme="dark"] pre.code, html[data-theme="dark"] code {
