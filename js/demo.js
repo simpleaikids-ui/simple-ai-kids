@@ -175,8 +175,8 @@
     // Seesaw math: net mood from -1 (sad) … 0 … +1 (happy)
     let net = 0;
     if (r.h + r.s > 0) net = (r.h - r.s) / (r.h + r.s);
-    const tilt = Math.max(-18, Math.min(18, net * 18));  // degrees
-    const pos  = 50 + net * 42; // ball position %
+    const tilt = Math.max(-14, Math.min(14, net * 14));  // degrees
+    const pos  = 50 + net * 34; // ball position % (stays inside beam)
 
     beam.style.transform = reducedMotion ? '' : `rotate(${-tilt}deg)`;
     ball.style.left = pos + '%';

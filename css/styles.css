@@ -1827,26 +1827,45 @@ html[data-theme="dark"] .mascot-bubble { background: #fff3d6; }
    ============================================================ */
 
 /* ---- Homepage seesaw mood meter ---- */
-.mood-seesaw { margin: 18px auto 8px; max-width: 560px; padding: 14px 18px 6px;
-  background: #fffbea; border-radius: 18px; border: 2px dashed #fde68a; }
-.seesaw-labels { display: flex; justify-content: space-between; font-weight: 700;
-  font-size: .95rem; margin-bottom: 6px; color: #64748b; }
-.ml-happy { color: #16a34a; } .ml-sad { color: #ef4444; } .ml-mid { color:#888; }
-.seesaw-track { position: relative; height: 90px; }
-.seesaw-beam { position: absolute; left: 8%; right: 8%; top: 38px; height: 10px;
+.mood-seesaw { margin: 20px auto 8px; max-width: 720px; padding: 18px 28px 22px;
+  background: #fffbea; border-radius: 20px; border: 2px dashed #fde68a; }
+.seesaw-labels { display: flex; justify-content: space-between; align-items: center;
+  font-weight: 700; font-size: .95rem; margin-bottom: 14px; color: #64748b;
+  padding: 0 12px; }
+.seesaw-labels .ml { white-space: nowrap; }
+.ml-happy { color: #16a34a; } .ml-sad { color: #ef4444; } .ml-mid { color:#888; font-size: 1.15rem; }
+.seesaw-track { position: relative; height: 120px; overflow: visible; padding: 0 8px; }
+.seesaw-beam { position: absolute; left: 14%; right: 14%; top: 78px; height: 12px;
   background: linear-gradient(90deg, #fecaca, #fde68a, #bbf7d0);
-  border-radius: 999px; transform-origin: 50% 50%; transition: transform .5s cubic-bezier(.34,1.56,.64,1);
+  border-radius: 999px; transform-origin: 50% 50%;
+  transition: transform .5s cubic-bezier(.34,1.56,.64,1);
   box-shadow: 0 2px 0 rgba(0,0,0,.08); }
-.seesaw-ball { position: absolute; top: 0; transform: translateX(-50%);
-  font-size: 2.6rem; transition: left .5s cubic-bezier(.34,1.56,.64,1); width: 56px;
-  text-align: center; line-height: 1; }
+/* Ball rides above the beam; left is driven by JS and clamped to stay inside */
+.seesaw-ball { position: absolute; top: 18px; transform: translateX(-50%);
+  font-size: 2.6rem; transition: left .5s cubic-bezier(.34,1.56,.64,1);
+  width: 56px; height: 56px; text-align: center; line-height: 56px;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,.08)); }
 .seesaw-ball.bounce { animation: seesaw-bounce .6s ease; }
 @keyframes seesaw-bounce { 0%,100% { transform: translateX(-50%) scale(1); }
   40% { transform: translateX(-50%) scale(1.25) rotate(-8deg); }
   70% { transform: translateX(-50%) scale(.95) rotate(4deg); } }
-.seesaw-fulcrum { position: absolute; left: 50%; bottom: 2px; width: 0; height: 0;
-  border-left: 18px solid transparent; border-right: 18px solid transparent;
-  border-bottom: 26px solid #fb923c; transform: translateX(-50%); }
+.seesaw-fulcrum { position: absolute; left: 50%; bottom: 0; width: 0; height: 0;
+  border-left: 22px solid transparent; border-right: 22px solid transparent;
+  border-bottom: 34px solid #fb923c; transform: translateX(-50%);
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,.1)); }
+/* Small "ground" shadow under the fulcrum so it looks planted */
+.seesaw-track::after {
+  content: ''; position: absolute; left: 50%; bottom: -6px;
+  width: 120px; height: 8px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,0,0,.12), transparent 70%);
+  transform: translateX(-50%); pointer-events: none;
+}
+@media (max-width: 560px) {
+  .mood-seesaw { max-width: 100%; padding: 16px 18px 20px; }
+  .seesaw-track { height: 110px; }
+  .seesaw-beam { top: 72px; left: 10%; right: 10%; }
+  .seesaw-ball { font-size: 2.2rem; width: 48px; height: 48px; line-height: 48px; }
+}
 
 /* ---- Word buckets ---- */
 .word-buckets { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
