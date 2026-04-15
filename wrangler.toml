@@ -7,4 +7,11 @@
 
 name = "simple-ai-kids"
 compatibility_date = "2026-04-15"
+
+# Cloudflare Pages (Git-integrated) uses this:
 pages_build_output_dir = "."
+
+# Workers Static Assets (wrangler deploy) uses this:
+[assets]
+directory = "."
+not_found_handling = "404-page"
