@@ -251,7 +251,14 @@
   };
   function fireConfetti(x, y) {
     if (reducedMotion) return;
-    const theme = CONFETTI_THEME[bandKey] || CONFETTI_THEME.home;
+    let theme = CONFETTI_THEME[bandKey] || CONFETTI_THEME.home;
+    // Rainbow-confetti prize unlock: override palette with a wide rainbow
+    if (document.documentElement.classList.contains('prize-rainbow')) {
+      theme = {
+        glyphs: ['⭐','🌈','🎉','🦄','✨','🎈','🍭','💫'],
+        colors: ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899']
+      };
+    }
     const canvas = document.createElement('canvas');
     canvas.className = 'confetti-canvas';
     canvas.width = window.innerWidth;

@@ -2463,3 +2463,119 @@ html[data-theme="dark"] .sticker-sparkline {
   box-shadow: 4px 4px 0 rgba(255,255,255,.15);
 }
 html[data-theme="dark"] .sticker-sparkline .sp-stat { color: #94a3b8; }
+
+/* ================================================================
+   Lily's Prize Shop (v28)
+   ================================================================ */
+.ps-balance {
+  background: #fff;
+  border: 2px solid #1e1e2e;
+  border-radius: 18px;
+  padding: 20px 24px;
+  box-shadow: 6px 6px 0 #1e1e2e;
+  margin: 20px auto 28px;
+  max-width: 720px;
+  text-align: center;
+}
+.ps-balance .ps-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ps-stat { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+.ps-stat .ps-num { font-size: 2rem; font-weight: 800; }
+.ps-stat .ps-lbl { font-size: .8rem; color: #475569; text-transform: uppercase; letter-spacing: .05em; }
+.ps-avail .ps-num { color: #eab308; }
+.ps-hint { font-size: .9rem; color: #475569; margin-top: 12px; }
+
+.prize-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+.prize-card {
+  background: #fff;
+  border: 2px solid #1e1e2e;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #1e1e2e;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.prize-card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 #1e1e2e; }
+.prize-icon { font-size: 3rem; line-height: 1; margin-bottom: 8px; }
+.prize-name { margin: 6px 0 4px; font-size: 1.1rem; }
+.prize-blurb { color: #475569; font-size: .9rem; flex: 1; margin: 6px 0 12px; }
+.prize-cost  { font-weight: 800; font-size: 1.1rem; color: #eab308; margin-bottom: 10px; }
+.prize-btn   { width: 100%; }
+
+.prize-card.prize-locked     { opacity: .55; }
+.prize-card.prize-locked .prize-btn { background: #e2e8f0; color: #475569; cursor: not-allowed; border-color: #cbd5e1; box-shadow: none; }
+.prize-card.prize-claimed    { background: linear-gradient(135deg, #fef9c3, #fff); }
+.prize-card.prize-claimed .prize-btn { background: #bbf7d0; color: #14532d; cursor: default; }
+.prize-card.prize-repeatable { background: linear-gradient(135deg, #e0f2fe, #fff); }
+
+.ps-reward-panel {
+  background: #fef9c3;
+  border: 2px dashed #eab308;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .35s, transform .35s;
+}
+.ps-reward-panel.show { opacity: 1; transform: translateY(0); }
+.ps-reward { display: flex; align-items: center; gap: 14px; }
+.ps-reward-icon { font-size: 2.4rem; }
+.ps-reward-text { flex: 1; }
+.ps-reward-text .btn { margin-left: 8px; }
+
+/* ---- Golden crown on mascot (prize: golden-crown) ---- */
+.mascot-wrap .lily-crown {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-8deg);
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(234,179,8,.6));
+  animation: crown-sparkle 2.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+@keyframes crown-sparkle {
+  0%, 100% { transform: translateX(-50%) rotate(-8deg) scale(1); }
+  50%      { transform: translateX(-50%) rotate(-4deg) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mascot-wrap .lily-crown { animation: none; }
+}
+
+/* ---- Rainbow-mode confetti canvas tint (prize: rainbow-confetti) ---- */
+html.prize-rainbow .confetti-canvas {
+  filter: hue-rotate(0deg) saturate(1.2);
+  animation: rainbow-spin 2s linear infinite;
+}
+@keyframes rainbow-spin {
+  from { filter: hue-rotate(0deg) saturate(1.2); }
+  to   { filter: hue-rotate(360deg) saturate(1.2); }
+}
+
+/* ---- Sneak-peek: reveal coming-soon card body on hover (prize: sneak-peek) ---- */
+html.prize-sneak-peek .coming-soon-card::after {
+  content: "🕵️ sneak peek unlocked";
+  display: block;
+  margin-top: 6px;
+  font-size: .75rem;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .prize-grid { grid-template-columns: 1fr; }
+  .ps-reward { flex-direction: column; text-align: center; }
+}
