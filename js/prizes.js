@@ -12,18 +12,16 @@
 
   const STICKER_KEY = 'sai_stickers_v1';
   const PRIZE_KEY   = 'sai_prizes_v1';
-  const SPENT_KEY   = 'sai_stickers_spent_v1'; // running tally of spent stickers
 
   const getJSON = (k) => { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch(e) { return {}; } };
   const setJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} };
-  const getInt  = (k) => { const v = parseInt(localStorage.getItem(k), 10); return isNaN(v) ? 0 : v; };
-  const setInt  = (k, v) => { try { localStorage.setItem(k, String(v)); } catch(e) {} };
 
+  /* Milestone model: stickers are NEVER spent. A prize unlocks once you've
+     earned enough total stickers to reach its cost. This keeps every prize
+     reachable (total: 26 stickers, max prize cost: 26). */
   function stickerCount() { return Object.keys(getJSON(STICKER_KEY)).length; }
-  function spent()       { return getInt(SPENT_KEY); }
-  function available()   { return Math.max(0, stickerCount() - spent()); }
-  function claims()      { return getJSON(PRIZE_KEY); }
-  function isClaimed(id) { return !!claims()[id]; }
+  function claims()       { return getJSON(PRIZE_KEY); }
+  function isClaimed(id)  { return !!claims()[id]; }
 
   /* ---- JOKES (for the 1-sticker mystery joke) ---- */
   const JOKES = [
@@ -186,27 +184,27 @@
     if (!host) return;
 
     const have = stickerCount();
-    const used = spent();
-    const avail = available();
     const c = claims();
+    const claimedCount = Object.keys(c).length;
     const totalProjects = (window.PROJECTS_META && Object.keys(window.PROJECTS_META).length) || 26;
+    const ready = PRIZES.filter(p => have >= p.cost && !c[p.id] && (!p.requireAllProjects || have >= totalProjects)).length;
 
     host.innerHTML = `
       <div class="ps-balance">
         <div class="ps-row">
           <div class="ps-stat"><span class="ps-num">${have}</span><span class="ps-lbl">Earned ⭐</span></div>
-          <div class="ps-stat"><span class="ps-num">${used}</span><span class="ps-lbl">Spent 🎁</span></div>
-          <div class="ps-stat ps-avail"><span class="ps-num">${avail}</span><span class="ps-lbl">To spend ✨</span></div>
+          <div class="ps-stat ps-avail"><span class="ps-num">${ready}</span><span class="ps-lbl">Ready ✨</span></div>
+          <div class="ps-stat"><span class="ps-num">${claimedCount}/${PRIZES.length}</span><span class="ps-lbl">Prizes 🎁</span></div>
         </div>
-        <p class="ps-hint">Every finished project earns 1 sticker. Redeem them below — most prizes unlock effects across the whole site!</p>
+        <p class="ps-hint">Every finished project earns a sticker ⭐ — and stickers are <b>never spent</b>! Each prize unlocks as soon as you've earned enough, so you can collect them all.</p>
       </div>
 
       <div class="prize-grid">
         ${PRIZES.map(p => {
           const claimed = !!c[p.id];
-          const canAfford = avail >= p.cost;
+          const reached = have >= p.cost;
           const meetsReq = !p.requireAllProjects || have >= totalProjects;
-          const canClaim = !claimed && canAfford && meetsReq;
+          const canClaim = !claimed && reached && meetsReq;
           const state = claimed ? (p.repeatable ? 'repeatable' : 'claimed')
                       : canClaim ? 'ready'
                       : 'locked';
@@ -215,15 +213,15 @@
               <div class="prize-icon">${p.icon}</div>
               <h3 class="prize-name">${p.name}</h3>
               <p class="prize-blurb">${p.blurb}</p>
-              <div class="prize-cost">${p.cost} ⭐</div>
+              <div class="prize-cost">${p.cost} ⭐ to unlock</div>
               <button class="btn prize-btn"
                 ${claimed && !p.repeatable ? 'disabled' : ''}
                 data-prize="${p.id}">
                 ${claimed && !p.repeatable ? '✓ Unlocked'
                  : claimed && p.repeatable ? 'Use again'
-                 : canClaim ? 'Redeem'
+                 : canClaim ? 'Unlock it!'
                  : !meetsReq ? 'Finish all projects first'
-                 : `Need ${p.cost - avail} more ⭐`}
+                 : `${p.cost - have} more ⭐ to go`}
               </button>
             </div>`;
         }).join('')}
@@ -239,22 +237,24 @@
         if (!prize) return;
         const already = !!claims()[id];
         if (already && !prize.repeatable) return;
-        if (!already && available() < prize.cost) return;
+        if (!already && stickerCount() < prize.cost) return;
         if (prize.requireAllProjects && stickerCount() < totalProjects) return;
 
-        // Spend only on first claim; repeatable prizes are free after that.
+        // Milestone model: never deduct stickers. Record the claim date.
         if (!already) {
           const prizes = claims();
           prizes[id] = { date: new Date().toISOString(), cost: prize.cost };
           setJSON(PRIZE_KEY, prizes);
-          setInt(SPENT_KEY, spent() + prize.cost);
         }
 
-        triggerPrize(prize);
-        renderShop();
-        if (window.saiPlaySound) window.saiPlaySound('cheer');
         const r = btn.getBoundingClientRect();
+        renderShop();                  // refresh grid first
+        triggerPrize(prize);           // then populate the fresh reward panel
+        if (window.saiPlaySound) window.saiPlaySound('cheer');
         if (window.fireConfetti) window.fireConfetti(r.left + r.width / 2, r.top + r.height / 2);
+        // Scroll the reward into view so the joke/message is actually seen
+        const panel = document.getElementById('ps-reward-panel');
+        if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
     });
   }
