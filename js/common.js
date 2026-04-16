@@ -40,7 +40,16 @@
     const _base = _styleLink
       ? _styleLink.getAttribute('href').replace(/css\/styles\.css.*$/, '')
       : '';
-    const _lilySrc = _base + 'images/faces/lily.png';
+    /* Pre-check the golden-crown prize state BEFORE creating the img tag,
+       so the crowned Lily loads on first paint — no flicker / no swap lag. */
+    let _crownActive = false;
+    try {
+      const _claims = JSON.parse(localStorage.getItem('sai_prizes_v1') || '{}');
+      _crownActive = !!_claims['golden-crown'] && !_claims['golden-crown'].disabled;
+    } catch (e) { /* ignore */ }
+    const _lilySrc = _base + (_crownActive ? 'images/faces/lily_crown.png' : 'images/faces/lily.png');
+    /* Mark the root so prizes.js knows not to swap/probe again */
+    if (_crownActive) document.documentElement.classList.add('prize-crown-preloaded');
 
     const wrap = document.createElement('div');
     wrap.className = 'mascot-wrap mascot-lily';
@@ -90,23 +99,51 @@
       setTimeout(() => wrap.classList.remove('flapping'), 800);
     });
 
-    /* Click → squawk speech bubble + flap + tiny confetti */
+    /* Click → squawk speech bubble + flap + tiny confetti.
+       Belt-and-suspenders: (a) direct listener on wrap, (b) document-level
+       delegated listener via .closest() so any overlapping pointer-events
+       can't steal the click, (c) touchstart for mobile, (d) inline styles
+       that override any media-query display:none on the bubble. */
     let bubbleTimer = null;
-    wrap.addEventListener('click', () => {
-      const msg = greetings[Math.floor(Math.random() * greetings.length)];
-      bubble.textContent = msg;
-      bubble.classList.add('show');
-      wrap.classList.add('flapping');
-      clearTimeout(bubbleTimer);
-      bubbleTimer = setTimeout(() => {
-        bubble.classList.remove('show');
-        wrap.classList.remove('flapping');
-      }, 2200);
-      if (window.fireConfetti) {
-        const r = wrap.getBoundingClientRect();
-        window.fireConfetti(r.left + r.width / 2, r.top + r.height / 2);
+    function showBubble() {
+      try {
+        const msg = greetings[Math.floor(Math.random() * greetings.length)];
+        bubble.textContent = msg;
+        bubble.classList.add('show');
+        // Force visible — defeat any rogue display:none / opacity:0 rule.
+        bubble.style.setProperty('display', 'block', 'important');
+        bubble.style.setProperty('opacity', '1', 'important');
+        bubble.style.setProperty('visibility', 'visible', 'important');
+        bubble.style.setProperty('z-index', '9999', 'important');
+        wrap.classList.add('flapping');
+        clearTimeout(bubbleTimer);
+        bubbleTimer = setTimeout(() => {
+          bubble.classList.remove('show');
+          bubble.style.removeProperty('opacity');
+          bubble.style.removeProperty('display');
+          bubble.style.removeProperty('visibility');
+          bubble.style.removeProperty('z-index');
+          wrap.classList.remove('flapping');
+        }, 2200);
+        if (window.fireConfetti) {
+          const r = wrap.getBoundingClientRect();
+          window.fireConfetti(r.left + r.width / 2, r.top + r.height / 2);
+        }
+      } catch (err) {
+        console.error('Lily bubble error:', err);
       }
-    });
+    }
+    wrap.addEventListener('click', showBubble);
+    wrap.addEventListener('touchstart', (e) => { e.preventDefault(); showBubble(); }, { passive: false });
+    /* Delegated fallback: if the direct listener never fires because of an
+       overlapping layer, document-level still catches any click inside wrap. */
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest || !e.target.closest('.mascot-wrap')) return;
+      if (!wrap.isConnected) return;
+      // Deduplicate: the direct handler already ran — check bubble state.
+      if (bubble.classList.contains('show')) return;
+      showBubble();
+    }, true);
 
     /* Occasional fly-across animation: every 25–45s Lily glides across the hero */
     if (!reducedMotion) {
@@ -261,38 +298,61 @@
     }
     const canvas = document.createElement('canvas');
     canvas.className = 'confetti-canvas';
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
     const pieces = [];
-    for (let i = 0; i < 90; i++) {
-      const useGlyph = Math.random() < 0.45;
+    // Fewer pieces + fewer glyphs = smoother on lower-end devices.
+    // Glyphs (emoji) are far more expensive than rects to draw.
+    const COUNT = 60;
+    const MAX_LIFE = 110;
+    for (let i = 0; i < COUNT; i++) {
+      const useGlyph = Math.random() < 0.25;
+      const angle = (Math.random() - 0.5) * Math.PI; // spread upward
+      const speed = 9 + Math.random() * 9;
       pieces.push({
         x: x, y: y,
-        vx: (Math.random() - 0.5) * 14,
-        vy: Math.random() * -14 - 4,
-        g: 0.35 + Math.random() * 0.15,
+        vx: Math.sin(angle) * speed,
+        vy: -Math.abs(Math.cos(angle)) * speed - 2,
+        g: 0.55 + Math.random() * 0.15,           // snappier fall
+        drag: 0.985,                               // smooth deceleration
         w: 6 + Math.random() * 6,
-        h: 8 + Math.random() * 10,
+        h: 9 + Math.random() * 10,
         rot: Math.random() * Math.PI * 2,
-        vr: (Math.random() - 0.5) * 0.3,
+        vr: (Math.random() - 0.5) * 0.35,
         color: theme.colors[Math.floor(Math.random() * theme.colors.length)],
         glyph: useGlyph ? theme.glyphs[Math.floor(Math.random() * theme.glyphs.length)] : null,
-        size: 16 + Math.random() * 12,
+        size: 16 + Math.random() * 10,
         life: 0,
       });
     }
-    function frame() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let last = performance.now();
+    function frame(now) {
+      // Time-based step keeps motion smooth even if a frame stutters.
+      const dt = Math.min((now - last) / 16.67, 2);
+      last = now;
+      ctx.clearRect(0, 0, W, H);
       let alive = 0;
-      pieces.forEach(p => {
-        p.vy += p.g;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += p.vr;
-        p.life++;
-        if (p.y < canvas.height + 30 && p.life < 180) alive++;
+      for (let i = 0; i < pieces.length; i++) {
+        const p = pieces[i];
+        p.vy += p.g * dt;
+        p.vx *= Math.pow(p.drag, dt);
+        p.vy *= Math.pow(p.drag, dt);
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.rot += p.vr * dt;
+        p.life += dt;
+        if (p.y > H + 40 || p.life > MAX_LIFE) continue;
+        alive++;
+        // Fade out near end of life
+        const fade = p.life > MAX_LIFE - 25 ? Math.max(0, (MAX_LIFE - p.life) / 25) : 1;
+        ctx.globalAlpha = fade;
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
@@ -306,11 +366,12 @@
           ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
         }
         ctx.restore();
-      });
+      }
+      ctx.globalAlpha = 1;
       if (alive > 0) requestAnimationFrame(frame);
       else canvas.remove();
     }
-    frame();
+    requestAnimationFrame(frame);
   }
 
   /* ================================================================
@@ -552,7 +613,7 @@
     if (article.classList.contains('about-page')) return;
     const slug = location.pathname.split('/').pop().replace(/\.html$/, '');
     if (!slug || slug === 'index') return;
-    if (['about', 'grown-ups', 'glossary', 'safety', 'coming-soon'].includes(slug)) return;
+    if (['about', 'grown-ups', 'glossary', 'safety', 'coming-soon', 'prizes', 'ai-mistakes', 'path'].includes(slug)) return;
 
     const title = (document.querySelector('article.project h1')?.textContent || slug).trim();
     const emoji = (document.querySelector('article.project .hero-thumb')?.textContent || '⭐').trim();

@@ -1439,8 +1439,12 @@ html[data-theme="dark"] .progress-badge { background: rgba(30,41,59,0.9); color:
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  white-space: nowrap;
-  max-width: 180px;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 220px;
+  width: max-content;
+  line-height: 1.3;
+  text-align: center;
   opacity: 0;
   transform: translateY(4px) scale(0.9);
   transition: opacity .2s ease, transform .2s ease;
@@ -1448,8 +1452,32 @@ html[data-theme="dark"] .progress-badge { background: rgba(30,41,59,0.9); color:
   box-shadow: 3px 3px 0 #1e1e2e;
 }
 @media (max-width: 800px) {
-  /* Hide the speech bubble on narrow screens — not enough room */
-  .mascot-bubble { display: none !important; }
+  /* Narrow screens: reposition the bubble ABOVE Lily, centered on her head,
+     so it stays on-screen instead of clipping off the right edge. */
+  .mascot-bubble {
+    right: auto;
+    left: 50%;
+    bottom: 100%;
+    transform: translate(-50%, 4px) scale(0.9);
+    font-size: 0.82rem;
+    max-width: 180px;
+    margin-bottom: 4px;
+  }
+  .mascot-bubble.show {
+    transform: translate(-50%, 0) scale(1);
+  }
+  .mascot-bubble::after {
+    right: auto; left: 50%;
+    bottom: -14px;
+    border-left-color: transparent;
+    border-top-color: #1e1e2e;
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 420px) {
+  /* Very narrow: the mascot is pinned bottom-right at 90×90. Shift the bubble
+     up-and-to-the-left so it doesn't overlap the mascot or clip the viewport. */
+  .mascot-bubble { max-width: 150px; font-size: 0.78rem; }
 }
 .mascot-bubble::after {
   content: "";
@@ -2513,11 +2541,92 @@ html[data-theme="dark"] .sticker-sparkline .sp-stat { color: #94a3b8; }
 .prize-cost  { font-weight: 800; font-size: 1.1rem; color: #eab308; margin-bottom: 10px; }
 .prize-btn   { width: 100%; }
 
-.prize-card.prize-locked     { opacity: .55; }
-.prize-card.prize-locked .prize-btn { background: #e2e8f0; color: #475569; cursor: not-allowed; border-color: #cbd5e1; box-shadow: none; }
+/* ---- Prize card states ---- */
+.prize-card.prize-locked   { opacity: .6; }
+.prize-card.prize-locked .prize-btn {
+  background: #f1f5f9; color: #64748b; cursor: not-allowed;
+  border-color: #cbd5e1; box-shadow: none; font-weight: 600;
+}
+
+.prize-card.prize-ready    { background: linear-gradient(135deg, #fef9c3, #fff); }
+.prize-card.prize-ready .prize-btn {
+  background: linear-gradient(135deg, #fde047, #facc15);
+  color: #1e1e2e; border-color: #1e1e2e; font-weight: 700;
+  animation: prize-pulse 1.8s ease-in-out infinite;
+}
+@keyframes prize-pulse {
+  0%, 100% { box-shadow: 3px 3px 0 #1e1e2e; }
+  50%      { box-shadow: 3px 3px 0 #1e1e2e, 0 0 0 6px rgba(250,204,21,.25); }
+}
+
+/* ---- One-shot claimed (Master Certificate, etc.) ---- */
 .prize-card.prize-claimed    { background: linear-gradient(135deg, #fef9c3, #fff); }
-.prize-card.prize-claimed .prize-btn { background: #bbf7d0; color: #14532d; cursor: default; }
-.prize-card.prize-repeatable { background: linear-gradient(135deg, #e0f2fe, #fff); }
+.prize-btn.prize-btn-done {
+  background: #bbf7d0; color: #14532d;
+  cursor: default; border-color: #1e1e2e;
+  box-shadow: 3px 3px 0 #1e1e2e;
+}
+
+/* ---- Repeatable (Mystery Joke, Coloring Pages) ---- */
+.prize-card.prize-repeatable { background: linear-gradient(135deg, #e0f7ea, #fff); }
+.prize-btn.prize-btn-repeat {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #14532d; border-color: #1e1e2e;
+  cursor: pointer; font-weight: 700;
+}
+.prize-btn.prize-btn-repeat:hover {
+  background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+  transform: translateY(-1px);
+  box-shadow: 3px 4px 0 #1e1e2e;
+}
+
+/* ---- Toggleable: ON ---- */
+.prize-card.prize-active    { background: linear-gradient(135deg, #e0f2fe, #fff); }
+.prize-btn.prize-btn-on {
+  background: linear-gradient(135deg, #86efac, #34d399);
+  color: #064e3b; border-color: #065f46;
+  cursor: pointer; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.prize-btn.prize-btn-on .tgl-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #064e3b; box-shadow: 0 0 0 3px rgba(6,78,59,.15);
+  animation: tgl-blink 1.4s ease-in-out infinite;
+}
+@keyframes tgl-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
+}
+.prize-btn.prize-btn-on:hover {
+  background: linear-gradient(135deg, #6ee7b7, #10b981);
+  transform: translateY(-1px);
+  box-shadow: 3px 4px 0 #065f46;
+}
+
+/* ---- Toggleable: OFF ---- */
+.prize-card.prize-inactive   { background: linear-gradient(135deg, #f8fafc, #fff); opacity: .85; }
+.prize-card.prize-inactive .prize-icon,
+.prize-card.prize-inactive .prize-name { filter: grayscale(.4); }
+.prize-btn.prize-btn-off {
+  background: #f1f5f9;
+  color: #475569; border-color: #94a3b8;
+  cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.prize-btn.prize-btn-off .tgl-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #cbd5e1; box-shadow: inset 0 0 0 2px #94a3b8;
+}
+.prize-btn.prize-btn-off:hover {
+  background: #e2e8f0; color: #1e1e2e;
+  transform: translateY(-1px);
+  box-shadow: 3px 4px 0 #475569;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prize-card.prize-ready .prize-btn,
+  .prize-btn.prize-btn-on .tgl-dot { animation: none; }
+}
 
 .ps-reward-panel {
   background: #fef9c3;
@@ -2535,21 +2644,27 @@ html[data-theme="dark"] .sticker-sparkline .sp-stat { color: #94a3b8; }
 .ps-reward-text { flex: 1; }
 .ps-reward-text .btn { margin-left: 8px; }
 
-/* ---- Golden crown on mascot (prize: golden-crown) ---- */
+/* ---- Golden crown on mascot (prize: golden-crown) ----
+   Lily's head sits in the upper-right of her PNG, so the crown
+   is offset to ~62% horizontal (not dead center) and sits just
+   above her head. Tuned visually. */
 .mascot-wrap .lily-crown {
   position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-8deg);
-  font-size: 2rem;
+  top: 2%;
+  left: 62%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  font-size: 2.1rem;
   filter: drop-shadow(0 2px 4px rgba(234,179,8,.6));
   animation: crown-sparkle 2.4s ease-in-out infinite;
   pointer-events: none;
   z-index: 3;
 }
 @keyframes crown-sparkle {
-  0%, 100% { transform: translateX(-50%) rotate(-8deg) scale(1); }
-  50%      { transform: translateX(-50%) rotate(-4deg) scale(1.08); }
+  0%, 100% { transform: translate(-50%, -50%) rotate(-14deg) scale(1); }
+  50%      { transform: translate(-50%, -50%) rotate(-10deg) scale(1.08); }
+}
+@media (max-width: 700px) {
+  .mascot-wrap .lily-crown { font-size: 1.4rem; left: 62%; top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mascot-wrap .lily-crown { animation: none; }
@@ -2565,14 +2680,23 @@ html.prize-rainbow .confetti-canvas {
   to   { filter: hue-rotate(360deg) saturate(1.2); }
 }
 
-/* ---- Sneak-peek: reveal coming-soon card body on hover (prize: sneak-peek) ---- */
-html.prize-sneak-peek .coming-soon-card::after {
-  content: "🕵️ sneak peek unlocked";
-  display: block;
-  margin-top: 6px;
-  font-size: .75rem;
-  color: #7c3aed;
-  font-weight: 700;
+/* ---- Magic Sparkle Trail (prize: sparkle-trail) ---- */
+.sparkle-dot {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: sparkle-fade 0.9s ease-out forwards;
+  text-shadow: 0 0 6px rgba(255, 214, 100, 0.7);
+  will-change: transform, opacity;
+}
+@keyframes sparkle-fade {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(40deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--drift, 0)), calc(-50% - 24px)) scale(0.6) rotate(120deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-dot { display: none; }
 }
 
 @media (max-width: 560px) {

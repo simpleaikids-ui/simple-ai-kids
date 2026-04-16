@@ -36,3 +36,7 @@
 # ---- Images: long cache, they rarely change ----
 /images/*
   Cache-Control: public, max-age=2592000
+
+# ---- Downloadable prize assets (PDFs etc.) ----
+/downloads/*
+  Cache-Control: public, max-age=604800
